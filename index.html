@@ -3,816 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VoteBoxApp - Empowering Communities Through Democratic Technology</title>
-    <meta name="description" content="Open-source voting platform designed for underserved communities worldwide. Secure, transparent, and accessible governance tools.">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="./images/favicon.png">
-    
+    <title>VoteBoxApp - Democratic Technology for Communities</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        /* Custom Colors */
         .bg-navy-800 { background-color: #2D4A8B; }
-        .text-green-400 { color: #4ade80; }
-        .bg-green-500 { background-color: #22c55e; }
-        .bg-green-600 { background-color: #16a34a; }
+        .text-navy-800 { color: #2D4A8B; }
         .hover-lift { transition: transform 0.3s ease; }
         .hover-lift:hover { transform: translateY(-5px); }
-        .fade-in { animation: fadeIn 0.6s ease-out; }
-
+        
         @keyframes fadeIn { 
             from { opacity: 0; transform: translateY(20px); } 
             to { opacity: 1; transform: translateY(0); } 
         }
-
-        /* Header Styles */
-        .hero {
-            background: #2D4A8B;
-            background: linear-gradient(135deg, rgba(45, 74, 139, 0.95), rgba(34, 197, 94, 0.1));
-            color: white;
-            padding: 5rem 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to bottom right, rgba(30, 58, 138, 0.2), rgba(34, 197, 94, 0.1));
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 10;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero .subtitle {
-            color: #4ade80;
-            display: block;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            max-width: 768px;
-            margin-left: auto;
-            margin-right: auto;
-            opacity: 0.9;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .btn-primary {
-            background-color: #22c55e;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #16a34a;
-            transform: translateY(-2px);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-        }
-
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .green-bar {
-            height: 4px;
-            width: 6rem;
-            background-color: #22c55e;
-            margin: 2rem auto;
-        }
-
-        /* Logo Styles */
-        .logo-container {
-            margin-bottom: 2rem;
-        }
-
-        .logo-main {
-            max-width: 32rem;
-            height: auto;
-            max-height: 15rem;
-        }
-
-        .logo-fallback {
-            width: 20rem;
-            height: 10rem;
-            background: linear-gradient(to right, #1e3a8a, #1e40af);
-            border-radius: 0.5rem;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            margin: 0 auto;
-        }
-
-        .logo-fallback-content {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-fallback svg {
-            width: 4rem;
-            height: 4rem;
-            margin-right: 1rem;
-        }
-
-        .logo-fallback span {
-            color: white;
-            font-size: 1.875rem;
-            font-weight: bold;
-            letter-spacing: 0.05em;
-        }
-
-        /* Section Styles */
-        .section {
-            padding: 5rem 0;
-        }
-
-        .section-gray {
-            background-color: #f9fafb;
-        }
-
-        .section-title {
-            font-size: 2.25rem;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Feature Cards */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
+        .fade-in { animation: fadeIn 0.6s ease-out; }
+        
+        /* 3D Card Flip Animation Styles */
         .feature-card {
             background: white;
             border-radius: 0.75rem;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
+            padding: 0;
             text-align: center;
             height: 24rem;
-            display: flex;
-            flex-direction: column;
             position: relative;
-            overflow: hidden;
             cursor: pointer;
-            transition: all 0.5s ease;
+            transition: transform 0.3s ease;
+            perspective: 1000px;
         }
 
         .feature-card:hover {
             transform: translateY(-5px);
         }
 
-        .feature-card.flipped .card-front {
-            opacity: 0;
-            pointer-events: none;
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
         }
 
-        .feature-card.flipped .card-back {
-            opacity: 1;
-            pointer-events: auto;
+        .feature-card.flipped .card-inner {
+            transform: rotateY(180deg);
         }
 
         .card-front, .card-back {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            width: 100%;
+            height: 100%;
             padding: 2rem;
             display: flex;
             flex-direction: column;
-            transition: all 0.5s ease;
+            border-radius: 0.75rem;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
 
         .card-back {
             background: #2D4A8B;
             color: white;
-            opacity: 0;
-            pointer-events: none;
+            transform: rotateY(180deg);
         }
 
-        .feature-icon {
-            background: #22c55e;
-            color: white;
-            width: 4rem;
-            height: 4rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
+        .timeline-connector { 
+            background: linear-gradient(to right, #22c55e 0%, #22c55e 50%, #e5e7eb 50%, #e5e7eb 100%); 
         }
-
-        .feature-card h3 {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .feature-card p {
-            color: #6b7280;
-            flex-grow: 1;
-        }
-
-        .card-back p {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.875rem;
-            line-height: 1.6;
-        }
-
-        .flip-hint {
-            font-size: 0.875rem;
-            color: #22c55e;
-            font-weight: 500;
-            margin-top: 1rem;
-        }
-
-        .flip-back-hint {
-            text-align: center;
-            font-size: 0.875rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-top: 1rem;
-        }
-
-        /* Timeline */
-        .timeline {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 2rem;
-            max-width: 64rem;
-            margin: 0 auto;
-        }
-
-        .timeline-item {
-            flex: 1;
-            min-width: 200px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .timeline-item.active {
-            transform: scale(1.05);
-        }
-
-        .timeline-circle {
-            width: 4rem;
-            height: 4rem;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.125rem;
-        }
-
-        .timeline-circle.current { background-color: #22c55e; }
-        .timeline-circle.next { background-color: #3b82f6; }
-        .timeline-circle.planned { background-color: #9ca3af; }
-        .timeline-circle.future { background-color: #d1d5db; }
-
-        .timeline-item h3 {
-            font-weight: bold;
-            font-size: 1.125rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-item p {
-            color: #6b7280;
-            font-size: 0.875rem;
-            margin-bottom: 1rem;
-        }
-
-        .timeline-details {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-top: 1rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .timeline-details p {
-            font-size: 0.875rem;
-            color: #374151;
-        }
-
-        /* Team Cards */
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 64rem;
-            margin: 0 auto;
-        }
-
-        .team-card {
-            background: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            transition: transform 0.3s ease;
-        }
-
-        .team-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .team-card-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .team-icon {
-            background: #dcfce7;
-            color: #22c55e;
-            padding: 0.75rem;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .team-card h3 {
-            font-weight: bold;
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .team-card p {
-            color: #6b7280;
-            margin-bottom: 0.75rem;
-        }
-
-        .team-skills {
-            font-size: 0.875rem;
-            color: #22c55e;
-            font-weight: 500;
-        }
-
-        /* Donations Section */
-        .donations {
-            background: #2D4A8B;
-            color: white;
-            padding: 5rem 0;
-            text-align: center;
-        }
-
-        .donations-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
-            max-width: 80rem;
-            margin: 0 auto 3rem;
-        }
-
-        .donation-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 0.75rem;
-            padding: 2rem;
-        }
-
-        .donation-card h3 {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 1.5rem;
-        }
-
-        .funding-list {
-            text-align: left;
-        }
-
-        .funding-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .funding-item:last-child {
-            border-bottom: none;
-        }
-
-        .funding-amount {
-            font-weight: bold;
-        }
-
-        .bank-details {
-            text-align: left;
-            font-size: 0.875rem;
-        }
-
-        .bank-detail {
-            margin-bottom: 0.75rem;
-        }
-
-        .bank-label {
-            color: #4ade80;
-            font-weight: 500;
-        }
-
-        .bank-thanks {
-            margin-top: 1.5rem;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            text-align: center;
-        }
-
-        .transparency-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            max-width: 48rem;
-            margin: 0 auto 3rem;
-        }
-
-        .transparency-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            font-size: 0.875rem;
-        }
-
-        .transparency-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .check-icon {
-            color: #4ade80;
-            flex-shrink: 0;
-        }
-
-        .donation-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            max-width: 32rem;
-            margin: 0 auto;
-        }
-
-        /* Community Section */
-        .community {
-            padding: 4rem 0;
-            background: #f3f4f6;
-            text-align: center;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .social-link {
-            width: 3.5rem;
-            height: 3.5rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .social-link:hover {
-            transform: translateY(-3px);
-        }
-
-        .social-github { background: #374151; }
-        .social-github:hover { background: #1f2937; }
-        .social-discord { background: #5865f2; }
-        .social-discord:hover { background: #4752c4; }
-        .social-twitter { background: #000; }
-        .social-twitter:hover { background: #1f2937; }
-        .social-patreon { background: #f97316; }
-        .social-patreon:hover { background: #ea580c; }
-        .social-kickstarter { background: #22c55e; }
-        .social-kickstarter:hover { background: #16a34a; }
-
-        /* Footer */
-        .footer {
-            background: #2D4A8B;
-            color: white;
-            padding: 3rem 0;
-        }
-
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .footer-brand {
-            display: flex;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .footer-logo {
-            width: 4rem;
-            height: 4rem;
-            margin-right: 1rem;
-        }
-
-        .footer-logo-fallback {
-            width: 4rem;
-            height: 4rem;
-            background: #22c55e;
-            border-radius: 0.5rem;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1rem;
-        }
-
-        .footer-logo-fallback span {
-            color: white;
-            font-weight: bold;
-            font-size: 0.875rem;
-        }
-
-        .footer-text h4 {
-            font-weight: bold;
-            font-size: 1.125rem;
-        }
-
-        .footer-text p {
-            font-size: 0.875rem;
-            color: #9ca3af;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            margin-top: 2rem;
-            padding-top: 2rem;
-            text-align: center;
-            font-size: 0.875rem;
-            color: #9ca3af;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1.125rem;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .timeline {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .donations-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .donation-buttons {
-                grid-template-columns: 1fr;
-            }
-
-            .social-links {
-                gap: 1rem;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .hero {
-                padding: 3rem 0;
-            }
-
-            .section {
-                padding: 3rem 0;
-            }
-
-            .container {
-                padding: 0 0.5rem;
-            }
+        
+        /* Twitter/X Icon */
+        .twitter-icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
         }
     </style>
 </head>
-<body>
+<body class="bg-white">
     <!-- Hero Section -->
-    <header class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="logo-container fade-in">
-                    <!-- VoteBoxApp Logo - Replace with your actual logo -->
+    <header class="bg-navy-800 text-white overflow-hidden relative">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-green-500/10"></div>
+        <div class="container mx-auto px-4 py-20 relative z-10">
+            <div class="flex flex-col items-center text-center">
+                <div class="mb-8 fade-in">
+                    <!-- VoteBoxApp Logo -->
                     <img 
-                        src="./images/voteboxapp-logo.png" 
+                        src="/images/voteboxapp-logo.png" 
                         alt="VoteBoxApp Logo" 
-                        class="logo-main"
-                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                    >
-                    <!-- Fallback logo - hidden when real logo loads -->
-                    <div class="logo-fallback">
-                        <div class="logo-fallback-content">
-                            <svg viewBox="0 0 100 100">
-                                <path 
-                                    d="M30 40 C30 25, 40 20, 50 35 C60 20, 70 25, 70 40 C70 55, 50 75, 50 75 C50 75, 30 55, 30 40 Z" 
-                                    fill="none" 
-                                    stroke="#00E676" 
-                                    stroke-width="3"
-                                />
-                            </svg>
-                            <span>VoteBoxApp</span>
+                        class="max-w-lg h-auto mx-auto"
+                        style="max-height: 240px;"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                    />
+                    <!-- Development fallback -->
+                    <div class="w-80 h-40 bg-gradient-to-r from-blue-900 to-blue-800 rounded-lg flex items-center justify-center p-4 mx-auto" style="display: none;">
+                        <div class="flex items-center">
+                            <div class="w-16 h-16 mr-4">
+                                <svg viewBox="0 0 100 100" class="w-full h-full">
+                                    <path 
+                                        d="M30 40 C30 25, 40 20, 50 35 C60 20, 70 25, 70 40 C70 55, 50 75, 50 75 C50 75, 30 55, 30 40 Z" 
+                                        fill="none" 
+                                        stroke="#00E676" 
+                                        stroke-width="3"
+                                    />
+                                </svg>
+                            </div>
+                            <span class="text-white text-3xl font-bold tracking-wide">VoteBoxApp</span>
                         </div>
                     </div>
                 </div>
                 
-                <div class="green-bar fade-in"></div>
+                <div class="bg-green-500 h-1 w-32 mb-8"></div>
                 
-                <h1 class="fade-in">
+                <h1 class="text-3xl md:text-5xl font-bold mb-6 fade-in">
                     Empowering Communities Through
-                    <span class="subtitle">Democratic Technology</span>
+                    <span class="text-green-400 block">Democratic Technology</span>
                 </h1>
                 
-                <p class="fade-in">
+                <p class="text-xl md:text-2xl mb-8 max-w-3xl fade-in opacity-90 leading-relaxed">
                     Open-source voting platform designed for underserved communities worldwide. 
                     Secure, transparent, and accessible governance tools that put power back where it belongs—with the people.
                 </p>
                 
-                <div class="hero-buttons fade-in">
-                    <a href="#donations-section" class="btn btn-primary hover-lift">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                        </svg>
-                        Support Our Mission
-                    </a>
-                    <a href="#features-section" class="btn btn-outline">
-                        Learn More
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="m9 18 6-6-6-6"></path>
-                        </svg>
-                    </a>
+                <div class="flex flex-col sm:flex-row gap-4 fade-in">
+                    <button 
+                        onclick="document.getElementById('donations-section').scrollIntoView({ behavior: 'smooth' })"
+                        class="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg font-semibold transition flex items-center justify-center hover-lift"
+                    >
+                        Support Our Mission <i data-lucide="heart" class="ml-2 w-5 h-5"></i>
+                    </button>
+                    <button 
+                        onclick="document.getElementById('features-section').scrollIntoView({ behavior: 'smooth' })"
+                        class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition"
+                    >
+                        Learn More <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
+                    </button>
                 </div>
             </div>
         </div>
     </header>
 
     <!-- Feature Cards Section -->
-    <section id="features-section" class="section section-gray">
-        <div class="container">
-            <h2 class="section-title">How VoteBoxApp Transforms Communities</h2>
-            <div class="green-bar"></div>
+    <section id="features-section" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-6">How VoteBoxApp Transforms Communities</h2>
+            <div class="w-24 h-1 bg-green-500 mx-auto mb-16"></div>
             
-            <div class="cards-grid">
-                <div class="feature-card hover-lift" onclick="flipCard(this)">
-                    <div class="card-front">
-                        <div class="feature-icon">
-                            <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="m22 21-3-3m0 0a5.5 5.5 0 0 0 0-7.78 5.5 5.5 0 0 0-7.78 0"></path>
-                            </svg>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Card 1: Community Empowerment -->
+                <div class="feature-card" onclick="flipCard(0)">
+                    <div class="card-inner" id="card-0">
+                        <div class="card-front">
+                            <div class="h-full flex flex-col items-center text-center">
+                                <div class="bg-green-500 text-white p-4 rounded-full mb-6">
+                                    <i data-lucide="users" class="w-8 h-8"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-4">Community Empowerment</h3>
+                                <p class="text-gray-600 mb-6 flex-grow">Democratic decision-making tools that put power back in the hands of communities</p>
+                                <div class="text-sm text-green-600 font-medium">
+                                    Tap to learn more →
+                                </div>
+                            </div>
                         </div>
-                        <h3>Community Empowerment</h3>
-                        <p>Democratic decision-making tools that put power back in the hands of communities</p>
-                        <div class="flip-hint">Tap to learn more →</div>
-                    </div>
-                    <div class="card-back">
-                        <h3>Community Empowerment</h3>
-                        <p>Built on a one-user-one-vote equality model, VoteBoxApp ensures every voice carries equal weight regardless of economic status. Designed specifically for underserved communities, slums, and marginalized groups to self-organize and make collective decisions with dignity and transparency.</p>
-                        <div class="flip-back-hint">← Tap to flip back</div>
+                        <div class="card-back">
+                            <div class="h-full flex flex-col">
+                                <h3 class="text-xl font-bold mb-4">Community Empowerment</h3>
+                                <p class="text-white/90 text-sm leading-relaxed flex-grow">Built on a one-user-one-vote equality model, VoteBoxApp ensures every voice carries equal weight regardless of economic status. Designed specifically for underserved communities, slums, and marginalized groups to self-organize and make collective decisions with dignity and transparency.</p>
+                                <div class="text-center text-sm text-white/80 mt-4">
+                                    ← Tap to flip back
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="feature-card hover-lift" onclick="flipCard(this)">
-                    <div class="card-front">
-                        <div class="feature-icon">
-                            <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                            </svg>
+                <!-- Card 2: Decentralized Technology -->
+                <div class="feature-card" onclick="flipCard(1)">
+                    <div class="card-inner" id="card-1">
+                        <div class="card-front">
+                            <div class="h-full flex flex-col items-center text-center">
+                                <div class="bg-green-500 text-white p-4 rounded-full mb-6">
+                                    <i data-lucide="shield" class="w-8 h-8"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-4">Decentralized Technology</h3>
+                                <p class="text-gray-600 mb-6 flex-grow">Blockchain security and IPFS storage ensure tamper-proof, transparent voting</p>
+                                <div class="text-sm text-green-600 font-medium">
+                                    Tap to learn more →
+                                </div>
+                            </div>
                         </div>
-                        <h3>Decentralized Technology</h3>
-                        <p>Blockchain security and IPFS storage ensure tamper-proof, transparent voting</p>
-                        <div class="flip-hint">Tap to learn more →</div>
-                    </div>
-                    <div class="card-back">
-                        <h3>Decentralized Technology</h3>
-                        <p>Leveraging the Celo blockchain for low-cost operations and IPFS for decentralized storage. Smart contracts ensure vote integrity while keeping gas fees minimal for accessibility in resource-limited environments. Biometric authentication provides security without complexity.</p>
-                        <div class="flip-back-hint">← Tap to flip back</div>
+                        <div class="card-back">
+                            <div class="h-full flex flex-col">
+                                <h3 class="text-xl font-bold mb-4">Decentralized Technology</h3>
+                                <p class="text-white/90 text-sm leading-relaxed flex-grow">Leveraging the Celo blockchain for low-cost operations and IPFS for decentralized storage. Smart contracts ensure vote integrity while keeping gas fees minimal for accessibility in resource-limited environments. Biometric authentication provides security without complexity.</p>
+                                <div class="text-center text-sm text-white/80 mt-4">
+                                    ← Tap to flip back
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="feature-card hover-lift" onclick="flipCard(this)">
-                    <div class="card-front">
-                        <div class="feature-icon">
-                            <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
-                                <polyline points="16,18 22,12 16,6"></polyline>
-                                <polyline points="8,6 2,12 8,18"></polyline>
-                            </svg>
+                <!-- Card 3: Open Source Values -->
+                <div class="feature-card" onclick="flipCard(2)">
+                    <div class="card-inner" id="card-2">
+                        <div class="card-front">
+                            <div class="h-full flex flex-col items-center text-center">
+                                <div class="bg-green-500 text-white p-4 rounded-full mb-6">
+                                    <i data-lucide="code" class="w-8 h-8"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-4">Open Source Values</h3>
+                                <p class="text-gray-600 mb-6 flex-grow">Transparent development fostering global collaboration and universal access</p>
+                                <div class="text-sm text-green-600 font-medium">
+                                    Tap to learn more →
+                                </div>
+                            </div>
                         </div>
-                        <h3>Open Source Values</h3>
-                        <p>Transparent development fostering global collaboration and universal access</p>
-                        <div class="flip-hint">Tap to learn more →</div>
-                    </div>
-                    <div class="card-back">
-                        <h3>Open Source Values</h3>
-                        <p>Every line of code is publicly available on GitHub under open-source licenses. This ensures transparency, allows global contributions, and prevents vendor lock-in. Communities can fork, modify, and adapt the platform to their specific needs while contributing back to the collective good.</p>
-                        <div class="flip-back-hint">← Tap to flip back</div>
+                        <div class="card-back">
+                            <div class="h-full flex flex-col">
+                                <h3 class="text-xl font-bold mb-4">Open Source Values</h3>
+                                <p class="text-white/90 text-sm leading-relaxed flex-grow">Every line of code is publicly available on GitHub under open-source licenses. This ensures transparency, allows global contributions, and prevents vendor lock-in. Communities can fork, modify, and adapt the platform to their specific needs while contributing back to the collective good.</p>
+                                <div class="text-center text-sm text-white/80 mt-4">
+                                    ← Tap to flip back
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="feature-card hover-lift" onclick="flipCard(this)">
-                    <div class="card-front">
-                        <div class="feature-icon">
-                            <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <path d="m4.93 4.93 4.24 4.24"></path>
-                                <path d="m14.83 9.17 4.24-4.24"></path>
-                                <path d="m14.83 14.83 4.24 4.24"></path>
-                                <path d="m9.17 14.83-4.24 4.24"></path>
-                                <circle cx="12" cy="12" r="4"></circle>
-                            </svg>
+                <!-- Card 4: Real-World Impact -->
+                <div class="feature-card" onclick="flipCard(3)">
+                    <div class="card-inner" id="card-3">
+                        <div class="card-front">
+                            <div class="h-full flex flex-col items-center text-center">
+                                <div class="bg-green-500 text-white p-4 rounded-full mb-6">
+                                    <i data-lucide="globe" class="w-8 h-8"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-4">Real-World Impact</h3>
+                                <p class="text-gray-600 mb-6 flex-grow">Serving underserved communities with practical, accessible governance solutions</p>
+                                <div class="text-sm text-green-600 font-medium">
+                                    Tap to learn more →
+                                </div>
+                            </div>
                         </div>
-                        <h3>Real-World Impact</h3>
-                        <p>Serving underserved communities with practical, accessible governance solutions</p>
-                        <div class="flip-hint">Tap to learn more →</div>
-                    </div>
-                    <div class="card-back">
-                        <h3>Real-World Impact</h3>
-                        <p>From informal settlements in Ghana to community cooperatives worldwide, VoteBoxApp provides practical tools for collective decision-making. Low bandwidth requirements, multilingual support, and offline capabilities ensure the technology serves those who need it most, not just those with the most resources.</p>
-                        <div class="flip-back-hint">← Tap to flip back</div>
+                        <div class="card-back">
+                            <div class="h-full flex flex-col">
+                                <h3 class="text-xl font-bold mb-4">Real-World Impact</h3>
+                                <p class="text-white/90 text-sm leading-relaxed flex-grow">From informal settlements in Ghana to community cooperatives worldwide, VoteBoxApp provides practical tools for collective decision-making. Low bandwidth requirements, multilingual support, and offline capabilities ensure the technology serves those who need it most, not just those with the most resources.</p>
+                                <div class="text-center text-sm text-white/80 mt-4">
+                                    ← Tap to flip back
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -820,54 +261,86 @@
     </section>
 
     <!-- Interactive Development Timeline -->
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Development Roadmap</h2>
-            <div class="green-bar"></div>
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-6">Development Roadmap</h2>
+            <div class="w-24 h-1 bg-green-500 mx-auto mb-16"></div>
             
-            <div class="timeline">
-                <div class="timeline-item active" onclick="setActivePhase(0)">
-                    <div class="timeline-circle current">1</div>
-                    <h3>Foundation & Seed Funding</h3>
-                    <p>Establish LGC Foundation and raise initial capital</p>
-                    <div class="timeline-details">
-                        <p>Raising NOK 100,000 to register LifeGround Community as a Norwegian foundation</p>
+            <div class="max-w-4xl mx-auto">
+                <div class="flex flex-col lg:flex-row justify-between items-start space-y-8 lg:space-y-0">
+                    <!-- Phase 1 -->
+                    <div class="flex-1 cursor-pointer transition-all duration-300" onclick="setActivePhase(0)">
+                        <div class="text-center">
+                            <div class="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center text-white font-bold text-lg bg-green-500">
+                                1
+                            </div>
+                            <h3 class="font-bold text-lg mb-2">Foundation & Seed Funding</h3>
+                            <p class="text-gray-600 text-sm mb-4">Establish LGC Foundation and raise initial capital</p>
+                            
+                            <div id="phase-details-0" class="bg-white border border-gray-200 rounded-lg p-4 shadow-lg fade-in" style="display: block;">
+                                <p class="text-sm text-gray-700">Raising NOK 100,000 to register LifeGround Community as a Norwegian foundation</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="timeline-item" onclick="setActivePhase(1)">
-                    <div class="timeline-circle next">2</div>
-                    <h3>Core Team Assembly</h3>
-                    <p>Build our multidisciplinary team</p>
-                    <div class="timeline-details" style="display: none;">
-                        <p>Recruiting UX designers, blockchain engineers, and community advocates</p>
+                    <!-- Phase 2 -->
+                    <div class="flex-1 cursor-pointer transition-all duration-300" onclick="setActivePhase(1)">
+                        <div class="text-center">
+                            <div class="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center text-white font-bold text-lg bg-blue-500">
+                                2
+                            </div>
+                            <h3 class="font-bold text-lg mb-2">Core Team Assembly</h3>
+                            <p class="text-gray-600 text-sm mb-4">Build our multidisciplinary team</p>
+                            
+                            <div id="phase-details-1" class="bg-white border border-gray-200 rounded-lg p-4 shadow-lg fade-in" style="display: none;">
+                                <p class="text-sm text-gray-700">Recruiting UX designers, blockchain engineers, and community advocates</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="timeline-item" onclick="setActivePhase(2)">
-                    <div class="timeline-circle planned">3</div>
-                    <h3>MVP Beta Release</h3>
-                    <p>Launch working VoteBoxApp with core features</p>
-                    <div class="timeline-details" style="display: none;">
-                        <p>Biometric auth, proposal forums, and on-chain voting integrated</p>
+                    <!-- Phase 3 -->
+                    <div class="flex-1 cursor-pointer transition-all duration-300" onclick="setActivePhase(2)">
+                        <div class="text-center">
+                            <div class="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center text-white font-bold text-lg bg-gray-400">
+                                3
+                            </div>
+                            <h3 class="font-bold text-lg mb-2">MVP Beta Release</h3>
+                            <p class="text-gray-600 text-sm mb-4">Launch working VoteBoxApp with core features</p>
+                            
+                            <div id="phase-details-2" class="bg-white border border-gray-200 rounded-lg p-4 shadow-lg fade-in" style="display: none;">
+                                <p class="text-sm text-gray-700">Biometric auth, proposal forums, and on-chain voting integrated</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="timeline-item" onclick="setActivePhase(3)">
-                    <div class="timeline-circle planned">4</div>
-                    <h3>DAO Formation</h3>
-                    <p>Transition to community governance</p>
-                    <div class="timeline-details" style="display: none;">
-                        <p>Token-based DAO under LGC umbrella with community council</p>
+                    <!-- Phase 4 -->
+                    <div class="flex-1 cursor-pointer transition-all duration-300" onclick="setActivePhase(3)">
+                        <div class="text-center">
+                            <div class="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center text-white font-bold text-lg bg-gray-400">
+                                4
+                            </div>
+                            <h3 class="font-bold text-lg mb-2">DAO Formation</h3>
+                            <p class="text-gray-600 text-sm mb-4">Transition to community governance</p>
+                            
+                            <div id="phase-details-3" class="bg-white border border-gray-200 rounded-lg p-4 shadow-lg fade-in" style="display: none;">
+                                <p class="text-sm text-gray-700">Token-based DAO under LGC umbrella with community council</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="timeline-item" onclick="setActivePhase(4)">
-                    <div class="timeline-circle future">5</div>
-                    <h3>Global Scaling</h3>
-                    <p>Expand reach and impact worldwide</p>
-                    <div class="timeline-details" style="display: none;">
-                        <p>Partner pilots, advanced features, and multi-chain support</p>
+                    <!-- Phase 5 -->
+                    <div class="flex-1 cursor-pointer transition-all duration-300" onclick="setActivePhase(4)">
+                        <div class="text-center">
+                            <div class="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center text-white font-bold text-lg bg-gray-300">
+                                5
+                            </div>
+                            <h3 class="font-bold text-lg mb-2">Global Scaling</h3>
+                            <p class="text-gray-600 text-sm mb-4">Expand reach and impact worldwide</p>
+                            
+                            <div id="phase-details-4" class="bg-white border border-gray-200 rounded-lg p-4 shadow-lg fade-in" style="display: none;">
+                                <p class="text-sm text-gray-700">Partner pilots, advanced features, and multi-chain support</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -875,95 +348,91 @@
     </section>
 
     <!-- Team Recruitment Section -->
-    <section class="section section-gray">
-        <div class="container">
-            <h2 class="section-title">Join Our Core Team</h2>
-            <div class="green-bar"></div>
-            <p style="text-align: center; color: #6b7280; margin-bottom: 4rem; max-width: 32rem; margin-left: auto; margin-right: auto;">
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-6">Join Our Core Team</h2>
+            <div class="w-24 h-1 bg-green-500 mx-auto mb-8"></div>
+            <p class="text-center text-gray-600 mb-16 max-w-2xl mx-auto">
                 We're looking for passionate individuals who want to make a real difference in the world through technology and social impact.
             </p>
             
-            <div class="team-grid">
-                <div class="team-card hover-lift">
-                    <div class="team-card-header">
-                        <div class="team-icon">
-                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="m22 21-3-3m0 0a5.5 5.5 0 0 0 0-7.78 5.5 5.5 0 0 0-7.78 0"></path>
-                            </svg>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Role 1 -->
+                <div class="bg-white rounded-xl shadow-lg p-8 hover-lift">
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-green-100 p-3 rounded-full">
+                            <i data-lucide="users" class="w-6 h-6 text-green-600"></i>
                         </div>
-                        <div>
-                            <h3>Blockchain Engineer</h3>
-                            <p>Smart contract development, Cardano/Celo integration</p>
-                            <div class="team-skills">Plutus, Solidity, Web3</div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-xl mb-2">Blockchain Engineer</h3>
+                            <p class="text-gray-600 mb-3">Smart contract development, Cardano/Celo integration</p>
+                            <div class="text-sm text-green-600 font-medium">Plutus, Solidity, Web3</div>
                         </div>
                     </div>
-                    <a href="mailto:lifegroundcommunity@gmail.com?subject=VoteBoxApp%20Team%20Member%20Application&body=Hello,%20I%20am%20interested%20in%20applying%20for%20the%20team%20member%20position%20at%20LifeGround%20Community.%20Please%20find%20my%20background%20and%20interest%20below:%0A%0A[Your%20message%20here]" 
-                       class="btn btn-primary" style="width: 100%; text-align: center; margin-top: 1rem;">
+                    <a 
+                        href="mailto:lifegroundcommunity@gmail.com?subject=VoteBoxApp%20Team%20Member%20Application&body=Hello,%20I%20am%20interested%20in%20applying%20for%20the%20team%20member%20position%20at%20LifeGround%20Community.%20Please%20find%20my%20background%20and%20interest%20below:%0A%0A[Your%20message%20here]"
+                        class="mt-6 w-full bg-green-500 text-white py-3 rounded-lg font-medium hover:bg-green-600 transition block text-center"
+                    >
                         Apply Now
                     </a>
                 </div>
 
-                <div class="team-card hover-lift">
-                    <div class="team-card-header">
-                        <div class="team-icon">
-                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="m22 21-3-3m0 0a5.5 5.5 0 0 0 0-7.78 5.5 5.5 0 0 0-7.78 0"></path>
-                            </svg>
+                <!-- Role 2 -->
+                <div class="bg-white rounded-xl shadow-lg p-8 hover-lift">
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-green-100 p-3 rounded-full">
+                            <i data-lucide="users" class="w-6 h-6 text-green-600"></i>
                         </div>
-                        <div>
-                            <h3>UX Design Professional</h3>
-                            <p>Accessibility-focused design for global communities</p>
-                            <div class="team-skills">Mobile UI/UX, Accessibility</div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-xl mb-2">UX Design Professional</h3>
+                            <p class="text-gray-600 mb-3">Accessibility-focused design for global communities</p>
+                            <div class="text-sm text-green-600 font-medium">Mobile UI/UX, Accessibility</div>
                         </div>
                     </div>
-                    <a href="mailto:lifegroundcommunity@gmail.com?subject=VoteBoxApp%20Team%20Member%20Application&body=Hello,%20I%20am%20interested%20in%20applying%20for%20the%20team%20member%20position%20at%20LifeGround%20Community.%20Please%20find%20my%20background%20and%20interest%20below:%0A%0A[Your%20message%20here]" 
-                       class="btn btn-primary" style="width: 100%; text-align: center; margin-top: 1rem;">
+                    <a 
+                        href="mailto:lifegroundcommunity@gmail.com?subject=VoteBoxApp%20Team%20Member%20Application&body=Hello,%20I%20am%20interested%20in%20applying%20for%20the%20team%20member%20position%20at%20LifeGround%20Community.%20Please%20find%20my%20background%20and%20interest%20below:%0A%0A[Your%20message%20here]"
+                        class="mt-6 w-full bg-green-500 text-white py-3 rounded-lg font-medium hover:bg-green-600 transition block text-center"
+                    >
                         Apply Now
                     </a>
                 </div>
 
-                <div class="team-card hover-lift">
-                    <div class="team-card-header">
-                        <div class="team-icon">
-                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="m22 21-3-3m0 0a5.5 5.5 0 0 0 0-7.78 5.5 5.5 0 0 0-7.78 0"></path>
-                            </svg>
+                <!-- Role 3 -->
+                <div class="bg-white rounded-xl shadow-lg p-8 hover-lift">
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-green-100 p-3 rounded-full">
+                            <i data-lucide="users" class="w-6 h-6 text-green-600"></i>
                         </div>
-                        <div>
-                            <h3>Digital Marketing Expert</h3>
-                            <p>Brand strategy and community outreach</p>
-                            <div class="team-skills">Social Impact Marketing</div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-xl mb-2">Digital Marketing Expert</h3>
+                            <p class="text-gray-600 mb-3">Brand strategy and community outreach</p>
+                            <div class="text-sm text-green-600 font-medium">Social Impact Marketing</div>
                         </div>
                     </div>
-                    <a href="mailto:lifegroundcommunity@gmail.com?subject=VoteBoxApp%20Team%20Member%20Application&body=Hello,%20I%20am%20interested%20in%20applying%20for%20the%20team%20member%20position%20at%20LifeGround%20Community.%20Please%20find%20my%20background%20and%20interest%20below:%0A%0A[Your%20message%20here]" 
-                       class="btn btn-primary" style="width: 100%; text-align: center; margin-top: 1rem;">
+                    <a 
+                        href="mailto:lifegroundcommunity@gmail.com?subject=VoteBoxApp%20Team%20Member%20Application&body=Hello,%20I%20am%20interested%20in%20applying%20for%20the%20team%20member%20position%20at%20LifeGround%20Community.%20Please%20find%20my%20background%20and%20interest%20below:%0A%0A[Your%20message%20here]"
+                        class="mt-6 w-full bg-green-500 text-white py-3 rounded-lg font-medium hover:bg-green-600 transition block text-center"
+                    >
                         Apply Now
                     </a>
                 </div>
 
-                <div class="team-card hover-lift">
-                    <div class="team-card-header">
-                        <div class="team-icon">
-                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="m22 21-3-3m0 0a5.5 5.5 0 0 0 0-7.78 5.5 5.5 0 0 0-7.78 0"></path>
-                            </svg>
+                <!-- Role 4 -->
+                <div class="bg-white rounded-xl shadow-lg p-8 hover-lift">
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-green-100 p-3 rounded-full">
+                            <i data-lucide="users" class="w-6 h-6 text-green-600"></i>
                         </div>
-                        <div>
-                            <h3>Treasury Manager</h3>
-                            <p>Fundraising and financial management</p>
-                            <div class="team-skills">Grant Writing, Finance</div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-xl mb-2">Treasury Manager</h3>
+                            <p class="text-gray-600 mb-3">Fundraising and financial management</p>
+                            <div class="text-sm text-green-600 font-medium">Grant Writing, Finance</div>
                         </div>
                     </div>
-                    <a href="mailto:lifegroundcommunity@gmail.com?subject=VoteBoxApp%20Team%20Member%20Application&body=Hello,%20I%20am%20interested%20in%20applying%20for%20the%20team%20member%20position%20at%20LifeGround%20Community.%20Please%20find%20my%20background%20and%20interest%20below:%0A%0A[Your%20message%20here]" 
-                       class="btn btn-primary" style="width: 100%; text-align: center; margin-top: 1rem;">
+                    <a 
+                        href="mailto:lifegroundcommunity@gmail.com?subject=VoteBoxApp%20Team%20Member%20Application&body=Hello,%20I%20am%20interested%20in%20applying%20for%20the%20team%20member%20position%20at%20LifeGround%20Community.%20Please%20find%20my%20background%20and%20interest%20below:%0A%0A[Your%20message%20here]"
+                        class="mt-6 w-full bg-green-500 text-white py-3 rounded-lg font-medium hover:bg-green-600 transition block text-center"
+                    >
                         Apply Now
                     </a>
                 </div>
@@ -972,255 +441,256 @@
     </section>
 
     <!-- Support & Donations Section -->
-    <section id="donations-section" class="donations">
-        <div class="container">
-            <h2 class="section-title">Support Democratic Innovation</h2>
-            <div class="green-bar"></div>
+    <section id="donations-section" class="py-20 bg-navy-800 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-6">Support Democratic Innovation</h2>
+            <div class="w-24 h-1 bg-green-500 mx-auto mb-8"></div>
             
-            <p style="max-width: 48rem; margin: 0 auto 3rem; font-size: 1.25rem; line-height: 1.6;">
+            <p class="max-w-3xl mx-auto mb-12 text-xl leading-relaxed">
                 Help us establish the LGC - LifeGround Community foundation and expand our team. 
                 Your contribution directly supports open-source development that empowers communities worldwide.
             </p>
 
-            <div class="donations-grid">
-                <div class="donation-card">
-                    <h3>Current Funding Goals</h3>
-                    <div class="funding-list">
-                        <div class="funding-item">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto mb-12">
+                <div class="bg-white/10 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold mb-6">Current Funding Goals</h3>
+                    <div class="space-y-4 text-left">
+                        <div class="flex justify-between items-center py-2 border-b border-white/20">
                             <span>Foundation Registry Fee</span>
-                            <span class="funding-amount">NOK 100,000</span>
+                            <span class="font-bold">NOK 100,000</span>
                         </div>
-                        <div class="funding-item">
+                        <div class="flex justify-between items-center py-2 border-b border-white/20">
                             <span>Core Team Expansion</span>
-                            <span class="funding-amount">Ongoing</span>
+                            <span class="font-bold">Ongoing</span>
                         </div>
-                        <div class="funding-item">
+                        <div class="flex justify-between items-center py-2">
                             <span>Open Source Development</span>
-                            <span class="funding-amount">Ongoing</span>
+                            <span class="font-bold">Ongoing</span>
                         </div>
                     </div>
                 </div>
 
-                <div id="bank-details" class="donation-card">
-                    <h3>Bank Transfer Details</h3>
-                    <div class="bank-details">
-                        <div class="bank-detail">
-                            <div class="bank-label">Account Name:</div>
+                <div id="bank-details" class="bg-white/10 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold mb-6">Bank Transfer Details</h3>
+                    <div class="space-y-3 text-left text-sm">
+                        <div>
+                            <div class="text-green-400 font-medium">Account Name:</div>
                             <div>Fund-Raising for VoteBoxApp - LGC</div>
                         </div>
-                        <div class="bank-detail">
-                            <div class="bank-label">Account Number:</div>
+                        <div>
+                            <div class="text-green-400 font-medium">Account Number:</div>
                             <div>1228.44.61000</div>
                         </div>
-                        <div class="bank-detail">
-                            <div class="bank-label">IBAN:</div>
+                        <div>
+                            <div class="text-green-400 font-medium">IBAN:</div>
                             <div>NO57 1228 4461 000</div>
                         </div>
-                        <div class="bank-detail">
-                            <div class="bank-label">BIC/SWIFT:</div>
+                        <div>
+                            <div class="text-green-400 font-medium">BIC/SWIFT:</div>
                             <div>DNBANOKKXXX</div>
                         </div>
                     </div>
                     
-                    <div class="bank-thanks">
-                        <p><strong>We thank you all for any, and every amount!</strong></p>
-                        <p><strong>Your donations give this project legs! ❤️</strong></p>
+                    <div class="mt-6 pt-4 border-t border-white/20">
+                        <p class="text-center text-white/90 font-medium">
+                            We thank you all for any, and every amount!
+                        </p>
+                        <p class="text-center text-white/90 font-medium mt-1">
+                            Your donations give this project legs! ❤️
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <div class="transparency-card">
-                <h3 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 1rem;">Our Transparency Promise</h3>
-                <div class="transparency-grid">
-                    <div class="transparency-item">
-                        <svg class="check-icon" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                            <polyline points="20,6 9,17 4,12"></polyline>
-                        </svg>
+            <div class="bg-white/5 rounded-xl p-6 max-w-3xl mx-auto mb-12">
+                <h3 class="text-xl font-bold mb-4">Our Transparency Promise</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div class="flex items-center space-x-3">
+                        <i data-lucide="check" class="w-4 h-4 text-green-400"></i>
                         <span>Monthly financial reports will be posted on our Discord space</span>
                     </div>
-                    <div class="transparency-item">
-                        <svg class="check-icon" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                            <polyline points="20,6 9,17 4,12"></polyline>
-                        </svg>
+                    <div class="flex items-center space-x-3">
+                        <i data-lucide="check" class="w-4 h-4 text-green-400"></i>
                         <span>Open-source code repository</span>
                     </div>
-                    <div class="transparency-item">
-                        <svg class="check-icon" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                            <polyline points="20,6 9,17 4,12"></polyline>
-                        </svg>
+                    <div class="flex items-center space-x-3">
+                        <i data-lucide="check" class="w-4 h-4 text-green-400"></i>
                         <span>Community-driven development</span>
                     </div>
-                    <div class="transparency-item">
-                        <svg class="check-icon" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                            <polyline points="20,6 9,17 4,12"></polyline>
-                        </svg>
+                    <div class="flex items-center space-x-3">
+                        <i data-lucide="check" class="w-4 h-4 text-green-400"></i>
                         <span>Democratic governance transition</span>
                     </div>
                 </div>
             </div>
 
-            <div class="donation-buttons">
-                <button onclick="scrollToBankDetails()" class="btn btn-primary hover-lift">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                    </svg>
-                    Bank Transfer
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
+                <button 
+                    onclick="document.getElementById('bank-details').scrollIntoView({ behavior: 'smooth', block: 'start' })"
+                    class="bg-green-500 text-white py-4 px-6 rounded-lg hover:bg-green-600 transition flex items-center justify-center hover-lift"
+                >
+                    <i data-lucide="heart" class="mr-2 w-5 h-5"></i> Bank Transfer
                 </button>
-                <a href="https://patreon.com/LifeGroundCommunity" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <path d="M12 6v6l4 2"></path>
-                    </svg>
-                    Patreon
+                <a 
+                    href="https://patreon.com/LifeGroundCommunity"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="bg-transparent border-2 border-white text-white py-4 px-6 rounded-lg hover:bg-white/10 transition flex items-center justify-center"
+                >
+                    <i data-lucide="coffee" class="mr-2 w-5 h-5"></i> Patreon
                 </a>
-                <a href="https://www.kickstarter.com/projects/voteboxapp/voteboxapp-decentralized-voting-for-everyone?ref=nav_search&result=project&term=voteboxapp&total_hits=1" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                    </svg>
-                    Kickstarter
+                <a 
+                    href="https://www.kickstarter.com/projects/voteboxapp/voteboxapp-decentralized-voting-for-everyone?ref=nav_search&result=project&term=voteboxapp&total_hits=1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="bg-green-500 text-white py-4 px-6 rounded-lg hover:bg-green-600 transition flex items-center justify-center"
+                >
+                    <i data-lucide="dollar-sign" class="mr-2 w-5 h-5"></i> Kickstarter
                 </a>
             </div>
         </div>
     </section>
 
     <!-- Community & Social Links -->
-    <section class="community">
-        <div class="container">
-            <h2 style="font-size: 1.875rem; font-weight: bold; margin-bottom: 2rem;">Join Our Community</h2>
-            <p style="color: #6b7280; margin-bottom: 2rem; max-width: 32rem; margin-left: auto; margin-right: auto;">
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-8">Join Our Community</h2>
+            <p class="text-gray-600 mb-8 max-w-2xl mx-auto">
                 Follow our progress, contribute to development, and connect with like-minded individuals building a more democratic future.
             </p>
             
-            <div class="social-links">
-                <a href="https://github.com/Archaico/VoteBoxApp" target="_blank" rel="noopener noreferrer" class="social-link social-github hover-lift">
-                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                    </svg>
+            <div class="flex justify-center space-x-6">
+                <a 
+                    href="https://github.com/Archaico/VoteBoxApp" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="bg-gray-800 text-white p-4 rounded-full hover:bg-gray-700 transition hover-lift"
+                >
+                    <i data-lucide="github" class="w-6 h-6"></i>
                 </a>
-                <a href="https://discord.gg/TUQfaJW3" target="_blank" rel="noopener noreferrer" class="social-link social-discord hover-lift">
-                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
+                <a 
+                    href="https://discord.gg/BN3Bqzh6" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="bg-indigo-600 text-white p-4 rounded-full hover:bg-indigo-700 transition hover-lift"
+                >
+                    <i data-lucide="message-circle" class="w-6 h-6"></i>
                 </a>
-                <a href="https://x.com/TheLifeGround" target="_blank" rel="noopener noreferrer" class="social-link social-twitter hover-lift">
-                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <a 
+                    href="https://x.com/TheLifeGround" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="bg-black text-white p-4 rounded-full hover:bg-gray-800 transition hover-lift"
+                >
+                    <svg class="twitter-icon" viewBox="0 0 24 24">
                         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                     </svg>
                 </a>
-                <a href="https://patreon.com/LifeGroundCommunity" target="_blank" rel="noopener noreferrer" class="social-link social-patreon hover-lift">
-                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <path d="M12 6v6l4 2"></path>
-                    </svg>
+                <a 
+                    href="https://patreon.com/LifeGroundCommunity" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="bg-orange-500 text-white p-4 rounded-full hover:bg-orange-600 transition hover-lift"
+                >
+                    <i data-lucide="coffee" class="w-6 h-6"></i>
                 </a>
-                <a href="https://www.kickstarter.com/projects/voteboxapp/voteboxapp-decentralized-voting-for-everyone?ref=nav_search&result=project&term=voteboxapp&total_hits=1" target="_blank" rel="noopener noreferrer" class="social-link social-kickstarter hover-lift">
-                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                    </svg>
+                <a 
+                    href="https://www.kickstarter.com/projects/voteboxapp/voteboxapp-decentralized-voting-for-everyone?ref=nav_search&result=project&term=voteboxapp&total_hits=1" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="bg-green-500 text-white p-4 rounded-full hover:bg-green-600 transition hover-lift"
+                >
+                    <i data-lucide="dollar-sign" class="w-6 h-6"></i>
                 </a>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <!-- LGC Logo - Replace with your actual logo -->
+    <footer class="py-12 bg-navy-800 text-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-center items-center">
+                <div class="flex items-center mb-6 md:mb-0">
+                    <!-- LGC Logo -->
                     <img 
-                        src="./images/lgc-logo.png" 
+                        src="/images/lgc-logo.png" 
                         alt="LGC Logo" 
-                        class="footer-logo"
+                        class="w-16 h-16 mr-4"
                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                    >
-                    <!-- Fallback logo - hidden when real logo loads -->
-                    <div class="footer-logo-fallback">
-                        <span>LGC</span>
+                    />
+                    <!-- Development fallback -->
+                    <div class="w-16 h-16 bg-green-500 rounded-lg flex items-center justify-center mr-4" style="display: none;">
+                        <span class="text-white font-bold text-sm">LGC</span>
                     </div>
-                    <div class="footer-text">
-                        <h4>LifeGround Community</h4>
-                        <p>Building a Better Society</p>
+                    <div>
+                        <div class="font-bold text-lg">LifeGround Community</div>
+                        <div class="text-sm text-gray-400">Building a Better Society</div>
                     </div>
                 </div>
             </div>
             
-            <div class="footer-bottom">
+            <div class="border-t border-white/20 mt-8 pt-8 text-center text-sm text-gray-400">
                 <p>© 2024 LifeGround Community. Open source software for a better world.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Feature card flip functionality
-        function flipCard(card) {
-            card.classList.toggle('flipped');
-        }
+        // Initialize Lucide icons
+        lucide.createIcons();
 
-        // Timeline phase selection
+        // Global variables
+        let flippedCard = null;
         let activePhase = 0;
 
-        function setActivePhase(phaseIndex) {
-            // Hide all details first
-            document.querySelectorAll('.timeline-details').forEach(detail => {
-                detail.style.display = 'none';
-            });
+        // 3D Card flip functionality
+        function flipCard(index) {
+            const card = document.querySelector(`.feature-card:nth-child(${index + 1})`);
+            const cardInner = document.getElementById(`card-${index}`);
             
-            // Remove active class from all items
-            document.querySelectorAll('.timeline-item').forEach(item => {
-                item.classList.remove('active');
-            });
+            if (flippedCard === index) {
+                // Flip back
+                card.classList.remove('flipped');
+                flippedCard = null;
+            } else {
+                // Flip all cards back first
+                if (flippedCard !== null) {
+                    const prevCard = document.querySelector(`.feature-card:nth-child(${flippedCard + 1})`);
+                    prevCard.classList.remove('flipped');
+                }
+                
+                // Flip the new card
+                card.classList.add('flipped');
+                flippedCard = index;
+            }
+        }
+
+        // Timeline phase functionality
+        function setActivePhase(index) {
+            // Hide all phase details
+            for (let i = 0; i < 5; i++) {
+                const detail = document.getElementById(`phase-details-${i}`);
+                if (detail) {
+                    detail.style.display = 'none';
+                }
+            }
             
             // Show selected phase details
-            const timelineItems = document.querySelectorAll('.timeline-item');
-            const selectedItem = timelineItems[phaseIndex];
-            selectedItem.classList.add('active');
-            selectedItem.querySelector('.timeline-details').style.display = 'block';
+            const selectedDetail = document.getElementById(`phase-details-${index}`);
+            if (selectedDetail) {
+                selectedDetail.style.display = 'block';
+            }
             
-            activePhase = phaseIndex;
+            activePhase = index;
         }
 
-        // Smooth scroll to bank details
-        function scrollToBankDetails() {
-            document.getElementById('bank-details').scrollIntoView({ 
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Add entrance animations on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
-                }
-            });
-        }, observerOptions);
-
-        // Observe elements for animation
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.feature-card, .team-card, .timeline-item').forEach(el => {
-                observer.observe(el);
-            });
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial active phase
+            setActivePhase(0);
+            
+            // Re-initialize Lucide icons after DOM is loaded
+            lucide.createIcons();
         });
     </script>
 </body>
