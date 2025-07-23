@@ -18,34 +18,17 @@
         }
         .fade-in { animation: fadeIn 0.6s ease-out; }
         
-        /* 3D Card Flip Animation Styles */
+        /* Card Animation - Matching React version exactly */
         .feature-card {
-            background: transparent;
-            border-radius: 0.75rem;
-            padding: 0;
-            text-align: center;
-            height: 24rem;
             position: relative;
             cursor: pointer;
             transition: transform 0.3s ease;
+            height: 24rem;
             perspective: 1000px;
         }
 
         .feature-card:hover {
             transform: translateY(-5px);
-        }
-
-        .card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.8s;
-            transform-style: preserve-3d;
-        }
-
-        .feature-card.flipped .card-inner {
-            transform: rotateY(180deg);
         }
 
         .card-front, .card-back {
@@ -56,19 +39,36 @@
             display: flex;
             flex-direction: column;
             border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
 
         .card-front {
             background: white;
+            opacity: 1;
+            transform: rotateY(0deg);
         }
 
         .card-back {
             background: #2D4A8B;
             color: white;
+            opacity: 0;
+            pointer-events: none;
+            transform: rotateY(-180deg);
+        }
+
+        .feature-card.flipped .card-front {
+            opacity: 0;
+            pointer-events: none;
             transform: rotateY(180deg);
+        }
+
+        .feature-card.flipped .card-back {
+            opacity: 1;
+            pointer-events: auto;
+            transform: rotateY(0deg);
         }
 
         .timeline-connector { 
@@ -155,26 +155,24 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- Card 1: Community Empowerment -->
                 <div class="feature-card" onclick="flipCard(0)">
-                    <div class="card-inner" id="card-0">
-                        <div class="card-front">
-                            <div class="h-full flex flex-col items-center text-center">
-                                <div class="bg-green-500 text-white p-4 rounded-full mb-6">
-                                    <i data-lucide="users" class="w-8 h-8"></i>
-                                </div>
-                                <h3 class="text-xl font-bold mb-4">Community Empowerment</h3>
-                                <p class="text-gray-600 mb-6 flex-grow">Democratic decision-making tools that put power back in the hands of communities</p>
-                                <div class="text-sm text-green-600 font-medium">
-                                    Tap to learn more →
-                                </div>
+                    <div class="card-front">
+                        <div class="h-full flex flex-col items-center text-center">
+                            <div class="bg-green-500 text-white p-4 rounded-full mb-6">
+                                <i data-lucide="users" class="w-8 h-8"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4">Community Empowerment</h3>
+                            <p class="text-gray-600 mb-6 flex-grow">Democratic decision-making tools that put power back in the hands of communities</p>
+                            <div class="text-sm text-green-600 font-medium">
+                                Tap to learn more →
                             </div>
                         </div>
-                        <div class="card-back">
-                            <div class="h-full flex flex-col">
-                                <h3 class="text-xl font-bold mb-4">Community Empowerment</h3>
-                                <p class="text-white/90 text-sm leading-relaxed flex-grow">Built on a one-user-one-vote equality model, VoteBoxApp ensures every voice carries equal weight regardless of economic status. Designed specifically for underserved communities, slums, and marginalized groups to self-organize and make collective decisions with dignity and transparency.</p>
-                                <div class="text-center text-sm text-white/80 mt-4">
-                                    ← Tap to flip back
-                                </div>
+                    </div>
+                    <div class="card-back">
+                        <div class="h-full flex flex-col">
+                            <h3 class="text-xl font-bold mb-4">Community Empowerment</h3>
+                            <p class="text-white/90 text-sm leading-relaxed flex-grow">Built on a one-user-one-vote equality model, VoteBoxApp ensures every voice carries equal weight regardless of economic status. Designed specifically for underserved communities, slums, and marginalized groups to self-organize and make collective decisions with dignity and transparency.</p>
+                            <div class="text-center text-sm text-white/80 mt-4">
+                                ← Tap to flip back
                             </div>
                         </div>
                     </div>
@@ -182,26 +180,24 @@
 
                 <!-- Card 2: Decentralized Technology -->
                 <div class="feature-card" onclick="flipCard(1)">
-                    <div class="card-inner" id="card-1">
-                        <div class="card-front">
-                            <div class="h-full flex flex-col items-center text-center">
-                                <div class="bg-green-500 text-white p-4 rounded-full mb-6">
-                                    <i data-lucide="shield" class="w-8 h-8"></i>
-                                </div>
-                                <h3 class="text-xl font-bold mb-4">Decentralized Technology</h3>
-                                <p class="text-gray-600 mb-6 flex-grow">Blockchain security and IPFS storage ensure tamper-proof, transparent voting</p>
-                                <div class="text-sm text-green-600 font-medium">
-                                    Tap to learn more →
-                                </div>
+                    <div class="card-front">
+                        <div class="h-full flex flex-col items-center text-center">
+                            <div class="bg-green-500 text-white p-4 rounded-full mb-6">
+                                <i data-lucide="shield" class="w-8 h-8"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4">Decentralized Technology</h3>
+                            <p class="text-gray-600 mb-6 flex-grow">Blockchain security and IPFS storage ensure tamper-proof, transparent voting</p>
+                            <div class="text-sm text-green-600 font-medium">
+                                Tap to learn more →
                             </div>
                         </div>
-                        <div class="card-back">
-                            <div class="h-full flex flex-col">
-                                <h3 class="text-xl font-bold mb-4">Decentralized Technology</h3>
-                                <p class="text-white/90 text-sm leading-relaxed flex-grow">Leveraging the Celo blockchain for low-cost operations and IPFS for decentralized storage. Smart contracts ensure vote integrity while keeping gas fees minimal for accessibility in resource-limited environments. Biometric authentication provides security without complexity.</p>
-                                <div class="text-center text-sm text-white/80 mt-4">
-                                    ← Tap to flip back
-                                </div>
+                    </div>
+                    <div class="card-back">
+                        <div class="h-full flex flex-col">
+                            <h3 class="text-xl font-bold mb-4">Decentralized Technology</h3>
+                            <p class="text-white/90 text-sm leading-relaxed flex-grow">Leveraging the Celo blockchain for low-cost operations and IPFS for decentralized storage. Smart contracts ensure vote integrity while keeping gas fees minimal for accessibility in resource-limited environments. Biometric authentication provides security without complexity.</p>
+                            <div class="text-center text-sm text-white/80 mt-4">
+                                ← Tap to flip back
                             </div>
                         </div>
                     </div>
@@ -209,26 +205,24 @@
 
                 <!-- Card 3: Open Source Values -->
                 <div class="feature-card" onclick="flipCard(2)">
-                    <div class="card-inner" id="card-2">
-                        <div class="card-front">
-                            <div class="h-full flex flex-col items-center text-center">
-                                <div class="bg-green-500 text-white p-4 rounded-full mb-6">
-                                    <i data-lucide="code" class="w-8 h-8"></i>
-                                </div>
-                                <h3 class="text-xl font-bold mb-4">Open Source Values</h3>
-                                <p class="text-gray-600 mb-6 flex-grow">Transparent development fostering global collaboration and universal access</p>
-                                <div class="text-sm text-green-600 font-medium">
-                                    Tap to learn more →
-                                </div>
+                    <div class="card-front">
+                        <div class="h-full flex flex-col items-center text-center">
+                            <div class="bg-green-500 text-white p-4 rounded-full mb-6">
+                                <i data-lucide="code" class="w-8 h-8"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4">Open Source Values</h3>
+                            <p class="text-gray-600 mb-6 flex-grow">Transparent development fostering global collaboration and universal access</p>
+                            <div class="text-sm text-green-600 font-medium">
+                                Tap to learn more →
                             </div>
                         </div>
-                        <div class="card-back">
-                            <div class="h-full flex flex-col">
-                                <h3 class="text-xl font-bold mb-4">Open Source Values</h3>
-                                <p class="text-white/90 text-sm leading-relaxed flex-grow">Every line of code is publicly available on GitHub under open-source licenses. This ensures transparency, allows global contributions, and prevents vendor lock-in. Communities can fork, modify, and adapt the platform to their specific needs while contributing back to the collective good.</p>
-                                <div class="text-center text-sm text-white/80 mt-4">
-                                    ← Tap to flip back
-                                </div>
+                    </div>
+                    <div class="card-back">
+                        <div class="h-full flex flex-col">
+                            <h3 class="text-xl font-bold mb-4">Open Source Values</h3>
+                            <p class="text-white/90 text-sm leading-relaxed flex-grow">Every line of code is publicly available on GitHub under open-source licenses. This ensures transparency, allows global contributions, and prevents vendor lock-in. Communities can fork, modify, and adapt the platform to their specific needs while contributing back to the collective good.</p>
+                            <div class="text-center text-sm text-white/80 mt-4">
+                                ← Tap to flip back
                             </div>
                         </div>
                     </div>
@@ -236,26 +230,24 @@
 
                 <!-- Card 4: Real-World Impact -->
                 <div class="feature-card" onclick="flipCard(3)">
-                    <div class="card-inner" id="card-3">
-                        <div class="card-front">
-                            <div class="h-full flex flex-col items-center text-center">
-                                <div class="bg-green-500 text-white p-4 rounded-full mb-6">
-                                    <i data-lucide="globe" class="w-8 h-8"></i>
-                                </div>
-                                <h3 class="text-xl font-bold mb-4">Real-World Impact</h3>
-                                <p class="text-gray-600 mb-6 flex-grow">Serving underserved communities with practical, accessible governance solutions</p>
-                                <div class="text-sm text-green-600 font-medium">
-                                    Tap to learn more →
-                                </div>
+                    <div class="card-front">
+                        <div class="h-full flex flex-col items-center text-center">
+                            <div class="bg-green-500 text-white p-4 rounded-full mb-6">
+                                <i data-lucide="globe" class="w-8 h-8"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4">Real-World Impact</h3>
+                            <p class="text-gray-600 mb-6 flex-grow">Serving underserved communities with practical, accessible governance solutions</p>
+                            <div class="text-sm text-green-600 font-medium">
+                                Tap to learn more →
                             </div>
                         </div>
-                        <div class="card-back">
-                            <div class="h-full flex flex-col">
-                                <h3 class="text-xl font-bold mb-4">Real-World Impact</h3>
-                                <p class="text-white/90 text-sm leading-relaxed flex-grow">From informal settlements in Ghana to community cooperatives worldwide, VoteBoxApp provides practical tools for collective decision-making. Low bandwidth requirements, multilingual support, and offline capabilities ensure the technology serves those who need it most, not just those with the most resources.</p>
-                                <div class="text-center text-sm text-white/80 mt-4">
-                                    ← Tap to flip back
-                                </div>
+                    </div>
+                    <div class="card-back">
+                        <div class="h-full flex flex-col">
+                            <h3 class="text-xl font-bold mb-4">Real-World Impact</h3>
+                            <p class="text-white/90 text-sm leading-relaxed flex-grow">From informal settlements in Ghana to community cooperatives worldwide, VoteBoxApp provides practical tools for collective decision-making. Low bandwidth requirements, multilingual support, and offline capabilities ensure the technology serves those who need it most, not just those with the most resources.</p>
+                            <div class="text-center text-sm text-white/80 mt-4">
+                                ← Tap to flip back
                             </div>
                         </div>
                     </div>
@@ -647,7 +639,7 @@
         let flippedCard = null;
         let activePhase = 0;
 
-        // 3D Card flip functionality
+        // 3D Card flip functionality (matching React version)
         function flipCard(index) {
             const card = document.querySelector(`.feature-card:nth-child(${index + 1})`);
             
