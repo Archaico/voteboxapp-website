@@ -18,7 +18,8 @@
         }
         .fade-in { animation: fadeIn 0.6s ease-out; }
         
-        /* 3D Card Flip Animation Styles */
+        /* 3D Card Flip — critical 3D properties injected via JS
+           to prevent Tailwind CDN stylesheet from overriding them */
         .feature-card {
             background: white;
             border-radius: 0.75rem;
@@ -28,43 +29,10 @@
             height: 24rem;
             position: relative;
             cursor: pointer;
-            perspective: 1000px;
         }
-
-        .feature-card:not(.flipped):hover .card-inner {
-            transform: translateY(-5px);
-        }
-
-        .card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.8s ease;
-            transform-style: preserve-3d !important;
-            -webkit-transform-style: preserve-3d !important;
-        }
-
-        .feature-card.flipped .card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            padding: 2rem;
-            display: flex !important;
-            flex-direction: column;
-            border-radius: 0.75rem;
-            backface-visibility: hidden !important;
-            -webkit-backface-visibility: hidden !important;
-        }
-
         .card-back {
             background: #2D4A8B;
             color: white;
-            transform: rotateY(180deg);
         }
 
         .timeline-connector { 
@@ -644,20 +612,62 @@
         let activePhase = 0;
 
         // 3D Card flip functionality
+        // Initialise card 3D styles inline so Tailwind cannot override them
+        function initCards() {
+            document.querySelectorAll('.feature-card').forEach(function(card) {
+                // Perspective on the outer card
+                card.style.perspective = '1000px';
+
+                var inner = card.querySelector('.card-inner');
+                if (inner) {
+                    inner.style.position       = 'relative';
+                    inner.style.width          = '100%';
+                    inner.style.height         = '100%';
+                    inner.style.transition     = 'transform 0.8s ease';
+                    inner.style.transformStyle = 'preserve-3d';
+                    inner.style.webkitTransformStyle = 'preserve-3d';
+                }
+
+                card.querySelectorAll('.card-front, .card-back').forEach(function(face) {
+                    face.style.position         = 'absolute';
+                    face.style.top              = '0';
+                    face.style.left             = '0';
+                    face.style.width            = '100%';
+                    face.style.height           = '100%';
+                    face.style.padding          = '2rem';
+                    face.style.display          = 'flex';
+                    face.style.flexDirection    = 'column';
+                    face.style.borderRadius     = '0.75rem';
+                    face.style.backfaceVisibility       = 'hidden';
+                    face.style.webkitBackfaceVisibility = 'hidden';
+                });
+
+                var back = card.querySelector('.card-back');
+                if (back) {
+                    back.style.transform = 'rotateY(180deg)';
+                }
+            });
+        }
+
         function flipCard(index) {
-            const cards = document.querySelectorAll('.feature-card');
-            const card = cards[index];
+            var cards = document.querySelectorAll('.feature-card');
+            var card  = cards[index];
             if (!card) return;
 
+            var inner = card.querySelector('.card-inner');
+            if (!inner) return;
+
             if (flippedCard === index) {
-                card.classList.remove('flipped');
+                inner.style.transform = 'rotateY(0deg)';
                 flippedCard = null;
             } else {
+                // Flip previous card back
                 if (flippedCard !== null) {
-                    const prevCard = cards[flippedCard];
-                    if (prevCard) prevCard.classList.remove('flipped');
+                    var prevCard  = cards[flippedCard];
+                    var prevInner = prevCard ? prevCard.querySelector('.card-inner') : null;
+                    if (prevInner) prevInner.style.transform = 'rotateY(0deg)';
                 }
-                card.classList.add('flipped');
+                inner.style.transform = 'rotateY(180deg)';
                 flippedCard = index;
             }
         }
@@ -683,6 +693,9 @@
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
+            // Inject 3D card styles inline (Tailwind-proof)
+            initCards();
+
             // Set initial active phase
             setActivePhase(0);
             
