@@ -116,114 +116,102 @@
             <h2 class="text-4xl font-bold text-center mb-6">How VoteBoxApp Transforms Communities</h2>
             <div class="w-24 h-1 bg-green-500 mx-auto mb-16"></div>
             
+            <!-- CARD STYLES: All 3D properties set as inline styles to prevent
+                 Tailwind CDN from overriding transform-style and backface-visibility -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
                 <!-- Card 1: Community Empowerment -->
-                <div class="feature-card" onclick="flipCard(0)">
-                    <div class="card-inner" id="card-0">
-                        <div class="card-front">
-                            <div class="h-full flex flex-col items-center text-center">
-                                <div class="bg-green-500 text-white p-4 rounded-full mb-6">
-                                    <i data-lucide="users" class="w-8 h-8"></i>
-                                </div>
-                                <h3 class="text-xl font-bold mb-4">Community Empowerment</h3>
-                                <p class="text-gray-600 mb-6 flex-grow">Democratic decision-making tools that put power back in the hands of communities</p>
-                                <div class="text-sm text-green-600 font-medium">
-                                    Tap to learn more →
-                                </div>
+                <div class="feature-card" onclick="flipCard(0)"
+                     style="height:24rem;position:relative;cursor:pointer;perspective:1000px;border-radius:0.75rem;box-shadow:0 10px 25px rgba(0,0,0,0.1);">
+                    <div id="card-0"
+                         style="position:relative;width:100%;height:100%;transition:transform 0.8s ease;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;">
+                        <!-- Front -->
+                        <div style="position:absolute;top:0;left:0;width:100%;height:100%;padding:2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:0.75rem;background:white;backface-visibility:hidden;-webkit-backface-visibility:hidden;">
+                            <div class="bg-green-500 text-white p-4 rounded-full mb-6">
+                                <i data-lucide="users" class="w-8 h-8"></i>
                             </div>
+                            <h3 class="text-xl font-bold mb-4">Community Empowerment</h3>
+                            <p class="text-gray-600 mb-6">Democratic decision-making tools that put power back in the hands of communities</p>
+                            <div class="text-sm text-green-600 font-medium">Tap to learn more →</div>
                         </div>
-                        <div class="card-back">
-                            <div class="h-full flex flex-col">
-                                <h3 class="text-xl font-bold mb-4">Community Empowerment</h3>
-                                <p class="text-white/90 text-sm leading-relaxed flex-grow">Built on a one-user-one-vote equality model, VoteBoxApp ensures every voice carries equal weight regardless of economic status. Designed specifically for underserved communities, slums, and marginalized groups to self-organize and make collective decisions with dignity and transparency.</p>
-                                <div class="text-center text-sm text-white/80 mt-4">
-                                    ← Tap to flip back
-                                </div>
-                            </div>
+                        <!-- Back -->
+                        <div style="position:absolute;top:0;left:0;width:100%;height:100%;padding:2rem;display:flex;flex-direction:column;justify-content:center;border-radius:0.75rem;background:#2D4A8B;color:white;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:rotateY(180deg);">
+                            <h3 class="text-xl font-bold mb-4">Community Empowerment</h3>
+                            <p style="color:rgba(255,255,255,0.9);font-size:0.875rem;line-height:1.6;">Built on a one-user-one-vote equality model, VoteBoxApp ensures every voice carries equal weight regardless of economic status. Designed for underserved communities to self-organize and make collective decisions with dignity and transparency.</p>
+                            <div style="text-align:center;font-size:0.875rem;color:rgba(255,255,255,0.7);margin-top:1.5rem;">← Tap to flip back</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Card 2: Decentralized Technology -->
-                <div class="feature-card" onclick="flipCard(1)">
-                    <div class="card-inner" id="card-1">
-                        <div class="card-front">
-                            <div class="h-full flex flex-col items-center text-center">
-                                <div class="bg-green-500 text-white p-4 rounded-full mb-6">
-                                    <i data-lucide="shield" class="w-8 h-8"></i>
-                                </div>
-                                <h3 class="text-xl font-bold mb-4">Decentralized Technology</h3>
-                                <p class="text-gray-600 mb-6 flex-grow">Blockchain security and IPFS storage ensure tamper-proof, transparent voting</p>
-                                <div class="text-sm text-green-600 font-medium">
-                                    Tap to learn more →
-                                </div>
+                <div class="feature-card" onclick="flipCard(1)"
+                     style="height:24rem;position:relative;cursor:pointer;perspective:1000px;border-radius:0.75rem;box-shadow:0 10px 25px rgba(0,0,0,0.1);">
+                    <div id="card-1"
+                         style="position:relative;width:100%;height:100%;transition:transform 0.8s ease;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;">
+                        <!-- Front -->
+                        <div style="position:absolute;top:0;left:0;width:100%;height:100%;padding:2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:0.75rem;background:white;backface-visibility:hidden;-webkit-backface-visibility:hidden;">
+                            <div class="bg-green-500 text-white p-4 rounded-full mb-6">
+                                <i data-lucide="shield" class="w-8 h-8"></i>
                             </div>
+                            <h3 class="text-xl font-bold mb-4">Decentralized Technology</h3>
+                            <p class="text-gray-600 mb-6">Blockchain security and IPFS storage ensure tamper-proof, transparent voting</p>
+                            <div class="text-sm text-green-600 font-medium">Tap to learn more →</div>
                         </div>
-                        <div class="card-back">
-                            <div class="h-full flex flex-col">
-                                <h3 class="text-xl font-bold mb-4">Decentralized Technology</h3>
-                                <p class="text-white/90 text-sm leading-relaxed flex-grow">Leveraging the Celo blockchain for low-cost operations and IPFS for decentralized storage. Smart contracts ensure vote integrity while keeping gas fees minimal for accessibility in resource-limited environments. Biometric authentication provides security without complexity.</p>
-                                <div class="text-center text-sm text-white/80 mt-4">
-                                    ← Tap to flip back
-                                </div>
-                            </div>
+                        <!-- Back -->
+                        <div style="position:absolute;top:0;left:0;width:100%;height:100%;padding:2rem;display:flex;flex-direction:column;justify-content:center;border-radius:0.75rem;background:#2D4A8B;color:white;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:rotateY(180deg);">
+                            <h3 class="text-xl font-bold mb-4">Decentralized Technology</h3>
+                            <p style="color:rgba(255,255,255,0.9);font-size:0.875rem;line-height:1.6;">Cardano blockchain and IPFS decentralized storage ensure vote integrity with minimal gas fees. Native metadata transactions keep costs low for accessibility in resource-limited environments. Biometric authentication provides security without complexity.</p>
+                            <div style="text-align:center;font-size:0.875rem;color:rgba(255,255,255,0.7);margin-top:1.5rem;">← Tap to flip back</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Card 3: Open Source Values -->
-                <div class="feature-card" onclick="flipCard(2)">
-                    <div class="card-inner" id="card-2">
-                        <div class="card-front">
-                            <div class="h-full flex flex-col items-center text-center">
-                                <div class="bg-green-500 text-white p-4 rounded-full mb-6">
-                                    <i data-lucide="code" class="w-8 h-8"></i>
-                                </div>
-                                <h3 class="text-xl font-bold mb-4">Open Source Values</h3>
-                                <p class="text-gray-600 mb-6 flex-grow">Transparent development fostering global collaboration and universal access</p>
-                                <div class="text-sm text-green-600 font-medium">
-                                    Tap to learn more →
-                                </div>
+                <div class="feature-card" onclick="flipCard(2)"
+                     style="height:24rem;position:relative;cursor:pointer;perspective:1000px;border-radius:0.75rem;box-shadow:0 10px 25px rgba(0,0,0,0.1);">
+                    <div id="card-2"
+                         style="position:relative;width:100%;height:100%;transition:transform 0.8s ease;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;">
+                        <!-- Front -->
+                        <div style="position:absolute;top:0;left:0;width:100%;height:100%;padding:2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:0.75rem;background:white;backface-visibility:hidden;-webkit-backface-visibility:hidden;">
+                            <div class="bg-green-500 text-white p-4 rounded-full mb-6">
+                                <i data-lucide="code" class="w-8 h-8"></i>
                             </div>
+                            <h3 class="text-xl font-bold mb-4">Open Source Values</h3>
+                            <p class="text-gray-600 mb-6">Transparent development fostering global collaboration and universal access</p>
+                            <div class="text-sm text-green-600 font-medium">Tap to learn more →</div>
                         </div>
-                        <div class="card-back">
-                            <div class="h-full flex flex-col">
-                                <h3 class="text-xl font-bold mb-4">Open Source Values</h3>
-                                <p class="text-white/90 text-sm leading-relaxed flex-grow">Every line of code is publicly available on GitHub under open-source licenses. This ensures transparency, allows global contributions, and prevents vendor lock-in. Communities can fork, modify, and adapt the platform to their specific needs while contributing back to the collective good.</p>
-                                <div class="text-center text-sm text-white/80 mt-4">
-                                    ← Tap to flip back
-                                </div>
-                            </div>
+                        <!-- Back -->
+                        <div style="position:absolute;top:0;left:0;width:100%;height:100%;padding:2rem;display:flex;flex-direction:column;justify-content:center;border-radius:0.75rem;background:#2D4A8B;color:white;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:rotateY(180deg);">
+                            <h3 class="text-xl font-bold mb-4">Open Source Values</h3>
+                            <p style="color:rgba(255,255,255,0.9);font-size:0.875rem;line-height:1.6;">Every line of code is publicly available on GitHub under AGPL-3.0. This ensures transparency, allows global contributions, and prevents vendor lock-in. Communities can fork, modify, and adapt the platform to their specific needs while contributing back to the collective good.</p>
+                            <div style="text-align:center;font-size:0.875rem;color:rgba(255,255,255,0.7);margin-top:1.5rem;">← Tap to flip back</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Card 4: Real-World Impact -->
-                <div class="feature-card" onclick="flipCard(3)">
-                    <div class="card-inner" id="card-3">
-                        <div class="card-front">
-                            <div class="h-full flex flex-col items-center text-center">
-                                <div class="bg-green-500 text-white p-4 rounded-full mb-6">
-                                    <i data-lucide="globe" class="w-8 h-8"></i>
-                                </div>
-                                <h3 class="text-xl font-bold mb-4">Real-World Impact</h3>
-                                <p class="text-gray-600 mb-6 flex-grow">Serving underserved communities with practical, accessible governance solutions</p>
-                                <div class="text-sm text-green-600 font-medium">
-                                    Tap to learn more →
-                                </div>
+                <div class="feature-card" onclick="flipCard(3)"
+                     style="height:24rem;position:relative;cursor:pointer;perspective:1000px;border-radius:0.75rem;box-shadow:0 10px 25px rgba(0,0,0,0.1);">
+                    <div id="card-3"
+                         style="position:relative;width:100%;height:100%;transition:transform 0.8s ease;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;">
+                        <!-- Front -->
+                        <div style="position:absolute;top:0;left:0;width:100%;height:100%;padding:2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:0.75rem;background:white;backface-visibility:hidden;-webkit-backface-visibility:hidden;">
+                            <div class="bg-green-500 text-white p-4 rounded-full mb-6">
+                                <i data-lucide="globe" class="w-8 h-8"></i>
                             </div>
+                            <h3 class="text-xl font-bold mb-4">Real-World Impact</h3>
+                            <p class="text-gray-600 mb-6">Serving underserved communities with practical, accessible governance solutions</p>
+                            <div class="text-sm text-green-600 font-medium">Tap to learn more →</div>
                         </div>
-                        <div class="card-back">
-                            <div class="h-full flex flex-col">
-                                <h3 class="text-xl font-bold mb-4">Real-World Impact</h3>
-                                <p class="text-white/90 text-sm leading-relaxed flex-grow">From informal settlements in Ghana to community cooperatives worldwide, VoteBoxApp provides practical tools for collective decision-making. Low bandwidth requirements, multilingual support, and offline capabilities ensure the technology serves those who need it most, not just those with the most resources.</p>
-                                <div class="text-center text-sm text-white/80 mt-4">
-                                    ← Tap to flip back
-                                </div>
-                            </div>
+                        <!-- Back -->
+                        <div style="position:absolute;top:0;left:0;width:100%;height:100%;padding:2rem;display:flex;flex-direction:column;justify-content:center;border-radius:0.75rem;background:#2D4A8B;color:white;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:rotateY(180deg);">
+                            <h3 class="text-xl font-bold mb-4">Real-World Impact</h3>
+                            <p style="color:rgba(255,255,255,0.9);font-size:0.875rem;line-height:1.6;">From informal settlements in Ghana to community cooperatives worldwide, VoteBoxApp provides practical tools for collective decision-making. Low bandwidth requirements, multilingual support, and offline capabilities ensure the technology serves those who need it most.</p>
+                            <div style="text-align:center;font-size:0.875rem;color:rgba(255,255,255,0.7);margin-top:1.5rem;">← Tap to flip back</div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -612,60 +600,17 @@
         let activePhase = 0;
 
         // 3D Card flip functionality
-        // Initialise card 3D styles inline so Tailwind cannot override them
-        function initCards() {
-            document.querySelectorAll('.feature-card').forEach(function(card) {
-                // Perspective on the outer card
-                card.style.perspective = '1000px';
-
-                var inner = card.querySelector('.card-inner');
-                if (inner) {
-                    inner.style.position       = 'relative';
-                    inner.style.width          = '100%';
-                    inner.style.height         = '100%';
-                    inner.style.transition     = 'transform 0.8s ease';
-                    inner.style.transformStyle = 'preserve-3d';
-                    inner.style.webkitTransformStyle = 'preserve-3d';
-                }
-
-                card.querySelectorAll('.card-front, .card-back').forEach(function(face) {
-                    face.style.position         = 'absolute';
-                    face.style.top              = '0';
-                    face.style.left             = '0';
-                    face.style.width            = '100%';
-                    face.style.height           = '100%';
-                    face.style.padding          = '2rem';
-                    face.style.display          = 'flex';
-                    face.style.flexDirection    = 'column';
-                    face.style.borderRadius     = '0.75rem';
-                    face.style.backfaceVisibility       = 'hidden';
-                    face.style.webkitBackfaceVisibility = 'hidden';
-                });
-
-                var back = card.querySelector('.card-back');
-                if (back) {
-                    back.style.transform = 'rotateY(180deg)';
-                }
-            });
-        }
-
         function flipCard(index) {
-            var cards = document.querySelectorAll('.feature-card');
-            var card  = cards[index];
-            if (!card) return;
-
-            var inner = card.querySelector('.card-inner');
+            var inner = document.getElementById('card-' + index);
             if (!inner) return;
 
             if (flippedCard === index) {
                 inner.style.transform = 'rotateY(0deg)';
                 flippedCard = null;
             } else {
-                // Flip previous card back
                 if (flippedCard !== null) {
-                    var prevCard  = cards[flippedCard];
-                    var prevInner = prevCard ? prevCard.querySelector('.card-inner') : null;
-                    if (prevInner) prevInner.style.transform = 'rotateY(0deg)';
+                    var prev = document.getElementById('card-' + flippedCard);
+                    if (prev) prev.style.transform = 'rotateY(0deg)';
                 }
                 inner.style.transform = 'rotateY(180deg)';
                 flippedCard = index;
@@ -693,9 +638,6 @@
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
-            // Inject 3D card styles inline (Tailwind-proof)
-            initCards();
-
             // Set initial active phase
             setActivePhase(0);
             
