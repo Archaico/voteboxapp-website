@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoteBoxApp — Stakeholder Overview</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep:   #0D3B1E;
+    --green-dark:   #1B5E20;
+    --green-mid:    #2E7D32;
+    --green-bright: #43A047;
+    --green-light:  #E8F5E9;
+    --green-pale:   #F1F8F2;
+    --gold:         #C8A84B;
+    --gold-light:   #FFF8E1;
+    --cream:        #FAFAF7;
+    --dark:         #111827;
+    --gray:         #6B7280;
+    --border:       #D1E7D4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--dark); line-height: 1.7; }
+
+  /* COVER */
+  .cover {
+    min-height: 100vh;
+    background: var(--green-deep);
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(67,160,71,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(200,168,75,0.15) 0%, transparent 50%);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; padding: 80px 40px; position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(255,255,255,0.015) 60px, rgba(255,255,255,0.015) 61px);
+  }
+  .cover-badge {
+    background: rgba(200,168,75,0.2); border: 1px solid rgba(200,168,75,0.5);
+    color: var(--gold); font-size: 11px; letter-spacing: 3px; font-weight: 600;
+    padding: 6px 18px; border-radius: 20px; margin-bottom: 32px; text-transform: uppercase;
+  }
+  .cover h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(48px, 8vw, 88px); font-weight: 900;
+    color: white; line-height: 1.05; margin-bottom: 24px;
+    text-shadow: 0 4px 40px rgba(0,0,0,0.4);
+  }
+  .cover h1 span { color: var(--gold); }
+  .cover p {
+    font-size: 18px; color: rgba(255,255,255,0.72); max-width: 600px;
+    margin-bottom: 48px; font-weight: 300;
+  }
+  .cover-stats {
+    display: flex; gap: 48px; flex-wrap: wrap; justify-content: center;
+    border-top: 1px solid rgba(255,255,255,0.12); padding-top: 40px;
+  }
+  .cover-stat { text-align: center; }
+  .cover-stat .num { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--gold); font-weight: 700; }
+  .cover-stat .lbl { font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+
+  /* NAV DOTS */
+  .section-label {
+    display: inline-block; background: var(--green-light); color: var(--green-dark);
+    font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    padding: 5px 14px; border-radius: 20px; margin-bottom: 14px;
+  }
+
+  /* SECTIONS */
+  .section { padding: 80px 40px; max-width: 1100px; margin: 0 auto; }
+  .section-alt { background: var(--green-pale); padding: 80px 40px; }
+  .section-alt .inner { max-width: 1100px; margin: 0 auto; }
+  .section-dark { background: var(--green-deep); padding: 80px 40px; color: white; }
+  .section-dark .inner { max-width: 1100px; margin: 0 auto; }
+
+  h2.title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 42px); font-weight: 700; line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  h2.title.light { color: white; }
+  h2.title.gold { color: var(--gold); }
+  .subtitle { font-size: 16px; color: var(--gray); max-width: 680px; margin-bottom: 48px; }
+  .subtitle.light { color: rgba(255,255,255,0.6); }
+  p.body-text { font-size: 15px; line-height: 1.8; margin-bottom: 14px; color: #374151; }
+  p.body-text.light { color: rgba(255,255,255,0.78); }
+
+  /* PROBLEM CARDS */
+  .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 16px; }
+  .problem-card {
+    background: white; border: 1px solid var(--border); border-radius: 12px;
+    padding: 28px; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .problem-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+  .problem-card .icon { font-size: 32px; margin-bottom: 14px; }
+  .problem-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--green-dark); }
+  .problem-card p { font-size: 14px; color: var(--gray); line-height: 1.6; }
+
+  /* HOW IT WORKS */
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; margin-top: 16px; position: relative; }
+  .step {
+    background: white; border: 1px solid var(--border); padding: 32px 24px;
+    text-align: center; position: relative;
+  }
+  .step:not(:last-child)::after {
+    content: '→'; position: absolute; right: -14px; top: 50%; transform: translateY(-50%);
+    font-size: 22px; color: var(--green-bright); z-index: 2; background: white;
+    width: 28px; text-align: center;
+  }
+  .step-num {
+    width: 44px; height: 44px; border-radius: 50%; background: var(--green-dark);
+    color: white; font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
+  }
+  .step h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; color: var(--dark); }
+  .step p { font-size: 13px; color: var(--gray); }
+  .step .price-tag { background: var(--green-light); color: var(--green-dark); font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; margin-top: 10px; display: inline-block; }
+
+  /* FEATURE GRID */
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 16px; }
+  .feature-card {
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px; padding: 28px;
+  }
+  .feature-card h3 { font-size: 16px; font-weight: 600; color: var(--gold); margin-bottom: 10px; }
+  .feature-card p { font-size: 14px; color: rgba(255,255,255,0.68); line-height: 1.65; }
+
+  /* METRICS BAR */
+  .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin: 32px 0; }
+  .metric {
+    background: white; border: 1px solid var(--border); border-radius: 12px;
+    padding: 24px; text-align: center;
+  }
+  .metric .val { font-family: 'Playfair Display', serif; font-size: 38px; color: var(--green-dark); font-weight: 700; line-height: 1; }
+  .metric .unit { font-size: 14px; color: var(--green-bright); font-weight: 600; margin-top: 2px; }
+  .metric .desc { font-size: 12px; color: var(--gray); margin-top: 6px; letter-spacing: 0.5px; }
+
+  /* REVENUE MODEL */
+  .revenue-flow {
+    display: flex; align-items: stretch; gap: 0; margin: 32px 0; flex-wrap: wrap;
+  }
+  .rev-box {
+    flex: 1; min-width: 160px; padding: 28px 20px; text-align: center;
+    border: 1px solid var(--border); background: white;
+  }
+  .rev-box.highlight { background: var(--green-dark); color: white; border-color: var(--green-dark); }
+  .rev-box h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .rev-box .amount { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--gold); }
+  .rev-box p { font-size: 12px; color: var(--gray); margin-top: 6px; line-height: 1.5; }
+  .rev-box.highlight p { color: rgba(255,255,255,0.65); }
+  .rev-arrow { display: flex; align-items: center; padding: 0 4px; color: var(--green-bright); font-size: 22px; }
+
+  /* ROADMAP */
+  .roadmap { margin-top: 32px; position: relative; }
+  .roadmap::before { content: ''; position: absolute; left: 28px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+  .roadmap-item { display: flex; gap: 24px; margin-bottom: 32px; position: relative; }
+  .roadmap-dot {
+    width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700;
+    position: relative; z-index: 1;
+  }
+  .roadmap-dot.done { background: var(--green-dark); color: white; }
+  .roadmap-dot.active { background: var(--gold); color: var(--green-deep); }
+  .roadmap-dot.future { background: white; color: var(--gray); border: 2px solid var(--border); }
+  .roadmap-content { padding-top: 8px; flex: 1; }
+  .roadmap-content .phase { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--green-bright); font-weight: 600; margin-bottom: 4px; }
+  .roadmap-content h3 { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .roadmap-content p { font-size: 14px; color: var(--gray); }
+  .status-tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-left: 10px; }
+  .status-tag.done { background: var(--green-light); color: var(--green-dark); }
+  .status-tag.active { background: var(--gold-light); color: #92400E; }
+  .status-tag.future { background: #F3F4F6; color: var(--gray); }
+
+  /* INVOLVEMENT */
+  .involve-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 24px; }
+  .involve-card {
+    border-radius: 14px; padding: 32px; border: 1px solid var(--border);
+    background: white; transition: transform 0.2s;
+  }
+  .involve-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.07); }
+  .involve-card .role { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--green-bright); font-weight: 600; margin-bottom: 10px; }
+  .involve-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; color: var(--green-dark); }
+  .involve-card ul { padding-left: 0; list-style: none; }
+  .involve-card ul li { font-size: 14px; color: var(--gray); padding: 5px 0; border-bottom: 1px solid #F3F4F6; }
+  .involve-card ul li::before { content: '→ '; color: var(--green-bright); font-weight: 600; }
+
+  /* FOUNDATION SECTION */
+  .foundation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 32px; }
+  @media (max-width: 640px) { .foundation-grid { grid-template-columns: 1fr; } .steps { grid-template-columns: 1fr; } .steps .step::after { display: none; } .cover-stats { gap: 28px; } .revenue-flow { flex-direction: column; } .rev-arrow { transform: rotate(90deg); align-self: center; } }
+  .found-panel { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 14px; padding: 32px; }
+  .found-panel h3 { font-size: 18px; font-weight: 600; color: var(--gold); margin-bottom: 10px; }
+  .found-panel p { font-size: 14px; color: rgba(255,255,255,0.68); line-height: 1.7; }
+
+  /* CTA */
+  .cta-section {
+    background: linear-gradient(135deg, var(--green-deep) 0%, #0a2e12 100%);
+    padding: 100px 40px; text-align: center;
+  }
+  .cta-section h2 { font-family: 'Playfair Display', serif; font-size: clamp(32px, 5vw, 52px); color: white; margin-bottom: 16px; }
+  .cta-section p { font-size: 17px; color: rgba(255,255,255,0.65); max-width: 560px; margin: 0 auto 40px; }
+  .cta-btn { display: inline-block; background: var(--gold); color: var(--green-deep); font-weight: 700; font-size: 15px; padding: 16px 40px; border-radius: 6px; text-decoration: none; letter-spacing: 0.5px; }
+  .cta-sub { margin-top: 24px; font-size: 13px; color: rgba(255,255,255,0.4); }
+
+  /* DIVIDER */
+  hr.div { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+  /* QUOTE */
+  .pull-quote {
+    border-left: 4px solid var(--gold); padding: 20px 28px; margin: 32px 0;
+    background: var(--gold-light); border-radius: 0 8px 8px 0;
+  }
+  .pull-quote p { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--green-deep); font-style: italic; line-height: 1.6; }
+  .pull-quote cite { display: block; font-size: 13px; color: var(--gray); margin-top: 8px; font-style: normal; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-badge">Stakeholder Overview · 2025</div>
+  <h1>Democracy<br><span>Reimagined</span></h1>
+  <p>VoteBoxApp is building the world's first open, blockchain-based direct democracy platform — putting the power of governance into the hands of every community on Earth.</p>
+  <div class="cover-stats">
+    <div class="cover-stat"><div class="num">4.2B</div><div class="lbl">People without meaningful governance access</div></div>
+    <div class="cover-stat"><div class="num">15</div><div class="lbl">Languages at launch</div></div>
+    <div class="cover-stat"><div class="num">1.2+</div><div class="lbl">ADA minimum per proposal — free to vote</div></div>
+    <div class="cover-stat"><div class="num">Cardano</div><div class="lbl">Blockchain infrastructure</div></div>
+  </div>
+</div>
+
+<!-- THE VISION -->
+<div class="section">
+  <span class="section-label">Our Purpose</span>
+  <h2 class="title">The Vision</h2>
+  <p class="subtitle">Rooted in philosophy. Built in code. Designed for everyone.</p>
+  <p class="body-text">VoteBoxApp was born from a simple but radical idea: that every person — regardless of where they live, what language they speak, or how much money they have — deserves a genuine voice in the decisions that affect their life.</p>
+  <p class="body-text">That idea was first articulated in <em>The Seed — Blueprint for a Better Society</em>, a published framework for post-capitalist, direct-democracy governance. VoteBoxApp is its technical realisation — a mobile-first, blockchain-secured voting platform that makes decentralised governance as easy as sending a message.</p>
+  <p class="body-text">The platform is developed and stewarded by the LifeGround Community Foundation (LGC), an international foundation dedicated to ecological stewardship and decentralised community networks. We are not building a product. We are building a movement.</p>
+
+  <div class="pull-quote">
+    <p>"The question is not whether people can govern themselves. The question is whether we will build the tools that let them."</p>
+    <cite>— The Seed, Blueprint for a Better Society</cite>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- THE PROBLEM -->
+<div class="section-alt">
+  <div class="inner">
+    <span class="section-label">The Problem</span>
+    <h2 class="title">Why This Needs to Exist</h2>
+    <p class="subtitle">The gap between citizens and decision-making has never been wider.</p>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="icon">🗳️</div>
+        <h3>Broken Representative Systems</h3>
+        <p>Traditional democracy relies on representatives who become increasingly distant from the people they serve. Voters have meaningful input once every several years — if at all.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">🌍</div>
+        <h3>The Developing World Left Behind</h3>
+        <p>Billions of people in rural and developing communities have no practical access to civic participation tools. Existing digital governance solutions assume infrastructure, literacy, and banking access that simply don't exist.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">🏛️</div>
+        <h3>Institutional Trust Collapse</h3>
+        <p>Public trust in governments and institutions is at historic lows globally. Communities need transparent, auditable, tamper-proof mechanisms to make collective decisions — independent of any central authority.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">⚙️</div>
+        <h3>DAOs Without Accessibility</h3>
+        <p>Web3 governance tools exist but remain inaccessible to non-technical users. High fees, complex interfaces, and English-only platforms exclude the communities that need decentralised governance most.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- THE SOLUTION -->
+<div class="section">
+  <span class="section-label">The Solution</span>
+  <h2 class="title">What VoteBoxApp Does</h2>
+  <p class="subtitle">A blockchain-secured, mobile-first governance platform built for the world — not just the West.</p>
+
+  <div class="metrics">
+    <div class="metric"><div class="val">Free</div><div class="unit">to Vote</div><div class="desc">Zero cost for community members to participate</div></div>
+    <div class="metric"><div class="val">1.2+</div><div class="unit">ADA / Proposal</div><div class="desc">Starting from 1.2 ADA — roughly $0.31 USD at current rates</div></div>
+    <div class="metric"><div class="val">15</div><div class="unit">Languages</div><div class="desc">Full internationalisation at launch</div></div>
+    <div class="metric"><div class="val">100%</div><div class="unit">On-Chain</div><div class="desc">Every vote immutably recorded on Cardano</div></div>
+  </div>
+
+  <h3 style="font-size:18px;font-weight:600;color:var(--green-dark);margin:32px 0 20px;">How It Works</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Create a Proposal</h3>
+      <p>Any wallet holder submits a proposal to their community</p>
+      <span class="price-tag">from 1.2 ADA</span>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Community Votes</h3>
+      <p>Members vote Yes, No, or Abstain from their mobile device</p>
+      <span class="price-tag">Free to vote</span>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Results Recorded</h3>
+      <p>Outcome is written to the Cardano blockchain — immutable and transparent</p>
+      <span class="price-tag">On-chain</span>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <h3>Community Acts</h3>
+      <p>Verified results trigger real-world or on-chain actions</p>
+      <span class="price-tag">Trustless</span>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- PLATFORM FEATURES -->
+<div class="section-dark">
+  <div class="inner">
+    <span class="section-label" style="background:rgba(200,168,75,0.2);color:var(--gold);border:1px solid rgba(200,168,75,0.3);">Platform</span>
+    <h2 class="title light">Built for Scale. Built for Everyone.</h2>
+    <p class="subtitle light">Technical architecture designed to serve communities from Silicon Valley to rural Sub-Saharan Africa.</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>📱 Mobile-First Design</h3>
+        <p>Built with React Native for iOS and Android. Lightweight, offline-tolerant, and designed for low-bandwidth environments. If you have a smartphone, you can participate.</p>
+      </div>
+      <div class="feature-card">
+        <h3>⛓️ Cardano Blockchain</h3>
+        <p>Every proposal and vote is anchored to the Cardano ledger. No central server can alter, delete, or manipulate results. Governance becomes a public good, not a proprietary service.</p>
+      </div>
+      <div class="feature-card">
+        <h3>🌐 15 Languages at Launch</h3>
+        <p>Full internationalisation including Spanish, French, Arabic, Portuguese, Swahili, Hindi, and more. Language is not a barrier to democratic participation.</p>
+      </div>
+      <div class="feature-card">
+        <h3>🔐 Decentralised Identity</h3>
+        <p>Wallet-based identity means no usernames, no passwords, no data harvesting. Users control their own identity and voting record — stored on IPFS, owned by them.</p>
+      </div>
+      <div class="feature-card">
+        <h3>🏅 Reputation Layer</h3>
+        <p>Soulbound tokens (non-transferable NFTs) create a verifiable reputation system. Contributors earn badges for real work, building governance weight through participation, not wealth.</p>
+      </div>
+      <div class="feature-card">
+        <h3>🌱 Ecological Alignment</h3>
+        <p>Cardano's Proof of Stake consensus uses a fraction of the energy of Proof of Work chains. Technology should serve the planet, not exploit it — this is a founding value of LGC.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- FOUNDATION -->
+<div class="section">
+  <span class="section-label">The Foundation</span>
+  <h2 class="title">LifeGround Community Foundation</h2>
+  <p class="subtitle">The long-term mission holder and governance structure behind VoteBoxApp.</p>
+  <p class="body-text">LGC is a formally established international foundation dedicated to ensuring VoteBoxApp remains a public good in perpetuity. It exists to hold the mission — governed by its community, funded by its usage, and accountable to its values rather than to shareholders or commercial interests.</p>
+  <p class="body-text">The foundation oversees platform development, manages the community treasury, and will progressively transition governance to a fully decentralised on-chain DAO as the community grows — putting real power in the hands of participants.</p>
+</div>
+
+<hr class="div">
+
+<!-- REVENUE MODEL -->
+<div class="section-alt">
+  <div class="inner">
+    <span class="section-label">Sustainability</span>
+    <h2 class="title">Revenue Model</h2>
+    <p class="subtitle">Sustainable, transparent, and aligned with mission — not speculation.</p>
+    <div class="revenue-flow">
+      <div class="rev-box">
+        <h4>Proposal Creator</h4>
+        <div class="amount">from 1.2 ADA</div>
+        <p>Starting from 1.2 ADA (~$0.31 USD at current rates) — the only fee in the ecosystem</p>
+      </div>
+      <div class="rev-arrow">→</div>
+      <div class="rev-box highlight">
+        <h4>Network Fee</h4>
+        <div class="amount">1.0 ADA</div>
+        <p>Goes to Cardano network transaction processing</p>
+      </div>
+      <div class="rev-arrow">→</div>
+      <div class="rev-box highlight">
+        <h4>Foundation Fee</h4>
+        <div class="amount">0.2 ADA</div>
+        <p>Goes to LGC treasury — funds development, bounties, and operations</p>
+      </div>
+      <div class="rev-arrow">→</div>
+      <div class="rev-box">
+        <h4>Voters Pay</h4>
+        <div class="amount">Zero</div>
+        <p>Voting is always free — removing every barrier to participation</p>
+      </div>
+    </div>
+    <div class="pull-quote" style="margin-top:28px;">
+      <p>A single proposal shared with 1,000 voters costs less than $0.001 per person — making VoteBoxApp one of the most cost-effective governance tools ever built.</p>
+      <cite>The more people participate, the more the cost per decision approaches zero.</cite>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:600;color:var(--green-dark);margin:36px 0 14px;">Additional Revenue Streams</h3>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="icon">🎨</div>
+        <h3>NFT Campaigns</h3>
+        <p>Two flagship collections — The 1,000 Founders and Seeds of Change — providing initial runway funding of up to 95,000+ ADA.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">🏗️</div>
+        <h3>Bounty Wall</h3>
+        <p>Community contributors earn soulbound tokens for completed work. Reduces development cost while building an invested contributor base.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">🏢</div>
+        <h3>Institutional Licensing</h3>
+        <p>White-label licensing of the governance platform to NGOs, cooperatives, DAOs, and municipal bodies — a future B2B revenue stream.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">🎓</div>
+        <h3>Grants & Partnerships</h3>
+        <p>Eligible for Cardano Project Catalyst grants, Gitcoin rounds, and international development funding aligned with democratic access.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ROADMAP -->
+<div class="section">
+  <span class="section-label">Timeline</span>
+  <h2 class="title">Development Roadmap</h2>
+  <p class="subtitle">Where we are. Where we're going. When we'll get there.</p>
+  <div class="roadmap">
+    <div class="roadmap-item">
+      <div class="roadmap-dot done">1</div>
+      <div class="roadmap-content">
+        <div class="phase">Phase 1 · Complete</div>
+        <h3>Foundation & Architecture <span class="status-tag done">Done</span></h3>
+        <p>Core blockchain architecture defined. Cardano integration designed. Revenue model confirmed. Legal foundation structure selected. Book published establishing philosophical basis.</p>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-dot active">2</div>
+      <div class="roadmap-content">
+        <div class="phase">Phase 2 · In Progress</div>
+        <h3>Platform Build <span class="status-tag active">Active Now</span></h3>
+        <p>React Native app in active development. 15-language internationalisation underway. IPFS integration in progress. AGPLv3 open source licensing applied. Visual mockups complete.</p>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-dot future">3</div>
+      <div class="roadmap-content">
+        <div class="phase">Phase 3 · Upcoming</div>
+        <h3>NFT Launch Campaigns <span class="status-tag future">Planned</span></h3>
+        <p>Seeds of Change literary collection drop (10 weeks). The 1,000 Founders genesis mint. Community building across Cardano ecosystem. Initial treasury funding secured.</p>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-dot future">4</div>
+      <div class="roadmap-content">
+        <div class="phase">Phase 4 · Planned</div>
+        <h3>Beta Launch & Bounty Wall <span class="status-tag future">Planned</span></h3>
+        <p>Public beta release with founding community. Bounty Wall live — open contributors earn soulbound reputation badges. First real governance proposals processed on-chain.</p>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-dot future">5</div>
+      <div class="roadmap-content">
+        <div class="phase">Phase 5 · Vision</div>
+        <h3>Global Rollout & DAO Governance <span class="status-tag future">Vision</span></h3>
+        <p>Full public launch across 15 languages. Community-governed roadmap through on-chain DAO voting. Institutional partnerships. Expanded to developing and rural communities globally.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- GET INVOLVED -->
+<div class="section-alt">
+  <div class="inner">
+    <span class="section-label">Collaboration</span>
+    <h2 class="title">How to Get Involved</h2>
+    <p class="subtitle">We're looking for people who believe the world can govern itself better.</p>
+    <div class="involve-grid">
+      <div class="involve-card">
+        <div class="role">Technical</div>
+        <h3>Developers</h3>
+        <ul>
+          <li>React Native engineers</li>
+          <li>Cardano / Aiken smart contract devs</li>
+          <li>IPFS & Web3 integrations</li>
+          <li>UI/UX designers</li>
+          <li>Security auditors</li>
+        </ul>
+      </div>
+      <div class="involve-card">
+        <div class="role">Community</div>
+        <h3>Ambassadors</h3>
+        <ul>
+          <li>Language translators (15 languages)</li>
+          <li>Community organisers</li>
+          <li>Regional coordinators</li>
+          <li>Social media advocates</li>
+          <li>Governance educators</li>
+        </ul>
+      </div>
+      <div class="involve-card">
+        <div class="role">Financial</div>
+        <h3>Supporters</h3>
+        <ul>
+          <li>NFT early adopters (Founders drop)</li>
+          <li>DAO treasury contributors</li>
+          <li>Grant matching partners</li>
+          <li>Impact investors</li>
+          <li>Crowdfunding backers</li>
+        </ul>
+      </div>
+      <div class="involve-card">
+        <div class="role">Strategic</div>
+        <h3>Partners</h3>
+        <ul>
+          <li>NGOs and civil society orgs</li>
+          <li>Cardano ecosystem DAOs</li>
+          <li>Academic institutions</li>
+          <li>Municipal and regional bodies</li>
+          <li>Media and press collaborators</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2>We Decide Now.</h2>
+  <p>Join the founding community of a platform built to give every person on Earth a genuine voice in the decisions that shape their world.</p>
+  <a href="#" class="cta-btn">Get Involved</a>
+  <div class="cta-sub">VoteBoxApp &nbsp;·&nbsp; LifeGround Community Foundation &nbsp;·&nbsp; Built on Cardano</div>
+</div>
+
+</body>
+</html>

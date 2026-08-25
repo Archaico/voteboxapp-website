@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LGC Bounty Wall — VoteBoxApp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rye&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --parchment:    #f5e9c8;
+      --parchment-dk: #e8d5a3;
+      --leather:      #8b5e3c;
+      --leather-dk:   #5c3a1e;
+      --ink:          #2a1a0e;
+      --gold:         #c8922a;
+      --gold-lt:      #e5b84a;
+      --seed-col:     #4a7c59;
+      --sprout-col:   #3a6b8a;
+      --branch-col:   #7a4f9a;
+      --root-col:     #b84c1e;
+    }
+
+    body {
+      background: var(--leather-dk);
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(0,0,0,.04) 40px, rgba(0,0,0,.04) 41px),
+        repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(0,0,0,.04) 40px, rgba(0,0,0,.04) 41px);
+      min-height: 100vh;
+      font-family: 'Crimson Text', Georgia, serif;
+      color: var(--ink);
+      padding: 24px 16px 48px;
+    }
+
+    /* ─── HEADER ─── */
+    .bw-header {
+      max-width: 980px;
+      margin: 0 auto 28px;
+      text-align: center;
+    }
+    .bw-header::before, .bw-header::after {
+      content: '✦ ─────────────────── ✦';
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: .85rem;
+      color: var(--gold);
+      letter-spacing: .15em;
+      margin: 6px 0;
+    }
+    .bw-title {
+      font-family: 'Rye', cursive;
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      color: var(--parchment);
+      text-shadow: 2px 3px 6px rgba(0,0,0,.6), 0 0 30px rgba(200,146,42,.25);
+      letter-spacing: .05em;
+      line-height: 1.1;
+    }
+    .bw-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--gold-lt);
+      font-size: 1rem;
+      letter-spacing: .12em;
+      margin-top: 4px;
+    }
+
+    /* ─── CARD ─── */
+    .bw-card {
+      max-width: 980px;
+      margin: 0 auto;
+      background: var(--parchment);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");
+      border: 3px solid var(--leather);
+      border-radius: 4px;
+      box-shadow: 0 8px 40px rgba(0,0,0,.55), inset 0 0 60px rgba(139,94,60,.08);
+      overflow: hidden;
+    }
+
+    /* ─── LEGEND ─── */
+    .legend {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding: 10px 20px;
+      background: var(--parchment-dk);
+      border-bottom: 2px solid var(--leather);
+      align-items: center;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: .78rem;
+      color: var(--leather-dk);
+    }
+    .legend-dot {
+      width: 12px; height: 12px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    /* ─── CALENDAR NAV ─── */
+    .cal-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--leather-dk);
+      padding: 14px 20px;
+      border-bottom: 3px solid var(--gold);
+    }
+    .cal-nav-btn {
+      background: none;
+      border: 2px solid var(--gold);
+      color: var(--gold-lt);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      width: 36px; height: 36px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cal-nav-btn:hover { background: var(--gold); color: var(--ink); }
+    .cal-month-label {
+      font-family: 'Rye', cursive;
+      color: var(--parchment);
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      letter-spacing: .08em;
+      text-shadow: 1px 2px 4px rgba(0,0,0,.5);
+    }
+
+    /* ─── WEEKDAY ROW ─── */
+    .cal-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      background: var(--parchment-dk);
+      border-bottom: 2px solid var(--leather);
+    }
+    .cal-weekday {
+      text-align: center;
+      padding: 8px 4px;
+      font-family: 'Playfair Display', serif;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      color: var(--leather-dk);
+      text-transform: uppercase;
+    }
+
+    /* ─── GRID ─── */
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      border-left: 1px solid var(--parchment-dk);
+      border-top: 1px solid var(--parchment-dk);
+    }
+    .cal-day {
+      min-height: 80px;
+      border-right: 1px solid var(--parchment-dk);
+      border-bottom: 1px solid var(--parchment-dk);
+      padding: 6px;
+    }
+    .cal-day.other-month { background: rgba(0,0,0,.03); }
+    .cal-day.today { background: rgba(200,146,42,.12); }
+    .cal-day.today .day-num { color: var(--root-col); font-weight: 700; }
+    .day-num {
+      font-family: 'Playfair Display', serif;
+      font-size: .85rem;
+      color: var(--leather-dk);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .cal-day.other-month .day-num { color: #bbb; }
+
+    .bounty-pip {
+      display: block;
+      color: #fff;
+      font-family: 'Crimson Text', serif;
+      font-size: .7rem;
+      font-weight: 600;
+      border-radius: 2px;
+      padding: 2px 5px;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      cursor: pointer;
+      transition: opacity .15s, transform .1s;
+    }
+    .bounty-pip:hover { opacity: .82; transform: translateY(-1px); }
+    .bounty-pip.diff-seed   { background: var(--seed-col); }
+    .bounty-pip.diff-sprout { background: var(--sprout-col); }
+    .bounty-pip.diff-branch { background: var(--branch-col); }
+    .bounty-pip.diff-root   { background: var(--root-col); }
+
+    /* ─── APPLY FOOTER BAR ─── */
+    .apply-bar {
+      background: var(--leather-dk);
+      border-top: 3px solid var(--gold);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .apply-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--parchment-dk);
+      font-size: .95rem;
+      line-height: 1.5;
+    }
+    .apply-text strong {
+      color: var(--gold-lt);
+      font-style: normal;
+    }
+    .apply-link {
+      font-family: 'Rye', cursive;
+      font-size: .78rem;
+      letter-spacing: .1em;
+      color: var(--ink);
+      background: var(--gold);
+      border: 2px solid var(--gold-lt);
+      border-radius: 3px;
+      padding: 9px 22px;
+      text-decoration: none;
+      transition: background .2s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .apply-link:hover { background: var(--gold-lt); }
+
+    /* ─── MODAL ─── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(30,15,5,.78);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--parchment);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
+      border: 3px solid var(--leather);
+      border-radius: 4px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,.7);
+      position: relative;
+    }
+    .modal-top {
+      background: var(--leather-dk);
+      padding: 18px 20px 16px;
+      border-bottom: 3px solid var(--gold);
+      position: relative;
+    }
+    .modal-top::before {
+      content: '— WANTED —';
+      display: block;
+      font-family: 'Rye', cursive;
+      font-size: .65rem;
+      color: var(--gold);
+      letter-spacing: .3em;
+      margin-bottom: 5px;
+    }
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--parchment);
+      padding-right: 36px;
+      line-height: 1.3;
+    }
+    .modal-close {
+      position: absolute;
+      top: 14px; right: 14px;
+      background: none;
+      border: 2px solid var(--gold);
+      color: var(--gold-lt);
+      font-size: 1.1rem;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
+    }
+    .modal-close:hover { background: var(--gold); color: var(--ink); }
+
+    .modal-body { padding: 22px; }
+    .modal-desc {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+    .modal-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .meta-block {
+      background: var(--parchment-dk);
+      border: 1px solid var(--leather);
+      border-radius: 3px;
+      padding: 10px 12px;
+    }
+    .meta-label {
+      font-family: 'Playfair Display', serif;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--leather);
+      margin-bottom: 4px;
+    }
+    .meta-value {
+      font-size: .98rem;
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .diff-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: .85rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .diff-badge.seed   { background: var(--seed-col); }
+    .diff-badge.sprout { background: var(--sprout-col); }
+    .diff-badge.branch { background: var(--branch-col); }
+    .diff-badge.root   { background: var(--root-col); }
+
+    .modal-cta {
+      background: var(--leather-dk);
+      border: 2px solid var(--gold);
+      border-radius: 3px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .modal-cta-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--parchment-dk);
+      font-size: .92rem;
+    }
+    .modal-cta-link {
+      font-family: 'Rye', cursive;
+      font-size: .75rem;
+      letter-spacing: .08em;
+      color: var(--ink);
+      background: var(--gold);
+      border: 2px solid var(--gold-lt);
+      border-radius: 3px;
+      padding: 8px 18px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background .2s;
+      flex-shrink: 0;
+    }
+    .modal-cta-link:hover { background: var(--gold-lt); }
+
+    @media (max-width: 600px) {
+      .modal-meta { grid-template-columns: 1fr; }
+      .cal-day { min-height: 54px; }
+      .day-num { font-size: .72rem; }
+      .bounty-pip { font-size: .62rem; }
+      .bw-title { font-size: 2rem; }
+      .apply-bar { flex-direction: column; text-align: center; }
+      .modal-cta { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bw-header">
+  <div class="bw-title">LGC Bounty Wall</div>
+  <div class="bw-subtitle">LifeGround Community · VoteBoxApp Project</div>
+</div>
+
+<div class="bw-card">
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--seed-col)"></div> 🌱 Seed — Entry level</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--sprout-col)"></div> 🌿 Sprout — Intermediate</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--branch-col)"></div> 🌳 Branch — Advanced</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--root-col)"></div> 🏔️ Root — Expert</div>
+    <div style="flex:1"></div>
+    <div class="legend-item" style="font-style:italic;color:var(--leather)">Click any bounty to view &amp; apply</div>
+  </div>
+
+  <!-- Calendar nav -->
+  <div class="cal-nav">
+    <button class="cal-nav-btn" id="prevBtn">‹</button>
+    <div class="cal-month-label" id="monthLabel"></div>
+    <button class="cal-nav-btn" id="nextBtn">›</button>
+  </div>
+
+  <!-- Weekdays -->
+  <div class="cal-weekdays">
+    <div class="cal-weekday">Sun</div>
+    <div class="cal-weekday">Mon</div>
+    <div class="cal-weekday">Tue</div>
+    <div class="cal-weekday">Wed</div>
+    <div class="cal-weekday">Thu</div>
+    <div class="cal-weekday">Fri</div>
+    <div class="cal-weekday">Sat</div>
+  </div>
+
+  <!-- Grid -->
+  <div class="cal-grid" id="calGrid"></div>
+
+  <!-- Apply footer -->
+  <div class="apply-bar">
+    <div class="apply-text">
+      Complete a bounty. Earn a <strong>Soulbound Token</strong>. Build your on-chain reputation — permanently.<br />
+      <span style="font-size:.85rem;opacity:.8">Seed → Sprout → Branch → Root. Your contributions live on Cardano forever.</span>
+    </div>
+    <a class="apply-link" href="mailto:hello@voteboxapp.com">Apply for a Bounty</a>
+  </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-top">
+      <div class="modal-title" id="modalTitle"></div>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-desc" id="modalDesc"></p>
+      <div class="modal-meta" id="modalMeta"></div>
+      <div class="modal-cta">
+        <div class="modal-cta-text">Ready to claim this bounty?</div>
+        <a class="modal-cta-link" id="modalApplyLink" href="mailto:hello@voteboxapp.com">Claim this Bounty</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const BOUNTIES = [
+  { id:'b-001', title:'Admin Dashboard (Web)', description:'Build a lightweight web UI for LGC to monitor active proposals, user counts, vote tallies, and flag or remove abusive content. Read-only data views plus basic moderation actions. React or plain HTML accepted. Deliver with a simple setup doc.', date:'2026-07-25', difficulty:'Branch', paymentType:'ADA', paymentAmount:'80 ADA', skills:'React or vanilla JS, REST/API integration, basic UX' },
+  { id:'b-002', title:'App Store Submission Prep (iOS)', description:'Prepare VoteBoxApp for Apple App Store submission: privacy manifest, entitlements file, App Store screenshots (all required device sizes), metadata copy, and content rating questionnaire. Familiarity with Expo EAS Build is a strong plus. Deliver all assets in a structured handoff folder.', date:'2026-07-01', difficulty:'Sprout', paymentType:'SBT + ADA', paymentAmount:'1 SBT (Sprout) · 25 ADA', skills:'iOS deployment, Expo EAS, App Store Connect' },
+  { id:'b-003', title:'App Store Submission Prep (Android)', description:'Prepare VoteBoxApp for Google Play Store submission: APK/AAB signing, Play Console listing setup, store graphics and feature graphic, content rating questionnaire, and release notes. Must have prior experience with Expo EAS or React Native Android builds.', date:'2026-07-01', difficulty:'Sprout', paymentType:'SBT + ADA', paymentAmount:'1 SBT (Sprout) · 25 ADA', skills:'Android deployment, Expo EAS, Google Play Console' },
+  { id:'b-004', title:'UI/UX Audit — Mobile App', description:'Conduct a full review of all VoteBoxApp screens: user flows, tap targets, visual consistency, accessibility (colour contrast, font sizes), and edge-case states (empty, loading, error). Deliver a written report with annotated screenshots and a prioritised list of recommendations.', date:'2026-06-18', difficulty:'Sprout', paymentType:'SBT + ADA', paymentAmount:'1 SBT (Sprout) · 20 ADA', skills:'Mobile UX, Figma or equivalent, accessibility standards' },
+  { id:'b-005', title:'Explainer Video Script', description:'Write a 90-second video script introducing VoteBoxApp to a non-technical audience. Should clearly cover: the problem (broken representative democracy), the solution (decentralised direct voting), and a compelling call to action. Tone: warm, bold, human — not technical. Deliver as a formatted script with speaker notes.', date:'2026-06-05', difficulty:'Seed', paymentType:'SBT', paymentAmount:'1 SBT (Seed badge)', skills:'Copywriting, storytelling, project familiarity' },
+  { id:'b-006', title:'Discord Community Setup', description:'Create and fully configure the LGC/VoteBoxApp Discord server. Includes channel structure (dev, governance, general, languages, bounties), role hierarchy mirroring SBT tiers (Seed → Sprout → Branch → Root), welcome bot, rules channel, pinned resources, and moderation settings. Deliver a complete handoff document.', date:'2026-06-05', difficulty:'Seed', paymentType:'SBT', paymentAmount:'1 SBT (Seed badge)', skills:'Discord admin, community management, bot setup (MEE6 or similar)' },
+  { id:'b-007', title:'Gitcoin Grant Application (GG25/GG26)', description:'Research current Gitcoin round eligibility for VoteBoxApp and write a compelling application. Must align with public goods / open-source framing. Lead with: decentralised governance tooling, digital commons, community empowerment. Deliver a full draft for review and approval before submission.', date:'2026-07-08', difficulty:'Branch', paymentType:'SBT + ADA', paymentAmount:'1 SBT (Branch) · 50 ADA', skills:'Grant writing, Web3 ecosystem knowledge, Gitcoin platform experience' },
+  { id:'b-008', title:'Indiegogo Campaign Page', description:'Write and structure the full Indiegogo crowdfunding campaign page: headline, mission story, team section, reward tier descriptions, FAQ, and stretch goals. Tone must be consistent with VoteBoxApp brand ("We decide now" / "Everybody in"). Deliver as a structured document ready for upload.', date:'2026-08-05', difficulty:'Sprout', paymentType:'SBT + ADA', paymentAmount:'1 SBT (Sprout) · 30 ADA', skills:'Copywriting, crowdfunding strategy, campaign storytelling' },
+  { id:'b-009', title:'One-Page Press Kit', description:'Create a media-ready one-pager covering: LGC mission, VoteBoxApp overview, founder background, key project milestones, one or two pull quotes, and press contact. Delivered as a designed PDF and an editable source file (Word, Figma, or equivalent).', date:'2026-06-07', difficulty:'Seed', paymentType:'SBT', paymentAmount:'1 SBT (Seed badge)', skills:'Copywriting, layout and design, PDF production' },
+  { id:'b-010', title:'i18n String Review — Spanish', description:'Native Spanish speaker review of all UI strings in the VoteBoxApp i18n JSON file. Correct grammar, natural tone, and terminology. Flag any culturally awkward or mistranslated phrasing. Deliver the corrected JSON file with a change log noting every edit made.', date:'2026-06-10', difficulty:'Seed', paymentType:'SBT', paymentAmount:'1 SBT (Seed badge)', skills:'Native Spanish, attention to detail, basic JSON literacy' },
+  { id:'b-011', title:'i18n String Review — Arabic / RTL', description:'Native Arabic speaker review of all UI strings, plus QA of right-to-left layout rendering across the key screens of VoteBoxApp. Deliver the corrected translation JSON file plus a short screen recording or annotated screenshot report documenting any RTL layout issues found.', date:'2026-06-14', difficulty:'Sprout', paymentType:'SBT + ADA', paymentAmount:'1 SBT (Sprout) · 20 ADA', skills:'Native Arabic, RTL UI awareness, mobile testing' },
+  { id:'b-012', title:'AGPLv3 Compliance Audit', description:'Review the full VoteBoxApp codebase and all open-source dependencies. Confirm correct license attribution for each dependency. Identify any AGPL-incompatible licenses. Flag any conflicts with the proprietary transaction service layer. Deliver a structured compliance checklist with pass/flag/fail status per package.', date:'2026-07-20', difficulty:'Branch', paymentType:'SBT + ADA', paymentAmount:'1 SBT (Branch) · 40 ADA', skills:'Open-source licensing, software legal basics, codebase navigation' },
+  { id:'b-013', title:'SBT Minting Workflow Design', description:'Design and document the complete end-to-end process for issuing Soulbound Tokens to bounty contributors: task completion → community review → approval → SBT minted to contributor wallet. Include metadata schema, review criteria, rejection handling, and edge cases. Deliverable: written specification plus a simple flow diagram.', date:'2026-07-14', difficulty:'Branch', paymentType:'SBT + ADA', paymentAmount:'1 SBT (Branch) · 35 ADA', skills:'DAO/Web3 process design, technical writing, Cardano SBT familiarity preferred' },
+  { id:'b-014', title:'"First 100 Founders" Campaign Coordination', description:'Manage outreach for the genesis NFT campaign over 4–6 weeks: track signups, follow up with interested parties, maintain a simple CRM or spreadsheet, and coordinate with the team on NFT delivery timeline. Report back weekly with numbers and qualitative notes on conversations.', date:'2026-08-15', difficulty:'Sprout', paymentType:'SBT + ADA', paymentAmount:'1 SBT (Sprout) · 30 ADA', skills:'Community outreach, organisation, basic Web3 literacy, communication' },
+  { id:'b-015', title:'Donkey Welfare Petition Outreach', description:'Distribute the existing LGC donkey welfare petition page to expat communities, animal welfare organisations, and relevant Spanish municipal contacts in the Mijas / Costa del Sol area. Track distribution channels and weekly signup numbers. Report back each Friday with a brief update.', date:'2026-06-22', difficulty:'Seed', paymentType:'SBT', paymentAmount:'1 SBT (Seed badge)', skills:'Community outreach, social media, Spanish language a strong plus' }
+];
+
+const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const now = new Date();
+let currentYear = 2026, currentMonth = 5;
+
+function diffClass(d) { return d ? d.toLowerCase() : 'seed'; }
+function padDate(y,m,d) { return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
+function formatDate(s) { if(!s) return '—'; const [y,m,d]=s.split('-'); return `${MONTH_NAMES[+m-1]} ${+d}, ${y}`; }
+
+function renderCalendar() {
+  document.getElementById('monthLabel').textContent = `${MONTH_NAMES[currentMonth]} ${currentYear}`;
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+  const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+  const daysInMonth = new Date(currentYear, currentMonth+1, 0).getDate();
+  const daysInPrev  = new Date(currentYear, currentMonth, 0).getDate();
+  const todayStr = padDate(now.getFullYear(), now.getMonth(), now.getDate());
+  const total = Math.ceil((firstDay + daysInMonth) / 7) * 7;
+
+  for (let i = 0; i < total; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cal-day';
+    let dayNum, dateStr, isOther = false;
+
+    if (i < firstDay) {
+      dayNum = daysInPrev - firstDay + i + 1;
+      const pm = currentMonth===0?11:currentMonth-1, py = currentMonth===0?currentYear-1:currentYear;
+      dateStr = padDate(py, pm, dayNum); isOther = true;
+    } else if (i >= firstDay + daysInMonth) {
+      dayNum = i - firstDay - daysInMonth + 1;
+      const nm = currentMonth===11?0:currentMonth+1, ny = currentMonth===11?currentYear+1:currentYear;
+      dateStr = padDate(ny, nm, dayNum); isOther = true;
+    } else {
+      dayNum = i - firstDay + 1;
+      dateStr = padDate(currentYear, currentMonth, dayNum);
+    }
+
+    if (isOther) cell.classList.add('other-month');
+    if (dateStr === todayStr) cell.classList.add('today');
+
+    const numEl = document.createElement('span');
+    numEl.className = 'day-num';
+    numEl.textContent = dayNum;
+    cell.appendChild(numEl);
+
+    BOUNTIES.filter(b => b.date === dateStr).forEach(b => {
+      const pip = document.createElement('span');
+      pip.className = `bounty-pip diff-${diffClass(b.difficulty)}`;
+      pip.textContent = b.title;
+      pip.title = b.title;
+      pip.addEventListener('click', () => openModal(b.id));
+      cell.appendChild(pip);
+    });
+
+    grid.appendChild(cell);
+  }
+}
+
+function openModal(id) {
+  const b = BOUNTIES.find(x => x.id === id);
+  if (!b) return;
+  document.getElementById('modalTitle').textContent = b.title;
+  document.getElementById('modalDesc').textContent = b.description;
+  const dc = diffClass(b.difficulty);
+  document.getElementById('modalMeta').innerHTML = `
+    <div class="meta-block"><div class="meta-label">Difficulty</div><div class="meta-value"><span class="diff-badge ${dc}">${b.difficulty}</span></div></div>
+    <div class="meta-block"><div class="meta-label">Deadline</div><div class="meta-value">${formatDate(b.date)}</div></div>
+    <div class="meta-block"><div class="meta-label">Payment Type</div><div class="meta-value">${b.paymentType}</div></div>
+    <div class="meta-block"><div class="meta-label">Reward</div><div class="meta-value">${b.paymentAmount}</div></div>
+    <div class="meta-block" style="grid-column:1/-1"><div class="meta-label">Skills Required</div><div class="meta-value" style="font-weight:400">${b.skills}</div></div>
+  `;
+  const subj = encodeURIComponent(`Bounty Application: ${b.title}`);
+  document.getElementById('modalApplyLink').href = `mailto:hello@voteboxapp.com?subject=${subj}`;
+  document.getElementById('modal').classList.add('open');
+}
+
+document.getElementById('modalClose').addEventListener('click', () => document.getElementById('modal').classList.remove('open'));
+document.getElementById('modal').addEventListener('click', e => { if (e.target===document.getElementById('modal')) document.getElementById('modal').classList.remove('open'); });
+document.getElementById('prevBtn').addEventListener('click', () => { currentMonth--; if(currentMonth<0){currentMonth=11;currentYear--;} renderCalendar(); });
+document.getElementById('nextBtn').addEventListener('click', () => { currentMonth++; if(currentMonth>11){currentMonth=0;currentYear++;} renderCalendar(); });
+
+renderCalendar();
+</script>
+</body>
+</html>

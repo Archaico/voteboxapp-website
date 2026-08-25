@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoteBoxApp — Architecture Diagram</title>
+<style>
+  :root {
+    --ink: #16241c;
+    --paper: #f3f0e6;
+    --muted: #5c6459;
+    --root: #1f5c3d;
+    --branch: #3d7a4e;
+    --sprout: #7a9b3e;
+    --rust: #b4552d;
+    --sky: #3a6b8a;
+    --gold: #c08a2e;
+    --line: #cbc4ae;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    padding: 40px 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .frame { max-width: 1080px; margin: 0 auto; }
+  .head { text-align: center; margin-bottom: 8px; }
+  .eyebrow {
+    font-family: "SF Mono", Consolas, monospace;
+    font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--root); margin-bottom: 12px;
+  }
+  h1 { font-size: 38px; letter-spacing: -0.02em; }
+  h1 span { color: var(--root); }
+  .sub { color: var(--muted); font-style: italic; font-size: 16px; margin-top: 6px; }
+  svg { width: 100%; height: auto; display: block; margin-top: 24px; }
+
+  .cap {
+    font-family: "SF Mono", Consolas, monospace;
+    font-size: 11px; letter-spacing: 0.02em;
+  }
+  text { font-family: "Iowan Old Style", Georgia, serif; }
+  .layer-label {
+    font-family: "SF Mono", Consolas, monospace;
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    fill: #fff; font-weight: 600;
+  }
+  .node-title { font-size: 14px; font-weight: 700; fill: #fff; }
+  .node-sub { font-family: "SF Mono", Consolas, monospace; font-size: 9.5px; fill: rgba(255,255,255,0.82); letter-spacing: 0.04em; }
+  .svc-title { font-size: 13px; font-weight: 700; }
+  .svc-role { font-family: "SF Mono", Consolas, monospace; font-size: 8.5px; letter-spacing: 0.06em; }
+  .flow-lbl { font-family: "SF Mono", Consolas, monospace; font-size: 9.5px; fill: var(--muted); letter-spacing: 0.02em; }
+
+  .legend { display: flex; justify-content: center; gap: 26px; flex-wrap: wrap; margin-top: 30px; }
+  .legend .item { display: flex; align-items: center; gap: 9px; font-family: "SF Mono", monospace; font-size: 12px; }
+  .swatch { width: 13px; height: 13px; border-radius: 3px; }
+  .status-note { display: flex; justify-content: center; gap: 26px; flex-wrap: wrap; margin-top: 14px; }
+  .status-note .item { display: flex; align-items: center; gap: 8px; font-family: "SF Mono", monospace; font-size: 12px; color: var(--muted); }
+  .dot { width: 11px; height: 11px; border-radius: 50%; }
+  .foot {
+    text-align: center; margin-top: 30px;
+    font-family: "SF Mono", monospace; font-size: 11px; color: var(--muted); line-height: 1.8;
+  }
+  @media print { body { background: #fff; } }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="head">
+    <div class="eyebrow">System Architecture</div>
+    <h1>VoteBoxApp<span>App</span></h1>
+    <div class="sub">How a proposal is planted, votes accrue, and the outcome takes root on the ledger</div>
+  </div>
+
+  <svg viewBox="0 0 1080 1180" role="img" aria-label="VoteBoxApp architecture diagram">
+    <defs>
+      <marker id="arrow" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#5c6459"/>
+      </marker>
+      <marker id="arrowUp" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#3a6b8a"/>
+      </marker>
+      <linearGradient id="gClient" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#7a9b3e"/><stop offset="1" stop-color="#5f7d31"/>
+      </linearGradient>
+      <linearGradient id="gIpfs" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#c08a2e"/><stop offset="1" stop-color="#a5741f"/>
+      </linearGradient>
+      <linearGradient id="gChain" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#3d7a4e"/><stop offset="1" stop-color="#1f5c3d"/>
+      </linearGradient>
+      <linearGradient id="gRead" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#3a6b8a"/><stop offset="1" stop-color="#2b5268"/>
+      </linearGradient>
+    </defs>
+
+    <!-- ============ LAYER 1: CLIENT ============ -->
+    <g>
+      <rect x="40" y="40" width="1000" height="250" rx="14" fill="#fbfaf4" stroke="#cbc4ae" stroke-width="1.5"/>
+      <rect x="40" y="40" width="1000" height="30" rx="14" fill="url(#gClient)"/>
+      <rect x="40" y="56" width="1000" height="14" fill="url(#gClient)"/>
+      <text x="60" y="60" class="layer-label">01 · Client — React Native / Expo</text>
+
+      <!-- device identity -->
+      <g>
+        <rect x="66" y="90" width="230" height="180" rx="10" fill="#f0eddf" stroke="#d8d2bd" stroke-width="1"/>
+        <circle cx="90" cy="116" r="5" fill="#2f7d4f"/>
+        <text x="104" y="120" class="svc-title">The Voter's Phone</text>
+        <text x="82" y="146" class="node-sub" fill="#5c6459">Biometric auth · session persist</text>
+        <text x="82" y="166" class="node-sub" fill="#5c6459">Device-generated voterKey</text>
+        <text x="82" y="186" class="node-sub" fill="#5c6459">(pseudonymous identity)</text>
+        <line x1="82" y1="202" x2="278" y2="202" stroke="#d8d2bd"/>
+        <text x="82" y="224" class="node-sub" fill="#5c6459">Browse · Create · Vote · Discuss</text>
+        <text x="82" y="244" class="node-sub" fill="#5c6459">Haptics · drafts · offline queue</text>
+      </g>
+
+      <!-- app-side services -->
+      <g>
+        <rect x="316" y="90" width="708" height="180" rx="10" fill="#f0eddf" stroke="#d8d2bd" stroke-width="1"/>
+        <text x="336" y="114" class="cap" fill="#5c6459" font-weight="600">APP-SIDE SERVICES</text>
+
+        <!-- svc cards row 1 -->
+        <g>
+          <rect x="336" y="128" width="160" height="58" rx="7" fill="#fff" stroke="#3d7a4e" stroke-width="1.5"/>
+          <circle cx="350" cy="144" r="4.5" fill="#2f7d4f"/>
+          <text x="362" y="148" class="svc-title" fill="#16241c">BlockchainService</text>
+          <text x="348" y="166" class="svc-role" fill="#5c6459">builds tx · submits · reads</text>
+          <text x="348" y="178" class="svc-role" fill="#5c6459">the core of the loop</text>
+        </g>
+        <g>
+          <rect x="508" y="128" width="160" height="58" rx="7" fill="#fff" stroke="#c08a2e" stroke-width="1.5"/>
+          <circle cx="522" cy="144" r="4.5" fill="#2f7d4f"/>
+          <text x="534" y="148" class="svc-title" fill="#16241c">IPFSService</text>
+          <text x="520" y="166" class="svc-role" fill="#5c6459">upload content + fallback</text>
+          <text x="520" y="178" class="svc-role" fill="#5c6459">Storacha primary</text>
+        </g>
+        <g>
+          <rect x="680" y="128" width="160" height="58" rx="7" fill="#fff" stroke="#3d7a4e" stroke-width="1.5"/>
+          <circle cx="694" cy="144" r="4.5" fill="#2f7d4f"/>
+          <text x="706" y="148" class="svc-title" fill="#16241c">TreasuryService</text>
+          <text x="692" y="166" class="svc-role" fill="#5c6459">fee split calc (app-side)</text>
+          <text x="692" y="178" class="svc-role" fill="#5c6459">founder / DAO treasury</text>
+        </g>
+        <g>
+          <rect x="852" y="128" width="160" height="58" rx="7" fill="#fff" stroke="#b4552d" stroke-width="1.5"/>
+          <circle cx="866" cy="144" r="4.5" fill="#c08a2e"/>
+          <text x="878" y="148" class="svc-title" fill="#16241c">WalletService</text>
+          <text x="864" y="166" class="svc-role" fill="#5c6459">CIP-30 · web only</text>
+          <text x="864" y="178" class="svc-role" fill="#5c6459">mobile: not yet wired</text>
+        </g>
+
+        <!-- svc cards row 2 -->
+        <g>
+          <rect x="336" y="198" width="160" height="58" rx="7" fill="#fff" stroke="#c08a2e" stroke-width="1.5"/>
+          <circle cx="350" cy="214" r="4.5" fill="#c08a2e"/>
+          <text x="362" y="218" class="svc-title" fill="#16241c">DiscussionService</text>
+          <text x="348" y="236" class="svc-role" fill="#5c6459">comments · local ok</text>
+          <text x="348" y="248" class="svc-role" fill="#5c6459">syncFromIPFS: stub</text>
+        </g>
+        <g>
+          <rect x="508" y="198" width="160" height="58" rx="7" fill="#fff" stroke="#c08a2e" stroke-width="1.5"/>
+          <circle cx="522" cy="214" r="4.5" fill="#c08a2e"/>
+          <text x="534" y="218" class="svc-title" fill="#16241c">DataSyncService</text>
+          <text x="520" y="236" class="svc-role" fill="#5c6459">offline action queue</text>
+          <text x="520" y="248" class="svc-role" fill="#5c6459">push/pull to complete</text>
+        </g>
+        <g>
+          <rect x="680" y="198" width="160" height="58" rx="7" fill="#fff" stroke="#3d7a4e" stroke-width="1.5"/>
+          <circle cx="694" cy="214" r="4.5" fill="#2f7d4f"/>
+          <text x="706" y="218" class="svc-title" fill="#16241c">NotificationSvc</text>
+          <text x="692" y="236" class="svc-role" fill="#5c6459">local alerts</text>
+          <text x="692" y="248" class="svc-role" fill="#5c6459">Discord webhook (env)</text>
+        </g>
+        <g>
+          <rect x="852" y="198" width="160" height="58" rx="7" fill="#fff" stroke="#3d7a4e" stroke-width="1.5"/>
+          <circle cx="866" cy="214" r="4.5" fill="#2f7d4f"/>
+          <text x="878" y="218" class="svc-title" fill="#16241c">AnalyticsService</text>
+          <text x="864" y="236" class="svc-role" fill="#5c6459">wallet · vote · error</text>
+          <text x="864" y="248" class="svc-role" fill="#5c6459">telemetry</text>
+        </g>
+      </g>
+    </g>
+
+    <!-- flow: client -> ipfs (down, left) -->
+    <path d="M 416 290 L 416 360" stroke="#5c6459" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <text x="426" y="330" class="flow-lbl">proposal body</text>
+
+    <!-- flow: client -> chain (down, right) -->
+    <path d="M 760 290 L 760 620" stroke="#5c6459" stroke-width="2" fill="none" marker-end="url(#arrow)" stroke-dasharray="0"/>
+    <text x="770" y="450" class="flow-lbl">signed tx +</text>
+    <text x="770" y="464" class="flow-lbl">metadata</text>
+
+    <!-- ============ LAYER 2: IPFS ============ -->
+    <g>
+      <rect x="120" y="370" width="520" height="150" rx="14" fill="#fbfaf4" stroke="#cbc4ae" stroke-width="1.5"/>
+      <rect x="120" y="370" width="520" height="30" rx="14" fill="url(#gIpfs)"/>
+      <rect x="120" y="386" width="520" height="14" fill="url(#gIpfs)"/>
+      <text x="140" y="390" class="layer-label">02 · Content Storage — IPFS</text>
+
+      <g>
+        <rect x="146" y="420" width="220" height="82" rx="9" fill="#f6efe0" stroke="#e0d4b5"/>
+        <text x="164" y="446" class="svc-title" fill="#16241c">Storacha (primary)</text>
+        <text x="164" y="468" class="node-sub" fill="#5c6459">Full proposal JSON lives here</text>
+        <text x="164" y="488" class="node-sub" fill="#5c6459">Returns a content hash (CID)</text>
+      </g>
+      <g>
+        <rect x="386" y="420" width="228" height="82" rx="9" fill="#f6efe0" stroke="#e0d4b5"/>
+        <text x="404" y="446" class="svc-title" fill="#16241c">Gateway fallback chain</text>
+        <text x="404" y="468" class="node-sub" fill="#5c6459">Public gateways for redundancy</text>
+        <text x="404" y="488" class="node-sub" fill="#5c6459">No single point of failure</text>
+      </g>
+    </g>
+
+    <!-- flow: ipfs hash -> chain -->
+    <path d="M 500 520 L 500 620" stroke="#5c6459" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <text x="360" y="572" class="flow-lbl">only the content hash (CID) goes on-chain →</text>
+
+    <!-- ============ LAYER 3: CARDANO ============ -->
+    <g>
+      <rect x="120" y="630" width="840" height="180" rx="14" fill="#fbfaf4" stroke="#cbc4ae" stroke-width="1.5"/>
+      <rect x="120" y="630" width="840" height="30" rx="14" fill="url(#gChain)"/>
+      <rect x="120" y="646" width="840" height="14" fill="url(#gChain)"/>
+      <text x="140" y="650" class="layer-label">03 · Ledger — Cardano (preprod testnet)</text>
+
+      <g>
+        <rect x="146" y="680" width="250" height="106" rx="9" fill="#eef3ec" stroke="#c3ddc9"/>
+        <text x="164" y="706" class="svc-title" fill="#16241c">Proposal transaction</text>
+        <text x="164" y="728" class="node-sub" fill="#3d7a4e">metadata label 721</text>
+        <text x="164" y="748" class="node-sub" fill="#5c6459">carries the IPFS hash</text>
+        <text x="164" y="768" class="node-sub" fill="#5c6459">~2 ADA fee (split app-side)</text>
+      </g>
+      <g>
+        <rect x="416" y="680" width="250" height="106" rx="9" fill="#eef3ec" stroke="#c3ddc9"/>
+        <text x="434" y="706" class="svc-title" fill="#16241c">Vote transaction</text>
+        <text x="434" y="728" class="node-sub" fill="#3d7a4e">metadata label 1337</text>
+        <text x="434" y="748" class="node-sub" fill="#5c6459">{ proposalId, choice, key, ts }</text>
+        <text x="434" y="768" class="node-sub" fill="#5c6459">free · no ADA moves to vote</text>
+      </g>
+      <g>
+        <rect x="686" y="680" width="250" height="106" rx="9" fill="#eef3ec" stroke="#c3ddc9"/>
+        <text x="704" y="706" class="svc-title" fill="#16241c">Blockfrost</text>
+        <text x="704" y="728" class="node-sub" fill="#3d7a4e">submit + query API</text>
+        <text x="704" y="748" class="node-sub" fill="#5c6459">the bridge in and out</text>
+        <text x="704" y="768" class="node-sub" fill="#5c6459">of the chain</text>
+      </g>
+    </g>
+
+    <!-- flow: chain -> read-back -->
+    <path d="M 811 810 L 811 880" stroke="#5c6459" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <text x="821" y="850" class="flow-lbl">query labelled metadata</text>
+
+    <!-- ============ LAYER 4: READ-BACK ============ -->
+    <g>
+      <rect x="120" y="890" width="840" height="150" rx="14" fill="#fbfaf4" stroke="#cbc4ae" stroke-width="1.5"/>
+      <rect x="120" y="890" width="840" height="30" rx="14" fill="url(#gRead)"/>
+      <rect x="120" y="906" width="840" height="14" fill="url(#gRead)"/>
+      <text x="140" y="910" class="layer-label">04 · Read-back &amp; Tally</text>
+
+      <g>
+        <rect x="146" y="940" width="250" height="82" rx="9" fill="#eaf0f3" stroke="#c2d5df"/>
+        <text x="164" y="966" class="svc-title" fill="#16241c">Fetch from chain</text>
+        <text x="164" y="988" class="node-sub" fill="#5c6459">Read foundation wallet's</text>
+        <text x="164" y="1008" class="node-sub" fill="#5c6459">labelled metadata via Blockfrost</text>
+      </g>
+      <g>
+        <rect x="416" y="940" width="250" height="82" rx="9" fill="#eaf0f3" stroke="#c2d5df"/>
+        <text x="434" y="966" class="svc-title" fill="#16241c">Rehydrate proposals</text>
+        <text x="434" y="988" class="node-sub" fill="#5c6459">Parse CID → pull JSON from IPFS</text>
+        <text x="434" y="1008" class="node-sub" fill="#5c6459">Reassemble full proposal</text>
+      </g>
+      <g>
+        <rect x="686" y="940" width="250" height="82" rx="9" fill="#eaf0f3" stroke="#c2d5df"/>
+        <text x="704" y="966" class="svc-title" fill="#16241c">Tally results</text>
+        <text x="704" y="988" class="node-sub" fill="#5c6459">Count vote transactions</text>
+        <text x="704" y="1008" class="node-sub" fill="#5c6459">Immutable, publicly auditable</text>
+      </g>
+    </g>
+
+    <!-- return flow: read-back -> client (long left rail, going up) -->
+    <path d="M 146 981 L 100 981 L 100 180 L 296 180" stroke="#3a6b8a" stroke-width="2" fill="none" marker-end="url(#arrowUp)" stroke-dasharray="6 5"/>
+    <text x="82" y="600" class="flow-lbl" fill="#3a6b8a" transform="rotate(-90 82 600)">results flow back to the phone — proposals &amp; live tallies</text>
+
+    <!-- trust caption -->
+    <g>
+      <rect x="686" y="826" width="274" height="46" rx="8" fill="none"/>
+    </g>
+  </svg>
+
+  <!-- key note under diagram -->
+  <div style="text-align:center; max-width:760px; margin:8px auto 0; color:var(--muted); font-size:14px; font-style:italic;">
+    Trustless by way of the ledger's permanence — not by a custom on-chain validator. Votes and proposals are metadata; content lives on IPFS. This is a deliberate architecture choice.
+  </div>
+
+  <div class="legend">
+    <div class="item"><span class="swatch" style="background:#7a9b3e"></span> Client layer</div>
+    <div class="item"><span class="swatch" style="background:#c08a2e"></span> IPFS storage</div>
+    <div class="item"><span class="swatch" style="background:#1f5c3d"></span> Cardano ledger</div>
+    <div class="item"><span class="swatch" style="background:#3a6b8a"></span> Read-back path</div>
+  </div>
+  <div class="status-note">
+    <div class="item"><span class="dot" style="background:#2f7d4f"></span> Service working</div>
+    <div class="item"><span class="dot" style="background:#c08a2e"></span> Partial / to complete</div>
+  </div>
+
+  <div class="foot">
+    VoteBoxApp · LifeGround Community · built on <i>The Seed — Blueprint for a Better Society</i><br>
+    Architecture as of 28 July 2026 · Expo SDK 54 / React 19 / RN 0.81 · Cardano preprod · AGPL-3.0
+  </div>
+</div>
+</body>
+</html>

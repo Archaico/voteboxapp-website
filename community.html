@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>VoteBoxApp x Discord</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #0d0d1a;
+  color: #f0eeff;
+  font-family: Georgia, serif;
+  padding: 18px 14px 60px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 21px;
+  color: #a78bfa;
+  margin-bottom: 4px;
+}
+.subtitle {
+  text-align: center;
+  color: #9b8fc4;
+  font-size: 12px;
+  font-style: italic;
+  margin-bottom: 22px;
+}
+
+/* ── Pure CSS Tabs via radio inputs ── */
+input[type="radio"] { display: none; }
+
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  gap: 7px;
+  padding-bottom: 8px;
+  margin-bottom: 18px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab-label {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #9b8fc4;
+  font-size: 12px;
+  font-family: Georgia, serif;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+/* Active tab states */
+#t1:checked ~ .tabs label[for="t1"],
+#t2:checked ~ .tabs label[for="t2"],
+#t3:checked ~ .tabs label[for="t3"],
+#t4:checked ~ .tabs label[for="t4"],
+#t5:checked ~ .tabs label[for="t5"] {
+  border-color: #764ba2;
+  background: rgba(118,75,162,0.35);
+  color: #fff;
+}
+
+/* All panels hidden by default */
+.panel { display: none; }
+
+#t1:checked ~ .panels #p1,
+#t2:checked ~ .panels #p2,
+#t3:checked ~ .panels #p3,
+#t4:checked ~ .panels #p4,
+#t5:checked ~ .panels #p5 { display: block; }
+
+/* ── Cards & layout ── */
+.card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(118,75,162,0.35);
+  border-radius: 13px;
+  padding: 13px 15px;
+  margin-bottom: 11px;
+}
+.two-col { display: flex; gap: 10px; margin-bottom: 10px; }
+.box { flex: 1; border-radius: 12px; padding: 13px 10px; text-align: center; }
+.box-app  { background: rgba(102,126,234,0.1); border: 2px solid rgba(118,75,162,0.55); }
+.box-disc { background: rgba(88,101,242,0.1);  border: 2px solid rgba(88,101,242,0.55); }
+.box-icon { font-size: 24px; margin-bottom: 5px; }
+.box-name { font-weight: bold; font-size: 13px; margin-bottom: 2px; }
+.box-app  .box-name { color: #c4b5fd; }
+.box-disc .box-name { color: #818cf8; }
+.box-sub { font-size: 10px; color: #9b8fc4; margin-bottom: 9px; }
+.fi {
+  background: rgba(255,255,255,0.06);
+  border-radius: 6px; padding: 4px 7px;
+  font-size: 10px; color: #9b8fc4;
+  text-align: left; margin-bottom: 4px;
+}
+.bridge {
+  text-align: center; padding: 9px 0;
+  font-size: 12px; color: #a78bfa;
+  font-weight: bold; margin-bottom: 4px;
+}
+.flow-cols { display: flex; gap: 10px; margin-bottom: 12px; }
+.fc {
+  flex: 1; background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(118,75,162,0.3);
+  border-radius: 11px; padding: 11px;
+}
+.fc-label { font-size: 10px; letter-spacing: 1px; margin-bottom: 7px; }
+.fc-label.a { color: #667eea; }
+.fc-label.d { color: #5865F2; }
+.fc-item { font-size: 11px; color: #9b8fc4; margin-bottom: 4px; }
+.id-row { display: flex; gap: 10px; margin-top: 8px; }
+.id-box { flex: 1; border-radius: 9px; padding: 10px; }
+.id-app  { background: rgba(118,75,162,0.15); }
+.id-disc { background: rgba(88,101,242,0.15); }
+.id-lbl  { font-size: 11px; margin-bottom: 4px; }
+.id-app  .id-lbl { color: #c4b5fd; }
+.id-disc .id-lbl { color: #818cf8; }
+.id-name { font-family: monospace; font-size: 13px; margin-bottom: 4px; }
+.id-app  .id-name { color: #a78bfa; }
+.id-disc .id-name { color: #818cf8; }
+.id-desc { font-size: 10px; color: #9b8fc4; line-height: 1.5; }
+.micro { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #9b8fc4; margin-bottom: 8px; }
+
+/* ── Steps ── */
+.step { display: flex; gap: 12px; margin-bottom: 4px; }
+.step-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.sicon { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 17px; }
+.sline { width: 2px; flex: 1; min-height: 16px; margin-top: 4px; }
+.step-body { padding-bottom: 16px; flex: 1; }
+.step-title { font-size: 13px; font-weight: bold; color: #fff; margin-bottom: 4px; }
+.step-desc  { font-size: 12px; color: #9b8fc4; line-height: 1.65; }
+
+/* ── Concepts ── */
+.con-row { display: flex; gap: 11px; align-items: flex-start; }
+.con-icon  { font-size: 21px; flex-shrink: 0; margin-top: 2px; }
+.con-title { font-size: 13px; font-weight: bold; color: #c4b5fd; margin-bottom: 4px; }
+.con-body  { font-size: 12px; color: #9b8fc4; line-height: 1.65; }
+
+.footer {
+  margin-top: 26px; padding: 11px 13px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 9px; font-size: 11px;
+  color: #9b8fc4; text-align: center; line-height: 1.7;
+}
+.footer b { color: #a78bfa; }
+
+/* shorthand colour helpers */
+.p { background:rgba(118,75,162,0.2); border:2px solid rgba(118,75,162,0.4); }
+.b { background:rgba(88,101,242,0.2);  border:2px solid rgba(88,101,242,0.4);  }
+.g { background:rgba(34,197,94,0.15);  border:2px solid rgba(34,197,94,0.35);  }
+.lp { background:rgba(118,75,162,0.3); }
+.lb { background:rgba(88,101,242,0.3); }
+.lg { background:rgba(34,197,94,0.25); }
+</style>
+</head>
+<body>
+
+<h1>VoteBoxApp x Discord</h1>
+<p class="subtitle">The Dual-System Architecture</p>
+
+<!-- Radio controls MUST be siblings of .tabs and .panels -->
+<input type="radio" name="tab" id="t1" checked/>
+<input type="radio" name="tab" id="t2"/>
+<input type="radio" name="tab" id="t3"/>
+<input type="radio" name="tab" id="t4"/>
+<input type="radio" name="tab" id="t5"/>
+
+<div class="tabs">
+  <label class="tab-label" for="t1">🗺️ System Map</label>
+  <label class="tab-label" for="t2">📱 App User</label>
+  <label class="tab-label" for="t3">🎮 Discord User</label>
+  <label class="tab-label" for="t4">✍️ Creator</label>
+  <label class="tab-label" for="t5">💡 Concepts</label>
+</div>
+
+<div class="panels">
+
+  <!-- PANEL 1: SYSTEM MAP -->
+  <div id="p1" class="panel">
+
+    <div class="two-col">
+      <div class="box box-app">
+        <div class="box-icon">📱</div>
+        <div class="box-name">VoteBoxApp</div>
+        <div class="box-sub">Mobile-first</div>
+        <div class="fi">🗳️ Vote on proposals</div>
+        <div class="fi">💬 In-app discussions</div>
+        <div class="fi">🔐 Wallet identity</div>
+        <div class="fi">📊 Results</div>
+      </div>
+      <div class="box box-disc">
+        <div class="box-icon">🎮</div>
+        <div class="box-name">Discord Server</div>
+        <div class="box-sub">Community hub</div>
+        <div class="fi">💬 Extended discussions</div>
+        <div class="fi">🔔 Notifications</div>
+        <div class="fi">👀 Public audience</div>
+        <div class="fi">🤖 Bot relay</div>
+      </div>
+    </div>
+
+    <div class="bridge">— 🤖 VoteBoxApp Bot Bridge —</div>
+
+    <div class="flow-cols">
+      <div class="fc">
+        <div class="fc-label a">APP → DISCORD</div>
+        <div class="fc-item">→ New proposal live</div>
+        <div class="fc-item">→ Results announced</div>
+        <div class="fc-item">→ In-app comment</div>
+        <div class="fc-item">→ Deadline reminder</div>
+      </div>
+      <div class="fc">
+        <div class="fc-label d">DISCORD → APP</div>
+        <div class="fc-item">← Comment synced</div>
+        <div class="fc-item">← External voice</div>
+        <div class="fc-item">← Discord badge shown</div>
+        <div class="fc-item">← Discussion only</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="micro">Identity in Discussions</div>
+      <div class="id-row">
+        <div class="id-box id-app">
+          <div class="id-lbl">📱 App User</div>
+          <div class="id-name">Voter·4a2f</div>
+          <div class="id-desc">Wallet-derived pseudonym. Consistent. Cryptographically grounded.</div>
+        </div>
+        <div class="id-box id-disc">
+          <div class="id-lbl">🎮 Discord User</div>
+          <div class="id-name">CryptoTom99</div>
+          <div class="id-desc">Self-chosen Discord name. Not wallet-verified. Discord badge shown.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PANEL 2: APP USER FLOW -->
+  <div id="p2" class="panel">
+
+    <div class="step">
+      <div class="step-left"><div class="sicon p">🔐</div><div class="sline lp"></div></div>
+      <div class="step-body">
+        <div class="step-title">Onboard</div>
+        <div class="step-desc">Connect your Cardano wallet and verify with biometrics. The app automatically derives your pseudonym (e.g. Voter·4a2f) from your wallet address. No username, no email, no signup form needed.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="sicon p">📋</div><div class="sline lp"></div></div>
+      <div class="step-body">
+        <div class="step-title">Browse Proposals</div>
+        <div class="step-desc">See all active proposals in your feed. Each shows the title, creator, deadline, live vote counts, and how many people are discussing it.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="sicon p">💬</div><div class="sline lp"></div></div>
+      <div class="step-body">
+        <div class="step-title">Join a Discussion</div>
+        <div class="step-desc">Tap into a proposal's Discussion tab. You see comments from app users (by pseudonym) and Discord users (with a badge). You can reply to either.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="sicon p">🗳️</div><div class="sline lp"></div></div>
+      <div class="step-body">
+        <div class="step-title">Cast Your Vote</div>
+        <div class="step-desc">Vote privately and securely. Your vote is cryptographically separated from your pseudonym — no one can link Voter·4a2f to any specific vote choice.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="sicon p">📊</div></div>
+      <div class="step-body">
+        <div class="step-title">See and Share Results</div>
+        <div class="step-desc">When voting closes, results appear publicly. Share that you participated — without revealing how you voted — building social proof and encouraging others.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PANEL 3: DISCORD USER FLOW -->
+  <div id="p3" class="panel">
+
+    <div class="step">
+      <div class="step-left"><div class="sicon b">🏠</div><div class="sline lb"></div></div>
+      <div class="step-body">
+        <div class="step-title">Join the Server</div>
+        <div class="step-desc">A community member or proposal creator invites you to the VoteBoxApp Discord server. No app required — just Discord, which many communities already use daily.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="sicon b">🔔</div><div class="sline lb"></div></div>
+      <div class="step-body">
+        <div class="step-title">Get Notified</div>
+        <div class="step-desc">The VoteBoxApp Bot automatically posts when a new proposal goes live — title, description, and a link. A dedicated discussion thread is created automatically for that proposal.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="sicon b">💬</div><div class="sline lb"></div></div>
+      <div class="step-body">
+        <div class="step-title">Comment in Thread</div>
+        <div class="step-desc">Reply in the Discord thread using your Discord name. The Bot relays your comment into the VoteBoxApp app's discussion tab, where it appears with a Discord badge.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="sicon b">👀</div><div class="sline lb"></div></div>
+      <div class="step-body">
+        <div class="step-title">Watch the Results</div>
+        <div class="step-desc">When voting closes, the Bot announces the result in Discord. You can see the democratic outcome without ever touching the app.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="sicon b">📲</div></div>
+      <div class="step-body">
+        <div class="step-title">Optional: Download and Vote</div>
+        <div class="step-desc">Want to actually vote, not just discuss? Download VoteBoxApp and connect a wallet. Discord is the gateway; the app is where democracy happens.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PANEL 4: CREATOR FLOW -->
+  <div id="p4" class="panel">
+
+    <div class="step">
+      <div class="step-left"><div class="sicon g">💡</div><div class="sline lg"></div></div>
+      <div class="step-body">
+        <div class="step-title">Create Your Proposal</div>
+        <div class="step-desc">Fill out your proposal in the app — title, description, options, deadline. You pay the blockchain fee including the Foundation Fee. Voters always participate free.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="sicon g">🌐</div><div class="sline lg"></div></div>
+      <div class="step-body">
+        <div class="step-title">Auto-Published Everywhere</div>
+        <div class="step-desc">The moment your proposal goes live on-chain, the Bot simultaneously posts it to Discord. It instantly reaches both app users and the entire Discord community.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="sicon g">📣</div><div class="sline lg"></div></div>
+      <div class="step-body">
+        <div class="step-title">Share the Link</div>
+        <div class="step-desc">You receive a shareable link. Post it on Twitter, Telegram, WhatsApp — anywhere. Every shared proposal is a VoteBoxApp advertisement.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="sicon g">📈</div><div class="sline lg"></div></div>
+      <div class="step-body">
+        <div class="step-title">Watch Engagement</div>
+        <div class="step-desc">See real-time voting numbers and discussion activity from both app users and Discord users in one unified view inside the app.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="sicon g">✅</div></div>
+      <div class="step-body">
+        <div class="step-title">Results Published On-Chain</div>
+        <div class="step-desc">Results are published on-chain — permanent and tamper-proof — and announced in Discord. The community has a verifiable record of the democratic decision.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PANEL 5: KEY CONCEPTS -->
+  <div id="p5" class="panel">
+
+    <div class="card">
+      <div class="con-row">
+        <div class="con-icon">🤖</div>
+        <div>
+          <div class="con-title">What is the VoteBoxApp Bot?</div>
+          <div class="con-body">A small software program running on a server — not your phone — connected to both systems simultaneously. Think of it as a bilingual translator: it speaks VoteBoxApp and Discord fluently, relaying messages between the two worlds automatically, 24/7, no human needed.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="con-row">
+        <div class="con-icon">🌉</div>
+        <div>
+          <div class="con-title">Why Discord specifically?</div>
+          <div class="con-body">Discord is where an enormous number of crypto, DAO, activist, and community groups already communicate daily — roughly 200 million registered users. By bridging to Discord, VoteBoxApp proposals reach those communities without requiring everyone to download a new app first.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="con-row">
+        <div class="con-icon">⚖️</div>
+        <div>
+          <div class="con-title">Who can actually vote?</div>
+          <div class="con-body">Only verified VoteBoxApp app users with connected wallets. Discord participation is discussion-only. This preserves the integrity of the democratic process while still allowing broad community engagement and awareness.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="con-row">
+        <div class="con-icon">🏛️</div>
+        <div>
+          <div class="con-title">The Town Hall Metaphor</div>
+          <div class="con-body">The VoteBoxApp is the town hall — where verified citizens debate and cast votes. Discord is the public square outside — where the broader community hears what is being debated. They can be heard inside, but they cannot pull a voting lever. The Bot shuttles messages between the two rooms.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="con-row">
+        <div class="con-icon">🔮</div>
+        <div>
+          <div class="con-title">Phase 1 vs Phase 2</div>
+          <div class="con-body">Your current working APK is Phase 1 — in-app discussions only, no Discord yet. Discord integration is Phase 2: a planned enhancement the architecture is already designed for. Phase 1 is a working democracy. Phase 2 adds the public square.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- end .panels -->
+
+<div class="footer">
+  Discord integration is <b>Phase 2</b> &nbsp;·&nbsp; Current APK has in-app discussions &nbsp;·&nbsp; Architecture already designed for bridging
+</div>
+
+</body>
+</html>

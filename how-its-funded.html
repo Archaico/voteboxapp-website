@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoteBoxApp — Revenue Model &amp; Build Plan (Plain Language)</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{--olive:#3a3d24;--olive2:#4c5130;--gold:#c9a227;--gold2:#e0be4a;
+    --ink:#20220f;--paper:#f6f3e7;--card:#fffdf5;--line:#d8d2bc;--muted:#6a6a52;
+    --rust:#8a4b1f;--green:#3f6b3f;--sky:#3d5c73}
+  *{box-sizing:border-box;-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.65;font-size:16px}
+  header{background:linear-gradient(135deg,var(--olive),var(--olive2));color:var(--paper);padding:32px 20px 28px}
+  header .kicker{color:var(--gold2);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+  header h1{margin:8px 0 6px;font-size:1.55rem;line-height:1.2}
+  header p{margin:6px 0 0;color:#e8e4d2;font-size:.9rem}
+  main{max-width:880px;margin:0 auto;padding:18px 16px 60px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 16px;margin:16px 0;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  h2{font-size:1.18rem;margin:2px 0 14px;color:var(--olive);border-bottom:2px solid var(--gold);padding-bottom:8px;display:inline-block}
+  h3{font-size:1.02rem;margin:22px 0 8px;color:var(--olive2)}
+  h4{font-size:.94rem;margin:16px 0 6px;color:var(--olive2)}
+  p{margin:11px 0}.lead{font-size:.97rem}
+  .jargon{background:#eef2f5;border-left:4px solid var(--sky);border-radius:8px;padding:11px 14px;margin:12px 0;font-size:.88rem}
+  .jargon b{color:var(--sky)}
+  .jargon .term{display:block;font-weight:700;color:var(--sky);margin-bottom:3px;font-size:.9rem}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.84rem}
+  th,td{padding:9px 8px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  .r th,.r td{text-align:right}.r th:first-child,.r td:first-child{text-align:left}
+  thead th{background:var(--olive);color:var(--paper);font-weight:600;font-size:.77rem}
+  tbody tr:nth-child(even){background:#faf8ee}
+  .grp td{background:#efeada!important;font-weight:700;color:var(--olive);font-size:.83rem}
+  .pf{color:var(--gold);font-weight:700}.tr{color:var(--olive2);font-weight:700}
+  .lo{color:var(--green);font-weight:700}.mid{color:#a07a1f;font-weight:700}.hi{color:var(--rust);font-weight:700}
+  .chart-wrap{position:relative;height:290px;margin:10px 0 4px}
+  .note{font-size:.83rem;color:var(--muted);margin-top:8px}
+  .callout{background:linear-gradient(135deg,#f3eeda,#efe8cf);border:1px solid var(--gold);border-radius:12px;padding:15px 16px;margin:15px 0}
+  .callout b{color:var(--olive)}
+  .warn{background:#f7efe6;border:1px solid #d9b48a;border-radius:12px;padding:15px 16px;margin:15px 0}
+  .warn b{color:var(--rust)}
+  .ok{background:#eef3ea;border:1px solid #a9c0a0;border-radius:12px;padding:15px 16px;margin:15px 0}
+  .ok b{color:var(--green)}
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .pill{display:inline-block;background:var(--olive2);color:var(--paper);font-size:.7rem;padding:3px 10px;border-radius:20px;letter-spacing:.05em;margin-bottom:8px}
+  ul,ol{padding-left:20px}li{margin:7px 0;font-size:.91rem}
+  code{background:#efeada;padding:1px 5px;border-radius:4px;font-size:.85em}
+  .diagram{margin:16px 0;text-align:center}
+  .diagram svg{width:100%;height:auto;max-width:520px}
+  .diagram .cap{font-size:.8rem;color:var(--muted);margin-top:6px;text-align:center}
+  .phase{border:1px solid var(--line);border-radius:10px;padding:13px 15px;margin:11px 0;background:var(--paper)}
+  .phase h4{margin:0 0 4px;font-size:.96rem;color:var(--olive)}
+  .phase .meta{font-size:.78rem;color:var(--muted);margin-bottom:6px;font-weight:600}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.79rem;margin:6px 0 0;color:var(--muted);justify-content:center}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:14px;height:4px;border-radius:2px;display:inline-block}
+  .toc{background:var(--paper);border-radius:10px;padding:14px 18px}
+  .toc ol{margin:4px 0;padding-left:20px}
+  .toc a{color:var(--olive2);text-decoration:none;border-bottom:1px dotted var(--gold)}
+  footer{text-align:center;color:var(--muted);font-size:.77rem;padding:0 16px 30px;line-height:1.5}
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">LifeGround Community · VoteBoxApp</div>
+  <h1>Revenue Model &amp; Build Plan</h1>
+  <p>Written in plain language — no prior blockchain knowledge assumed</p>
+</header>
+
+<main>
+
+<section>
+  <h2>Before we begin</h2>
+  <p class="lead">This document explains how VoteBoxApp can pay for itself, stay affordable for poor communities, guarantee the founder's share permanently, and eventually hand control to its community — and what it would actually take to build.</p>
+  <p>Technical terms are explained the moment they appear, in blue boxes like the one below. Nothing has been simplified away; the detail is all here, just unpacked.</p>
+  <div class="jargon">
+    <span class="term">Blockchain</span>
+    A shared public record book that many computers keep copies of. Once something is written in it, it cannot be quietly altered or deleted. VoteBoxApp uses the <b>Cardano</b> blockchain.
+  </div>
+  <div class="toc">
+    <b>What's in here</b>
+    <ol>
+      <li>How proposals get priced — and why the poorest pay least</li>
+      <li>Protecting everyone from ADA's price swings</li>
+      <li>What happens when more people vote than expected</li>
+      <li>Guaranteeing the founder's share forever</li>
+      <li>What can actually be built — and the one hard problem</li>
+      <li>Who needs a crypto wallet (and who doesn't)</li>
+      <li>Money projections</li>
+      <li>Risks, build order, and a glossary</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 1 ============ -->
+<section>
+  <h2>1 · How proposals get priced</h2>
+  <p class="lead">Voting is always free. Only the person who <i>creates</i> a proposal pays. The question is how much.</p>
+
+  <h3>Why a single flat price fails</h3>
+  <p>Charging everyone the same amount — say 20 cents per proposal — sounds fair but isn't:</p>
+  <ul>
+    <li><b>It hurts poor communities most.</b> Twenty cents is invisible in Spain and meaningful in rural Malawi. One price cannot be fair to both.</li>
+    <li><b>It undercharges large organisations.</b> A twelve-person gardening group and a city of 500,000 pay the same, even though the value they get differs enormously.</li>
+    <li><b>It doesn't raise enough money.</b> At realistic volumes, a flat small fee never funds the organisation.</li>
+  </ul>
+
+  <h3>The solution: price by how many people will vote</h3>
+  <div class="callout">
+    <b>Charge according to the size of the group the proposal is put to — not according to who is asking.</b> When creating a proposal, you declare roughly how many people are eligible to vote on it. That declared size sets the price.
+  </div>
+  <p>This is fair automatically. Small local groups with few resources land in the cheap tiers. Large institutions land in the expensive ones. And crucially, <b>the platform never has to ask anyone how much money they have</b> — which would be both intrusive and easy to lie about.</p>
+
+  <div class="scroll">
+  <table class="r">
+    <thead><tr><th>Tier</th><th>People who can vote</th><th>Price</th><th>≈ in euros</th></tr></thead>
+    <tbody>
+      <tr><td><b>Micro</b></td><td>up to 50</td><td>$0.10 <span class="lo">— in practice free</span></td><td>€0.09</td></tr>
+      <tr><td><b>Community</b></td><td>51 – 500</td><td>$0.50</td><td>€0.44</td></tr>
+      <tr><td><b>Municipal</b></td><td>501 – 10,000</td><td>$2.00</td><td>€1.75</td></tr>
+      <tr><td><b>Regional</b></td><td>10,001 – 100,000</td><td>$8.00</td><td>€7.02</td></tr>
+      <tr><td><b>National</b></td><td>over 100,000</td><td>$25.00</td><td>€21.93</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>The finding that makes this work</h3>
+  <p>Because a handful of large proposals bring in most of the money, the cheapest tier can be made almost free at virtually no cost to the organisation:</p>
+  <div class="chart-wrap"><canvas id="contribChart"></canvas></div>
+  <div class="legend"><span><i class="sw" style="background:#4c5130"></i>share of all proposals</span><span><i class="sw" style="background:#c9a227"></i>share of all revenue</span></div>
+  <div class="ok">
+    <b>Just 7% of proposals bring in 61% of the money.</b> Lowering the Micro price from 16 cents to 10 cents changes total revenue by under 3%. So making the platform genuinely affordable for the poorest users costs almost nothing — the large institutions quietly pay for it.
+  </div>
+  <p>Compare the two approaches directly. The poorest users end up paying <b>less</b> than before, while the organisation earns roughly <b>nine times more</b> overall:</p>
+  <div class="scroll">
+  <table class="r">
+    <thead><tr><th></th><th>Old flat model</th><th>New tiered model</th></tr></thead>
+    <tbody>
+      <tr><td>Cheapest proposal costs</td><td>$0.16</td><td class="lo">$0.10 (or free)</td></tr>
+      <tr><td>Average revenue per proposal</td><td>$0.16</td><td class="lo">$1.48</td></tr>
+      <tr><td>Proposals needed for $10,000/month</td><td class="hi">~62,500</td><td class="lo">~6,800</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">Suggestion: launch with just three tiers (Micro / Community / Institutional) rather than five. Simpler to explain, cheaper to check for errors, and more tiers can be added later without breaking anything.</p>
+
+  <h3>Three layers of affordability</h3>
+  <p>Cheap prices are the first layer. Two more make affordability reliable rather than merely low:</p>
+  <div class="jargon" style="border-left-color:var(--gold);background:#f8f4e6">
+    <span class="term" style="color:var(--olive)">Layer 1 — Progressive tiers</span>
+    The base price for a small community proposal is set lower than the cost of a text message.
+  </div>
+  <div class="jargon" style="border-left-color:var(--gold);background:#f8f4e6">
+    <span class="term" style="color:var(--olive)">Layer 2 — Sponsorship</span>
+    Anyone can pay for someone else's proposal. A charity, a wealthier partner town, or a family member abroad can cover the fee. Affordability becomes something the community can solve for itself.
+  </div>
+  <div class="jargon" style="border-left-color:var(--gold);background:#f8f4e6">
+    <span class="term" style="color:var(--olive)">Layer 3 — The Solidarity Pool</span>
+    A fixed slice of the organisation's income (suggested 10%) is set aside to automatically pay for Micro-tier proposals from low-income regions. Growth funds accessibility by itself. By year three this pool alone could cover well over 100,000 free proposals.
+  </div>
+  <p>Together these mean the answer to <i>"can a poor village afford this?"</i> is never "it depends" — it is <b>"yes, and if not, the platform pays for them."</b></p>
+</section>
+
+<!-- ============ 2 ============ -->
+<section>
+  <h2>2 · Protecting everyone from ADA's price swings</h2>
+  <div class="jargon">
+    <span class="term">ADA</span>
+    The currency of the Cardano blockchain. Like any cryptocurrency, its value against the euro or dollar moves constantly — it has ranged from under $0.15 to over $3.00 in past years. Today it is around $0.16.
+  </div>
+  <p class="lead">This volatility is a serious problem, and the fix is surprisingly simple once you see it.</p>
+
+  <h3>The trick: which number you write down</h3>
+  <p>At the moment the fee is defined <i>in ADA</i> — "1 ADA per proposal." The amount of ADA is fixed, so its real value floats up and down with the market. The organisation's income becomes a bet on the crypto market.</p>
+  <p><b>Flip it around.</b> Define the fee in dollars — "$0.50 per proposal" — and let the amount of ADA change to match. Now the real value is fixed and only the ADA quantity moves:</p>
+  <div class="scroll">
+  <table class="r">
+    <thead><tr><th>If ADA is worth</th><th>Old way: always 1 ADA</th><th>New way: always $0.50</th></tr></thead>
+    <tbody>
+      <tr><td>$0.16</td><td>organisation gets <span class="hi">$0.16</span></td><td>creator pays 3.125 ADA → <span class="lo">$0.50</span></td></tr>
+      <tr><td>$0.50</td><td>organisation gets <span class="hi">$0.50</span></td><td>creator pays 1.000 ADA → <span class="lo">$0.50</span></td></tr>
+      <tr><td>$1.00</td><td>organisation gets <span class="hi">$1.00</span></td><td>creator pays 0.500 ADA → <span class="lo">$0.50</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>The old way produces a six-fold swing in income for reasons that have nothing to do with how well the platform is doing. The new way produces a steady figure.</p>
+
+  <h3>How the app knows the exchange rate</h3>
+  <div class="jargon">
+    <span class="term">Price oracle</span>
+    A service that publishes the current ADA exchange rate <i>onto the blockchain itself</i>, so that automated blockchain programs can read it. On Cardano the main ones are <b>Charli3</b> and <b>Orcfax</b>. Think of it as a price board that the vending machine can see.
+  </div>
+  <div class="callout">
+    <b>But you probably don't need an oracle at first.</b> A much simpler option: the organisation publishes an ADA price table and updates it weekly or monthly. No outside dependency, no subscription fees, and nothing extra that can break or be manipulated. The only downside is a small lag between updates, which safety limits absorb easily.<br><br>
+    This removes the riskiest single component from the early build. Add a real oracle later, only if the lag starts causing problems.
+  </div>
+  <p>Whichever is used, set a <b>hard floor and ceiling</b> in ADA terms, so that a broken or manipulated price feed can never produce an absurd charge. And use an <b>average price over time</b> rather than the instant price, to smooth out momentary spikes.</p>
+
+  <h3>Two things pegging does <i>not</i> fix</h3>
+  <div class="jargon">
+    <span class="term">Gas fee</span>
+    The small charge the blockchain itself takes to record a transaction — like a postage stamp. It is always priced in ADA by the network, and nobody can change that. Currently about 0.17–0.20 ADA (roughly 3 cents) for a vote record.
+  </div>
+  <div class="warn">
+    <b>Problem 1 — gas is still tied to ADA.</b> If the creator pays the gas on top of the fee, their total bill still moves with the market. This bites hardest at the cheapest tier: today a Micro proposal costs 10 cents fee + 3 cents gas. If ADA reached $1.00, that becomes 10 cents fee + <b>20 cents gas</b> — the postage would cost twice the product, exactly where affordability matters most.<br><br>
+    <b>The fix:</b> the organisation pays the gas for Micro-tier proposals out of the Solidarity Pool. The cheapest tier then has one stable, promisable price no matter what the market does.
+  </div>
+  <div class="warn">
+    <b>Problem 2 — money already received still floats.</b> Pegging fixes the value <i>at the moment it arrives</i>. If the organisation then holds ADA and the price halves, its savings halve with it.<br><br>
+    <b>The fix:</b> a standing policy of converting part of income — say 60% — into a stable digital currency (one that holds a fixed dollar value), keeping 40% in ADA to stay aligned with the Cardano ecosystem.
+  </div>
+  <div class="ok"><b>In short: pegged going in, hedged coming out.</b> Two separate protections for two separate risks.</div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section>
+  <h2>3 · When more people vote than expected</h2>
+  <p class="lead">Someone declares a Community proposal for 500 people. It catches on and 3,000 people vote. What happens?</p>
+
+  <h3>Why asking voters to chip in doesn't work</h3>
+  <p>The natural idea is to let the extra voters contribute a few cents each. The arithmetic kills it:</p>
+  <div class="scroll">
+  <table class="r">
+    <thead><tr><th>Shortfall to next tier</th><th>Extra voters</th><th>Each would owe</th><th>Gas to send it</th></tr></thead>
+    <tbody><tr><td>$1.50</td><td>2,500</td><td>$0.0006</td><td class="hi">~$0.027</td></tr></tbody>
+  </table>
+  </div>
+  <div class="warn"><b>The postage costs about 45 times more than the payment.</b> Thousands of tiny blockchain payments are economically absurd. Crowd-funding the shortfall cannot work as "everyone chips in a little."</div>
+  <p>It works in two other forms instead:</p>
+  <ul>
+    <li><b>One sponsor covers the whole shortfall.</b> A single $1.50 payment is perfectly sensible — one transaction, one postage fee. This is the sponsorship mechanism already described.</li>
+    <li><b>The organisation simply absorbs it.</b> Honestly, this is probably the right default. The gaps between tiers are $1.50, $6.00 and $17.00 — trivial amounts.</li>
+  </ul>
+  <div class="callout">
+    <b>There is a principle here.</b> Going over your expected turnout means the proposal <i>succeeded</i> — which is exactly what the platform exists to make happen. Blocking 2,500 votes over $1.50, or sending someone a bill for being popular, would be perverse.
+  </div>
+
+  <h3>The clean solution: settle at the end, not the start</h3>
+  <p>Treat the declared tier as a <b>deposit</b> rather than a final price. When voting closes, the system compares what was declared against what actually happened:</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>What happened</th><th>What the system does</th></tr></thead>
+    <tbody>
+      <tr><td>Fewer voters than declared</td><td><b>Refund</b> the difference down to the correct tier</td></tr>
+      <tr><td>Somewhat more (within one tier)</td><td><b>Absorbed silently.</b> The creator is never even told</td></tr>
+      <tr><td>Enormously more</td><td><b>Top-up needed</b> before final results publish — but votes are <i>never thrown away</i>, and a sponsor can step in</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>The refund is what makes this fair. Because guessing too high costs you nothing, nobody has any reason to deliberately under-declare to save money. Honest estimation becomes the easy choice in both directions.</p>
+
+  <h3>Stopping abuse, using reputation</h3>
+  <div class="jargon">
+    <span class="term">SBT — Soulbound Token</span>
+    A permanent, non-transferable badge attached to a user account, recording their standing on the platform. VoteBoxApp's tiers are <b>Seed → Sprout → Branch → Root</b>. Unlike normal crypto tokens, they cannot be sold or given away — they are earned.
+  </div>
+  <p>The obvious cheat is to always declare Micro and let the organisation absorb the overflow every time. Reputation solves it neatly:</p>
+  <ul>
+    <li><b>Seed</b> (brand new) — narrow allowance; must top up if they exceed it</li>
+    <li><b>Sprout / Branch</b> — moderate allowance</li>
+    <li><b>Root</b> (long history of honest declarations) — generous allowance, absorbed automatically</li>
+  </ul>
+  <p>Repeatedly under-declaring damages your standing. This gives the reputation system real practical weight instead of being decorative.</p>
+</section>
+
+<!-- ============ 4 ============ -->
+<section>
+  <h2>4 · Guaranteeing the founder's share forever</h2>
+  <div class="jargon">
+    <span class="term">Smart contract / validator</span>
+    A small program stored on the blockchain that automatically controls money according to fixed rules. Once deployed it runs exactly as written and — if built without an update mechanism — <b>nobody can ever change it, including the person who wrote it</b>. Think of a vending machine that is physically incapable of giving the wrong change. On Cardano these are written in a language called <b>Aiken</b>.
+  </div>
+  <p class="lead">The Perpetual Founder Fee (PFF) is the founder's permanent share of platform income. The promise is only as good as its enforcement — and right now it is enforced only by ordinary app code, which could be changed by anyone who controls the software.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 360 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Money flow diagram">
+      <defs>
+        <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L7,3 z" fill="#4c5130"/>
+        </marker>
+        <marker id="arg" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L7,3 z" fill="#c9a227"/>
+        </marker>
+      </defs>
+      <style>
+        .bx{fill:#fffdf5;stroke:#4c5130;stroke-width:1.5;rx:8}
+        .bxg{fill:#f8f4e6;stroke:#c9a227;stroke-width:1.5;rx:8}
+        .t{font:600 11px -apple-system,Segoe UI,Roboto,sans-serif;fill:#20220f;text-anchor:middle}
+        .s{font:9px -apple-system,Segoe UI,Roboto,sans-serif;fill:#6a6a52;text-anchor:middle}
+        .ln{stroke:#4c5130;stroke-width:1.6;fill:none;marker-end:url(#ar)}
+        .lng{stroke:#c9a227;stroke-width:1.6;fill:none;marker-end:url(#arg);stroke-dasharray:4 3}
+      </style>
+      <!-- payers -->
+      <rect class="bx" x="8" y="8" width="104" height="46"/>
+      <text class="t" x="60" y="27">Proposal</text><text class="t" x="60" y="40">creator</text>
+      <rect class="bxg" x="128" y="8" width="104" height="46"/>
+      <text class="t" x="180" y="27">Sponsor</text><text class="s" x="180" y="41">optional</text>
+      <rect class="bxg" x="248" y="8" width="104" height="46"/>
+      <text class="t" x="300" y="24">Solidarity</text><text class="t" x="300" y="36">Pool</text><text class="s" x="300" y="48">covers Micro</text>
+      <!-- arrows down -->
+      <path class="ln" d="M60,56 L60,92"/>
+      <path class="lng" d="M180,56 L180,92"/>
+      <path class="lng" d="M300,56 L300,80 L196,80 L196,92"/>
+      <!-- validator -->
+      <rect x="26" y="96" width="308" height="66" rx="10" fill="#3a3d24"/>
+      <text x="180" y="118" style="font:700 12px -apple-system,sans-serif;fill:#e0be4a;text-anchor:middle">SMART CONTRACT</text>
+      <text x="180" y="134" style="font:9.5px -apple-system,sans-serif;fill:#e8e4d2;text-anchor:middle">immutable · cannot be altered by anyone</text>
+      <text x="180" y="150" style="font:9.5px -apple-system,sans-serif;fill:#e8e4d2;text-anchor:middle">splits every payment automatically</text>
+      <!-- split -->
+      <path class="ln" d="M110,164 L110,186 L88,186 L88,208"/>
+      <path class="ln" d="M250,164 L250,186 L272,186 L272,208"/>
+      <rect class="bx" x="16" y="212" width="144" height="58"/>
+      <text class="t" x="88" y="232">DAO Treasury</text>
+      <text x="88" y="252" style="font:700 15px -apple-system,sans-serif;fill:#4c5130;text-anchor:middle">90%</text>
+      <text class="s" x="88" y="264">community funds</text>
+      <rect class="bxg" x="200" y="212" width="144" height="58"/>
+      <text class="t" x="272" y="232">Founder (PFF)</text>
+      <text x="272" y="252" style="font:700 15px -apple-system,sans-serif;fill:#a07a1f;text-anchor:middle">10%</text>
+      <text class="s" x="272" y="264">permanent share</text>
+      <!-- solidarity loop -->
+      <path class="lng" d="M16,240 L6,240 L6,30 L8,30" />
+      <text class="s" x="60" y="288" style="fill:#a07a1f">10% of treasury refills Solidarity Pool</text>
+      <!-- voters -->
+      <line x1="8" y1="308" x2="352" y2="308" stroke="#d8d2bc" stroke-width="1"/>
+      <rect class="bx" x="90" y="326" width="180" height="46"/>
+      <text class="t" x="180" y="345">Voters</text>
+      <text class="s" x="180" y="360">pay nothing · need no wallet</text>
+      <path class="ln" d="M180,374 L180,398"/>
+      <rect class="bx" x="70" y="402" width="220" height="42" style="stroke:#3d5c73"/>
+      <text class="t" x="180" y="420" style="fill:#3d5c73">Foundation Relayer</text>
+      <text class="s" x="180" y="434">submits votes on their behalf</text>
+      <text class="s" x="180" y="462">Voting is always free — only creating costs money</text>
+    </svg>
+    <div class="cap">How money moves through the platform</div>
+  </div>
+
+  <h3>The conflict — and how to resolve it</h3>
+  <p>There is a genuine tension. If everything is frozen permanently, the future community-run organisation has no real power and is decorative. If nothing is frozen, the founder's share is just a promise that a future vote could delete.</p>
+  <div class="jargon">
+    <span class="term">DAO — Decentralised Autonomous Organisation</span>
+    An organisation governed by its members voting directly on the blockchain, rather than by a board or an owner. The long-term plan is for VoteBoxApp to be run this way.
+  </div>
+  <div class="callout">
+    <b>The resolution: freeze the percentage, not the amount.</b> The smart contract permanently hard-codes "10% goes to this address" with no possible update. But it leaves every other decision — prices, tier sizes, policies — to the community vote.
+  </div>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Frozen forever — no key, no update path</th><th>Decided by community vote</th></tr></thead>
+    <tbody>
+      <tr><td>Founder's share: <b>10%</b> of platform income</td><td>The price of each tier</td></tr>
+      <tr><td>The founder's payment address</td><td>The size boundaries of each tier</td></tr>
+      <tr><td>Treasury share: <b>90%</b></td><td>Where the exchange rate comes from</td></tr>
+      <tr><td>The split runs on every single payment</td><td>Solidarity Pool percentage</td></tr>
+      <tr><td>—</td><td>How much income is converted to stable currency</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="ok">
+    <b>Why this is elegant:</b> because the founder receives a <i>percentage</i> rather than a fixed sum, the founder and the community are never in conflict. If the community raises prices, both gain. If the community lowers prices to help poor users, both give up the same proportion. There is no possible setting where the founder profits at the community's expense, or the reverse. The fairness is built into the structure rather than promised in a contract.
+  </div>
+  <p class="note">This also settles the long-standing question of awkward split percentages. A 90/10 division is a whole, clean, easily audited number — which matters a great deal for something that can never be corrected once deployed.</p>
+</section>
+
+<!-- ============ 5 ============ -->
+<section>
+  <h2>5 · What can actually be built</h2>
+  <p class="lead">Now the engineering reality. There is one hard problem that reshapes the whole build order, and it is better to meet it now than after six months of work.</p>
+
+  <div class="warn">
+    <b>A blockchain program cannot count votes.</b><br><br>
+    Smart contracts on Cardano can only see the single transaction they are checking, plus a few specifically attached references. They cannot search back through history or tally up past transactions. Since votes are currently recorded as notes attached to many separate transactions, a smart contract has <b>no way to know how many votes a proposal received</b>. "Settle at the end" therefore cannot simply be written into a contract and expected to work.
+  </div>
+
+  <h3>Three possible ways around it</h3>
+  <div class="jargon">
+    <span class="term">UTxO</span>
+    Cardano tracks money as discrete chunks — like physical banknotes — rather than as a running account balance. Each chunk can carry a label (a "datum") holding extra information. A smart contract controls specific chunks and the rules for spending them.
+  </div>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Approach</th><th>How it works</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td>Record every vote individually on-chain</td><td>Each vote becomes its own blockchain entry, so they can be counted directly</td><td class="hi">Impossible — about 3 cents of gas per vote. Free voting would be destroyed.</td></tr>
+      <tr><td><b>Running tally chunk</b></td><td>One "scoreboard" held by the contract. Votes are gathered into batches, and each batch updates the scoreboard. The contract checks the tally only ever goes up, and that the batch was folded in correctly.</td><td class="lo">The right answer — one postage fee per batch rather than per vote, so voting stays free. It also fits the vote-batching design already planned.</td></tr>
+      <tr><td>Trusted declaration</td><td>The platform's own server signs a statement of the final count and the contract accepts it</td><td class="mid">Simple, but the count is trusted rather than proven</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="jargon">
+    <span class="term">Merkle tree / Merkle root</span>
+    A way of compressing a long list into a single short fingerprint. Anyone can prove a particular item was in the list without revealing or re-listing everything else. It is how thousands of votes can be summarised in one small blockchain entry.
+  </div>
+  <div class="warn">
+    <b>Two honest limitations of the running-tally approach.</b><br>
+    <b>Queueing.</b> Only one transaction can update the scoreboard at a time. Regular batching is fine, but very high volumes would require splitting the scoreboard into several parallel ones.<br><br>
+    <b>The batcher could leave votes out.</b> The contract can verify the arithmetic was done correctly, but not that every vote was included. This is unavoidable in any design where voters don't personally sign on the blockchain — which is the price of keeping voting free. <b>The money becomes fully trustworthy; the vote count remains partly trusted.</b> Be precise about this in grant applications: claim trustless <i>fee splitting</i>, not trustless voting.
+  </div>
+
+  <h3>The insight that saves months of work</h3>
+  <div class="ok">
+    <b>The founder's guarantee does not depend on counting votes at all.</b> The split applies to the fee, which is paid when the proposal is created — long before anyone votes. These are two completely separate jobs, so they should be two separate programs.
+  </div>
+  <div class="diagram">
+    <svg viewBox="0 0 360 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two validators">
+      <style>
+        .h1t{font:700 11.5px -apple-system,sans-serif;text-anchor:middle}
+        .bt{font:9.5px -apple-system,sans-serif;fill:#33351c;text-anchor:middle}
+        .bs{font:700 9.5px -apple-system,sans-serif;text-anchor:middle}
+      </style>
+      <rect x="6" y="8" width="168" height="228" rx="10" fill="#eef3ea" stroke="#a9c0a0" stroke-width="1.5"/>
+      <rect x="186" y="8" width="168" height="228" rx="10" fill="#f7efe6" stroke="#d9b48a" stroke-width="1.5"/>
+      <text class="h1t" x="90" y="30" fill="#3f6b3f">CONTRACT A</text>
+      <text class="bs" x="90" y="45" fill="#3f6b3f">Build this first</text>
+      <text class="h1t" x="270" y="30" fill="#8a4b1f">CONTRACT B</text>
+      <text class="bs" x="270" y="45" fill="#8a4b1f">Defer — maybe forever</text>
+      <line x1="20" y1="56" x2="160" y2="56" stroke="#a9c0a0"/>
+      <line x1="200" y1="56" x2="340" y2="56" stroke="#d9b48a"/>
+      <text class="bt" x="90" y="76">Takes the fee</text>
+      <text class="bt" x="90" y="92">Splits 90 / 10</text>
+      <text class="bt" x="90" y="108">Pays treasury + founder</text>
+      <text class="bt" x="90" y="124">Needs no vote data</text>
+      <text class="bt" x="270" y="76">Counts votes</text>
+      <text class="bt" x="270" y="92">Compares to declared tier</text>
+      <text class="bt" x="270" y="108">Handles refunds + top-ups</text>
+      <text class="bt" x="270" y="124">Needs running tally</text>
+      <line x1="20" y1="142" x2="160" y2="142" stroke="#a9c0a0"/>
+      <line x1="200" y1="142" x2="340" y2="142" stroke="#d9b48a"/>
+      <text class="bs" x="90" y="163" fill="#3f6b3f">~40–80 lines of code</text>
+      <text class="bs" x="90" y="180" fill="#3f6b3f">1–2 weeks</text>
+      <text class="bs" x="90" y="197" fill="#3f6b3f">cheap to audit</text>
+      <text class="bs" x="90" y="220" fill="#3f6b3f">LOW RISK</text>
+      <text class="bs" x="270" y="163" fill="#8a4b1f">complex, queueing issues</text>
+      <text class="bs" x="270" y="180" fill="#8a4b1f">6–12 weeks</text>
+      <text class="bs" x="270" y="197" fill="#8a4b1f">expensive to audit</text>
+      <text class="bs" x="270" y="220" fill="#8a4b1f">HIGH RISK</text>
+    </svg>
+    <div class="cap">Splitting one hard program into an easy one and a hard one</div>
+  </div>
+  <p><b>Build Contract A first.</b> It delivers the on-chain founder guarantee — the headline grant milestone — and it stands on its own even if Contract B is postponed indefinitely.</p>
+
+  <h3>Storing the proposal text</h3>
+  <div class="jargon">
+    <span class="term">IPFS</span>
+    A shared filing system spread across many computers, used to store the actual text and images of proposals (which would be far too expensive to put on the blockchain). Each stored item gets a reference code called a <b>CID</b>, and only that short code goes on the blockchain.
+  </div>
+  <p>Two things must be right here:</p>
+  <ul>
+    <li><b>The declared tier and voter limit must be written on the blockchain itself</b>, not only in the IPFS file. Smart contracts cannot read IPFS.</li>
+    <li><b>Lock the reference code at creation time.</b> IPFS files are effectively replaceable — editing produces a new code. Without locking it, someone could pay for a small proposal and then swap in different content afterwards.</li>
+  </ul>
+</section>
+
+<!-- ============ 6 ============ -->
+<section>
+  <h2>6 · Who needs a crypto wallet</h2>
+  <div class="jargon">
+    <span class="term">Crypto wallet</span>
+    An app holding the secret keys that control someone's blockchain funds — for example <b>VESPR</b> on mobile. Setting one up is a real barrier for ordinary users: it requires understanding seed phrases, buying currency, and keeping keys safe.
+  </div>
+  <div class="jargon">
+    <span class="term">Foundation Relayer</span>
+    VoteBoxApp's current arrangement: the organisation's own wallet signs and submits transactions on users' behalf. This means <b>a user with no wallet, no cryptocurrency and no technical knowledge can still take part.</b>
+  </div>
+  <div class="callout">
+    <b>Adding wallet support does not replace the Relayer — the two work side by side, permanently.</b> The Relayer is not a temporary shortcut to be outgrown. It is the single biggest accessibility feature the platform has, and it should never be given up.
+  </div>
+
+  <div class="diagram">
+    <svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Wallet architecture">
+      <defs>
+        <marker id="ar2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L7,3 z" fill="#4c5130"/>
+        </marker>
+      </defs>
+      <style>
+        .c{font:600 10.5px -apple-system,sans-serif;text-anchor:middle;fill:#20220f}
+        .cs{font:9px -apple-system,sans-serif;text-anchor:middle;fill:#6a6a52}
+        .l2{stroke:#4c5130;stroke-width:1.6;fill:none;marker-end:url(#ar2)}
+      </style>
+      <rect x="6" y="6" width="164" height="30" rx="8" fill="#3a3d24"/>
+      <text x="88" y="25" style="font:700 10.5px -apple-system,sans-serif;fill:#e0be4a;text-anchor:middle">NO WALLET NEEDED</text>
+      <rect x="190" y="6" width="164" height="30" rx="8" fill="#8a4b1f"/>
+      <text x="272" y="25" style="font:700 10.5px -apple-system,sans-serif;fill:#f6f3e7;text-anchor:middle">WALLET NEEDED</text>
+
+      <rect x="14" y="50" width="148" height="48" rx="8" fill="#fffdf5" stroke="#4c5130" stroke-width="1.4"/>
+      <text class="c" x="88" y="70">Voters</text><text class="cs" x="88" y="85">everyone who votes</text>
+      <rect x="198" y="50" width="148" height="48" rx="8" fill="#f8f4e6" stroke="#c9a227" stroke-width="1.4"/>
+      <text class="c" x="272" y="70">Proposal creators</text><text class="cs" x="272" y="85">paying their own fee</text>
+
+      <rect x="14" y="108" width="148" height="48" rx="8" fill="#fffdf5" stroke="#4c5130" stroke-width="1.4"/>
+      <text class="c" x="88" y="128">Micro-tier creators</text><text class="cs" x="88" y="143">Solidarity Pool pays</text>
+      <rect x="198" y="108" width="148" height="48" rx="8" fill="#f8f4e6" stroke="#c9a227" stroke-width="1.4"/>
+      <text class="c" x="272" y="128">Sponsors</text><text class="cs" x="272" y="143">paying for others</text>
+
+      <path class="l2" d="M88,158 L88,182"/>
+      <path class="l2" d="M272,158 L272,182"/>
+      <rect x="14" y="186" width="148" height="44" rx="8" fill="#eef2f5" stroke="#3d5c73" stroke-width="1.4"/>
+      <text class="c" x="88" y="205" style="fill:#3d5c73">Foundation Relayer</text>
+      <text class="cs" x="88" y="220">signs on their behalf</text>
+      <rect x="198" y="186" width="148" height="44" rx="8" fill="#f7efe6" stroke="#8a4b1f" stroke-width="1.4"/>
+      <text class="c" x="272" y="205" style="fill:#8a4b1f">Own wallet</text>
+      <text class="cs" x="272" y="220">VESPR / WalletConnect</text>
+      <text class="cs" x="180" y="250">A wallet is only ever needed when money leaves a user's own pocket</text>
+    </svg>
+    <div class="cap">Who needs a wallet, and who never does</div>
+  </div>
+
+  <div class="ok">
+    <b>An elegant side-effect:</b> the need for a wallet rises in step with the amount of money involved — which tracks how organised and resourced the user is. A village doing a Micro proposal is covered by the Solidarity Pool: no wallet, no money, no barrier at all. A city council paying $2.00 clearly has the capacity to manage a wallet. The same progressive logic as the prices themselves.
+  </div>
+  <p><b>So yes — start wallet integration now, but build it as strictly optional.</b> The app must remain fully usable with no wallet connected. Anything that breaks without one has been built the wrong way round.</p>
+  <div class="warn">
+    <b>Expect this to be fiddly.</b> The standard Cardano wallet connection method was designed for desktop web browsers, not phones. Mobile requires newer approaches (VESPR's mobile support, or WalletConnect). Inside a React Native / Expo app this is the most awkward item on the whole roadmap. Budget <b>3–6 weeks</b>, not one.
+  </div>
+</section>
+
+<!-- ============ 7 ============ -->
+<section>
+  <h2>7 · What the money looks like</h2>
+  <p class="lead">Average income of $1.48 per proposal, and — because prices are pegged — these figures no longer move with the ADA market. Two growth scenarios are shown: a cautious one and a faster one. Both slow down and level off over time, as real adoption does.</p>
+  <div class="scroll">
+  <table class="r">
+    <thead><tr><th>Target</th><th>Proposals per month needed</th><th>Cautious</th><th>Faster</th></tr></thead>
+    <tbody>
+      <tr><td>$1,000 per month</td><td>~680</td><td>month 9</td><td>month 3</td></tr>
+      <tr><td>$5,000 per month</td><td>~3,400</td><td>month 25</td><td>month 13</td></tr>
+      <tr><td>$10,000 per month</td><td>~6,800</td><td>month 34</td><td>month 18</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">Under the old flat fee, $10,000 a month would have needed around 62,500 proposals — realistically unreachable. Here it needs about 6,800.</p>
+  <div class="scroll">
+  <table class="r">
+    <thead><tr><th>After</th><th>Proposals</th><th>Total income</th><th class="pf">Founder</th><th class="tr">Treasury</th></tr></thead>
+    <tbody>
+      <tr class="grp"><td colspan="5">Cautious scenario</td></tr>
+      <tr><td>Year 1</td><td>~7,100</td><td>$10,436</td><td class="pf">$1,044</td><td class="tr">$9,392</td></tr>
+      <tr><td>Year 2</td><td>~31,800</td><td>$46,880</td><td class="pf">$4,688</td><td class="tr">$42,192</td></tr>
+      <tr><td>Year 3</td><td>~100,700</td><td>$148,503</td><td class="pf">$14,850</td><td class="tr">$133,653</td></tr>
+      <tr><td>Year 5</td><td>~393,800</td><td>$580,851</td><td class="pf">$58,085</td><td class="tr">$522,766</td></tr>
+      <tr class="grp"><td colspan="5">Faster scenario</td></tr>
+      <tr><td>Year 1</td><td>~17,000</td><td>$25,023</td><td class="pf">$2,502</td><td class="tr">$22,521</td></tr>
+      <tr><td>Year 2</td><td>~116,700</td><td>$172,123</td><td class="pf">$17,212</td><td class="tr">$154,911</td></tr>
+      <tr><td>Year 3</td><td>~429,900</td><td>$634,072</td><td class="pf">$63,407</td><td class="tr">$570,664</td></tr>
+      <tr><td>Year 5</td><td>~1,363,500</td><td>$2,011,149</td><td class="pf">$201,115</td><td class="tr">$1,810,034</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="chart-wrap"><canvas id="cumChart"></canvas></div>
+  <div class="legend"><span><i class="sw" style="background:#4c5130"></i>Treasury</span><span><i class="sw" style="background:#c9a227"></i>Founder</span></div>
+  <p>The first year remains modest — roughly $1,000–2,500 to the founder. That is entirely normal for a new organisation, but it must be said plainly: <b>grants and the NFT programmes are structural rather than optional for the first two to three years.</b> The honest framing for funders is that fee income is designed to <i>replace</i> grant dependency over a three-year horizon, not to avoid it from the start.</p>
+</section>
+
+<!-- ============ 8 ============ -->
+<section>
+  <h2>8 · How hard is all this to build?</h2>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Task</th><th>Time</th><th>Risk</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Tier pricing in the existing app code</td><td>Days</td><td class="lo">Low</td><td>Test the assumptions before touching the blockchain</td></tr>
+      <tr><td>Manually updated ADA price table</td><td>Days</td><td class="lo">Low</td><td>Avoids needing a price oracle entirely</td></tr>
+      <tr><td><b>Contract A</b> — the 90/10 split</td><td>1–2 weeks + review</td><td class="lo">Low</td><td>Best value for effort in the whole project</td></tr>
+      <tr><td>Wallet connection on mobile</td><td>3–6 weeks</td><td class="mid">Medium</td><td>Enables sponsorship and top-ups</td></tr>
+      <tr><td>Live price oracle</td><td>2–4 weeks + running cost</td><td class="mid">Med-high</td><td>Skip in the first phase</td></tr>
+      <tr><td><b>Contract B</b> — settle at the end</td><td>6–12 weeks</td><td class="hi">High</td><td>Running tally, queueing, fingerprint checks</td></tr>
+      <tr><td>Reputation-based allowances</td><td>Blocked</td><td class="hi">High</td><td>Needs the SBT badges on-chain first</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">The first four rows are realistically <b>2–3 months</b> of focused work and produce a working tiered system with a genuine on-chain founder guarantee. The complete vision is nearer <b>9–18 months</b>, and Contract B is where the difficulty genuinely escalates.</p>
+
+  <h3>Suggested order of work</h3>
+  <div class="phase">
+    <h4>Phase 0 — tidy up</h4><div class="meta">days</div>
+    <p>Settle the split at a clean 90/10. Correct the README so it describes the blockchain enforcement as planned rather than existing. Push the recent local work to the public repository so it reflects reality.</p>
+  </div>
+  <div class="phase">
+    <h4>Phase 1 — tiers in ordinary app code</h4><div class="meta">2–4 weeks</div>
+    <p>Implement the tier prices with a manually maintained rate table. Then run a real local campaign and <b>measure what mix of tiers actually occurs.</b> This assumption drives every revenue figure in this document and is currently completely untested.</p>
+  </div>
+  <div class="phase">
+    <h4>Phase 2 — Contract A and wallets, in parallel</h4><div class="meta">4–8 weeks</div>
+    <p>Build and independently review the permanent split contract — the headline grant milestone. At the same time, add optional wallet connection. Neither blocks the other.</p>
+  </div>
+  <div class="phase">
+    <h4>Phase 3 — settle at the end</h4><div class="meta">3–6 months, only if justified</div>
+    <p>Running tally, refunds, top-ups. Only worth building if Phase 1 shows that misdeclared tiers actually cost meaningful money. Until then, quietly absorbing the difference is far cheaper than the engineering.</p>
+  </div>
+  <div class="phase">
+    <h4>Phase 4 — hand over to the community</h4><div class="meta">when governance is ready</div>
+    <p>Transfer the adjustable settings to community control. The permanent core needs no handover, because it was never anyone's to change.</p>
+  </div>
+</section>
+
+<!-- ============ 9 ============ -->
+<section>
+  <h2>9 · Risks worth stating plainly</h2>
+  <div class="warn"><b>The tier mix is a guess.</b> The assumed spread of proposal sizes drives every revenue figure here. If large institutions never adopt the platform, average income collapses towards the Micro price and the model badly underperforms. This is the single most important thing to measure in a real campaign.</div>
+  <div class="warn"><b>Vote counting is not fully trustworthy.</b> Any batching design leaves whoever assembles the batches able to leave votes out. Be precise in grant applications and documentation: claim proven <i>fee splitting</i>, not proven voting.</div>
+  <div class="warn"><b>Permanent means permanent.</b> The 90/10 split and the founder's payment address, once deployed, can never be corrected — not by anyone, for any reason. Both technical and legal review before that moment.</div>
+  <div class="warn"><b>Complexity is the main enemy.</b> Five tiers, a price oracle, refunds, top-ups, a solidarity pool and reputation allowances add up to a large amount that can go wrong. Every component postponed is a reduction in cost and failure risk.</div>
+  <div class="warn"><b>The price oracle is an outside dependency.</b> Relying on an external price feed introduces something the platform does not control into an otherwise self-contained system. This is why the manual rate table is recommended first.</div>
+</section>
+
+<section>
+  <h2>Glossary</h2>
+  <div class="scroll">
+  <table>
+    <tbody>
+      <tr><td><b>ADA</b></td><td>The currency of the Cardano blockchain</td></tr>
+      <tr><td><b>Aiken</b></td><td>The programming language used to write Cardano smart contracts</td></tr>
+      <tr><td><b>Blockchain</b></td><td>A shared public record that cannot be quietly altered</td></tr>
+      <tr><td><b>CID</b></td><td>The short reference code for a file stored on IPFS</td></tr>
+      <tr><td><b>DAO</b></td><td>An organisation run by its members voting directly, rather than by an owner or board</td></tr>
+      <tr><td><b>Datum</b></td><td>A small label of information attached to a chunk of blockchain money</td></tr>
+      <tr><td><b>Gas fee</b></td><td>The network's own charge for recording a transaction — like postage</td></tr>
+      <tr><td><b>IPFS</b></td><td>A shared filing system for storing proposal text and images off the blockchain</td></tr>
+      <tr><td><b>Merkle root</b></td><td>A short fingerprint summarising a long list, allowing proof of membership</td></tr>
+      <tr><td><b>Oracle</b></td><td>A service publishing outside information (like exchange rates) onto the blockchain</td></tr>
+      <tr><td><b>PFF</b></td><td>Perpetual Founder Fee — the founder's permanent 10% share</td></tr>
+      <tr><td><b>Relayer</b></td><td>The organisation's wallet, submitting transactions for users who have none</td></tr>
+      <tr><td><b>SBT</b></td><td>Soulbound Token — a permanent, non-transferable reputation badge</td></tr>
+      <tr><td><b>Smart contract</b></td><td>A blockchain program that controls money by fixed, unchangeable rules</td></tr>
+      <tr><td><b>Stablecoin</b></td><td>A digital currency designed to hold a steady value against the dollar or euro</td></tr>
+      <tr><td><b>Treasury</b></td><td>The community fund receiving 90% of platform income</td></tr>
+      <tr><td><b>UTxO</b></td><td>A discrete chunk of blockchain money, like a banknote rather than a bank balance</td></tr>
+      <tr><td><b>VESPR / WalletConnect</b></td><td>Ways for a phone app to connect to a user's own crypto wallet</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<footer>
+  Strategic planning document — illustrative, not a financial forecast or a firm engineering estimate.<br>
+  Tier mix, adoption curves, effort ranges and price points are assumptions to be tested against real data.<br>
+  ADA ≈ $0.16 and EUR/USD ≈ 1.14 as of late July 2026; the pegged figures are by design independent of both. Prepared July 2026.
+</footer>
+
+</main>
+<script>
+new Chart(document.getElementById('contribChart'),{
+  type:'bar',
+  data:{labels:['Micro','Community','Municipal','Regional','National'],
+   datasets:[
+    {label:'share of proposals',data:[40,35,18,5,2],backgroundColor:'#4c5130'},
+    {label:'share of revenue',data:[2.7,11.9,24.4,27.1,33.9],backgroundColor:'#c9a227'}
+   ]},
+  options:{responsive:true,maintainAspectRatio:false,
+   plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.raw+'%'}}},
+   scales:{x:{ticks:{font:{size:10}},grid:{display:false}},
+     y:{title:{display:true,text:'percent',font:{size:10}},ticks:{font:{size:10},callback:v=>v+'%'},grid:{color:'#eee'}}}}
+});
+new Chart(document.getElementById('cumChart'),{
+  type:'bar',
+  data:{labels:['Y1 cautious','Y3 cautious','Y5 cautious','Y1 faster','Y3 faster','Y5 faster'],
+   datasets:[
+    {label:'Treasury',data:[9392,133653,522766,22521,570664,1810034],backgroundColor:'#4c5130'},
+    {label:'Founder',data:[1044,14850,58085,2502,63407,201115],backgroundColor:'#c9a227'}
+   ]},
+  options:{responsive:true,maintainAspectRatio:false,
+   plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.raw.toLocaleString()}}},
+   scales:{x:{ticks:{font:{size:9}},grid:{display:false}},
+     y:{type:'logarithmic',title:{display:true,text:'cumulative USD',font:{size:10}},ticks:{font:{size:9},callback:v=>'$'+v.toLocaleString()},grid:{color:'#eee'}}}}
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>VoteBoxApp - Proposal Creation Flow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f0f1e;
+            color: #fff;
+            padding: 16px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            padding: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .section-intro {
+            background: rgba(22, 33, 62, 0.9);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 32px;
+            border-left: 5px solid #667eea;
+        }
+
+        .intro-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #667eea;
+        }
+
+        .intro-text {
+            font-size: 15px;
+            color: #b0b0d0;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        /* Phone Mockup Styles */
+        .phone-mockup {
+            width: 100%;
+            max-width: 380px;
+            margin: 0 auto 30px;
+            background: #000;
+            border-radius: 32px;
+            padding: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .phone-screen {
+            background: #fff;
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .status-bar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            color: white;
+            font-size: 13px;
+        }
+
+        .screen-content {
+            background: #f8f9fa;
+            min-height: 600px;
+            padding: 24px 20px;
+            color: #333;
+        }
+
+        .screen-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .screen-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .icon-large {
+            font-size: 72px;
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .icon-medium {
+            font-size: 48px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .button {
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        .button-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .button-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .button-ghost {
+            background: transparent;
+            color: #666;
+            border: 1px solid #ddd;
+        }
+
+        .info-box {
+            background: #e8f4fd;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            padding: 14px;
+            margin: 16px 0;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 6px;
+            color: #667eea;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 8px;
+            padding: 14px;
+            margin: 16px 0;
+            font-size: 13px;
+            color: #856404;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #4ade80;
+            border-radius: 8px;
+            padding: 14px;
+            margin: 16px 0;
+            font-size: 13px;
+            color: #155724;
+        }
+
+        .payment-option {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 12px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-option:active {
+            border-color: #667eea;
+            background: #f8f9fe;
+            transform: scale(0.98);
+        }
+
+        .payment-option.recommended {
+            border-color: #4ade80;
+            background: #f0fdf4;
+        }
+
+        .payment-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .payment-icon {
+            font-size: 32px;
+        }
+
+        .payment-title {
+            flex: 1;
+        }
+
+        .payment-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .payment-subtitle {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .payment-badge {
+            background: #4ade80;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .payment-details {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.6;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .payment-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .feature-tag {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .cost-breakdown {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .cost-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+
+        .cost-row:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 16px;
+            padding-top: 12px;
+            margin-top: 8px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .cost-label {
+            color: #555;
+        }
+
+        .cost-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .flow-arrow {
+            text-align: center;
+            font-size: 40px;
+            color: #667eea;
+            margin: 20px 0;
+        }
+
+        .flow-label {
+            text-align: center;
+            font-size: 13px;
+            color: #667eea;
+            margin-top: -10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .decision-branch {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .branch-card {
+            background: rgba(22, 33, 62, 0.9);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .branch-icon {
+            font-size: 40px;
+            margin-bottom: 8px;
+        }
+
+        .branch-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .branch-desc {
+            font-size: 12px;
+            color: #b0b0d0;
+        }
+
+        .wallet-setup-steps {
+            margin: 16px 0;
+        }
+
+        .setup-step {
+            background: white;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 10px;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-weight: 700;
+            font-size: 13px;
+            margin-right: 10px;
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .step-desc {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .comparison-table {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .comparison-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 13px;
+        }
+
+        .comparison-row:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .comparison-value {
+            color: #666;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .highlight-box strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            background: white;
+        }
+
+        .textarea-field {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            background: white;
+            min-height: 100px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.5);
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 Create Your First Proposal</h1>
+            <p style="font-size: 14px; margin-top: 8px;">Payment options & wallet setup flow</p>
+        </div>
+
+        <!-- Context Explanation -->
+        <div class="section-intro">
+            <div class="intro-title">🤔 The Challenge: Who Pays?</div>
+            <div class="intro-text">
+                <strong>Voters never pay</strong> - that's VoteBoxApp's core promise. But proposal creation requires:
+                <br>• Gas fees (~$0.10-0.50 in ADA) for blockchain transaction
+                <br>• Foundation Fee (25% markup) to sustain development
+                <br>• <strong>Total cost: ~$0.13-0.63 per proposal</strong>
+            </div>
+            <div class="intro-text">
+                <strong>The Solution:</strong> Proposal creators pay, but we make it accessible through TWO payment options:
+            </div>
+            <div class="highlight-box">
+                <strong>Option 1: Pay with Credit/Debit Card</strong>
+                Stay on Tier 1 (email + biometric). No wallet needed. Maximum accessibility.
+            </div>
+            <div class="highlight-box">
+                <strong>Option 2: Pay with Cardano Wallet</strong>
+                Upgrade to Tier 2 for self-sovereign identity. Pay directly in ADA. Web3 native.
+            </div>
+        </div>
+
+        <!-- Screen 1: Create Proposal Button -->
+        <div class="phone-mockup">
+            <div class="phone-screen">
+                <div class="status-bar">
+                    <span>14:30</span>
+                    <span>🔋 68%</span>
+                </div>
+                <div class="screen-content">
+                    <div class="screen-title">Active Proposals</div>
+                    <div class="screen-subtitle">3 proposals currently open for voting</div>
+
+                    <!-- Mock proposal cards -->
+                    <div style="background: white; border-radius: 12px; padding: 16px; margin: 12px 0; border: 2px solid #e0e0e0;">
+                        <div style="font-weight: 700; color: #333; margin-bottom: 6px;">Community Park Renovation</div>
+                        <div style="font-size: 13px; color: #666;">Ends in 3 days • 847 votes</div>
+                    </div>
+
+                    <div style="background: white; border-radius: 12px; padding: 16px; margin: 12px 0; border: 2px solid #e0e0e0;">
+                        <div style="font-weight: 700; color: #333; margin-bottom: 6px;">School Budget Allocation</div>
+                        <div style="font-size: 13px; color: #666;">Ends in 5 days • 1,234 votes</div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 40px;">
+                        <div style="font-size: 14px; color: #666; margin-bottom: 16px;">
+                            Don't see your issue?
+                        </div>
+                        <button class="button button-primary">+ Create New Proposal</button>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>💡 Anyone can create proposals</strong>
+                        Share your ideas with the community and let them vote. Creators pay a small fee (~$0.50) but voters always vote for free.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flow-arrow">↓</div>
+        <div class="flow-label">User taps "Create New Proposal"</div>
+
+        <!-- Screen 2: Payment Method Selection -->
+        <div class="phone-mockup">
+            <div class="phone-screen">
+                <div class="status-bar">
+                    <span>14:32</span>
+                    <span>🔋 68%</span>
+                </div>
+                <div class="screen-content">
+                    <div class="icon-medium">💳</div>
+                    <div class="screen-title">Choose Payment Method</div>
+                    <div class="screen-subtitle">Select how you'd like to pay the proposal fee</div>
+
+                    <div class="cost-breakdown">
+                        <div style="font-weight: 700; color: #333; margin-bottom: 12px;">Cost Breakdown</div>
+                        <div class="cost-row">
+                            <span class="cost-label">Blockchain Gas Fee</span>
+                            <span class="cost-value">$0.40</span>
+                        </div>
+                        <div class="cost-row">
+                            <span class="cost-label">Foundation Fee (25%)</span>
+                            <span class="cost-value">$0.10</span>
+                        </div>
+                        <div class="cost-row">
+                            <span class="cost-label">Total Cost</span>
+                            <span class="cost-value" style="color: #667eea;">$0.50</span>
+                        </div>
+                    </div>
+
+                    <!-- Option 1: Fiat Payment -->
+                    <div class="payment-option recommended">
+                        <div class="payment-header">
+                            <div class="payment-icon">💳</div>
+                            <div class="payment-title">
+                                <div class="payment-name">Pay with Card</div>
+                                <div class="payment-subtitle">Credit/Debit • No wallet needed</div>
+                            </div>
+                            <div class="payment-badge">EASIEST</div>
+                        </div>
+                        <div class="payment-details">
+                            <strong>✅ Best for most users</strong><br>
+                            • Pay with credit card, debit card, or PayPal<br>
+                            • No blockchain wallet required<br>
+                            • Stay on Tier 1 (email + biometric)<br>
+                            • Instant processing
+                        </div>
+                        <div class="payment-features">
+                            <span class="feature-tag">Visa</span>
+                            <span class="feature-tag">Mastercard</span>
+                            <span class="feature-tag">PayPal</span>
+                            <span class="feature-tag">Apple Pay</span>
+                        </div>
+                    </div>
+
+                    <!-- Option 2: Crypto Payment -->
+                    <div class="payment-option">
+                        <div class="payment-header">
+                            <div class="payment-icon">👛</div>
+                            <div class="payment-title">
+                                <div class="payment-name">Pay with Cardano Wallet</div>
+                                <div class="payment-subtitle">ADA payment • Web3 native</div>
+                            </div>
+                        </div>
+                        <div class="payment-details">
+                            <strong>🔐 For Web3 users</strong><br>
+                            • Pay directly in ADA (₳1.25 at current rate)<br>
+                            • Upgrade to Tier 2 (self-sovereign identity)<br>
+                            • Full decentralization<br>
+                            • Lower fees (no card processing)
+                        </div>
+                        <div class="payment-features">
+                            <span class="feature-tag">ADA</span>
+                            <span class="feature-tag">W3C DID</span>
+                            <span class="feature-tag">Self-custody</span>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>🤔 Not sure which to choose?</strong>
+                        Use card payment if you don't have a crypto wallet. You can always upgrade to a wallet later!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flow-arrow">↓</div>
+        <div class="flow-label">Two possible paths</div>
+
+        <!-- Branch Visualization -->
+        <div class="decision-branch">
+            <div class="branch-card">
+                <div class="branch-icon">💳</div>
+                <div class="branch-title">Card Payment Path</div>
+                <div class="branch-desc">Stay Tier 1 → Simple checkout</div>
+            </div>
+            <div class="branch-card">
+                <div class="branch-icon">👛</div>
+                <div class="branch-title">Wallet Payment Path</div>
+                <div class="branch-desc">Upgrade to Tier 2 → Setup wallet</div>
+            </div>
+        </div>
+
+        <!-- PATH A: CARD PAYMENT (Simplest) -->
+        <div style="background: rgba(77, 222, 128, 0.1); border: 2px solid #4ade80; border-radius: 16px; padding: 20px; margin: 32px 0;">
+            <div style="font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #4ade80;">
+                💳 PATH A: Card Payment (Tier 1)
+            </div>
+            <div style="font-size: 14px; color: #b0b0d0; margin-bottom: 20px;">
+                User stays on email + biometric authentication, pays with traditional payment method
+            </div>
+
+            <!-- Screen: Stripe Checkout -->
+            <div class="phone-mockup">
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span>14:34</span>
+                        <span>🔋 67%</span>
+                    </div>
+                    <div class="screen-content">
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='30' viewBox='0 0 80 30'%3E%3Ctext x='10' y='20' font-family='Arial' font-size='20' font-weight='bold' fill='%23635bff'%3Estripe%3C/text%3E%3C/svg%3E" alt="Stripe" style="height: 30px;">
+                        </div>
+                        <div class="screen-title" style="text-align: center;">Complete Payment</div>
+                        <div class="screen-subtitle" style="text-align: center;">Secure checkout powered by Stripe</div>
+
+                        <div class="input-group">
+                            <label class="input-label">Card Number</label>
+                            <input type="text" class="input-field" placeholder="1234 5678 9012 3456" value="">
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="input-group">
+                                <label class="input-label">Expiry</label>
+                                <input type="text" class="input-field" placeholder="MM / YY" value="">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label">CVC</label>
+                                <input type="text" class="input-field" placeholder="123" value="">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Billing Email</label>
+                            <input type="email" class="input-field" placeholder="your.email@example.com" value="">
+                        </div>
+
+                        <div class="cost-breakdown">
+                            <div class="cost-row">
+                                <span class="cost-label">Proposal Fee</span>
+                                <span class="cost-value">$0.50</span>
+                            </div>
+                            <div class="cost-row">
+                                <span class="cost-label">Payment Processing (3%)</span>
+                                <span class="cost-value">$0.02</span>
+                            </div>
+                            <div class="cost-row">
+                                <span class="cost-label">Total Charge</span>
+                                <span class="cost-value" style="color: #667eea;">$0.52</span>
+                            </div>
+                        </div>
+
+                        <div class="success-box">
+                            <strong>🔒 Secure Payment</strong>
+                            Your payment info is processed securely by Stripe. VoteBoxApp never sees your card details.
+                        </div>
+
+                        <button class="button button-primary">Pay $0.52 →</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-arrow">↓</div>
+            <div class="flow-label">Payment processed, continue to proposal creation</div>
+        </div>
+
+        <!-- PATH B: WALLET PAYMENT (Upgrade to Tier 2) -->
+        <div style="background: rgba(96, 165, 250, 0.1); border: 2px solid #60a5fa; border-radius: 16px; padding: 20px; margin: 32px 0;">
+            <div style="font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #60a5fa;">
+                👛 PATH B: Wallet Payment (Upgrade to Tier 2)
+            </div>
+            <div style="font-size: 14px; color: #b0b0d0; margin-bottom: 20px;">
+                User upgrades to Cardano wallet, gets self-sovereign identity (DID), pays with ADA
+            </div>
+
+            <!-- Screen: Wallet Setup Intro -->
+            <div class="phone-mockup">
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span>14:34</span>
+                        <span>🔋 67%</span>
+                    </div>
+                    <div class="screen-content">
+                        <div class="icon-medium">🔐</div>
+                        <div class="screen-title">Setup Cardano Wallet</div>
+                        <div class="screen-subtitle">Get a self-sovereign identity and pay with ADA</div>
+
+                        <div class="highlight-box">
+                            <strong>🎁 Bonus: Upgrade to Tier 2 Identity</strong>
+                            By setting up a wallet, you'll get a W3C-compliant Decentralized Identifier (DID) that works across all Web3 platforms!
+                        </div>
+
+                        <div class="wallet-setup-steps">
+                            <div class="setup-step">
+                                <span class="step-number">1</span>
+                                <div style="display: inline-block; vertical-align: top; width: calc(100% - 40px);">
+                                    <div class="step-title">Create Wallet</div>
+                                    <div class="step-desc">We'll generate a secure Cardano wallet for you (or connect existing)</div>
+                                </div>
+                            </div>
+
+                            <div class="setup-step">
+                                <span class="step-number">2</span>
+                                <div style="display: inline-block; vertical-align: top; width: calc(100% - 40px);">
+                                    <div class="step-title">Backup Recovery Phrase</div>
+                                    <div class="step-desc">Save your 24-word recovery phrase securely</div>
+                                </div>
+                            </div>
+
+                            <div class="setup-step">
+                                <span class="step-number">3</span>
+                                <div style="display: inline-block; vertical-align: top; width: calc(100% - 40px);">
+                                    <div class="step-title">Fund Wallet</div>
+                                    <div class="step-desc">Add ~₳2 ($0.80) to cover fees and proposal cost</div>
+                                </div>
+                            </div>
+
+                            <div class="setup-step">
+                                <span class="step-number">4</span>
+                                <div style="display: inline-block; vertical-align: top; width: calc(100% - 40px);">
+                                    <div class="step-title">Generate DID</div>
+                                    <div class="step-desc">Automatic - your decentralized identity is created</div>
+                                </div>
+                            </div>
+
+                            <div class="setup-step">
+                                <span class="step-number">5</span>
+                                <div style="display: inline-block; vertical-align: top; width: calc(100% - 40px);">
+                                    <div class="step-title">Pay & Create</div>
+                                    <div class="step-desc">Use your wallet to pay for proposal in ADA</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-table">
+                            <div style="font-weight: 700; margin-bottom: 12px; color: #333;">Cost Comparison</div>
+                            <div class="comparison-row">
+                                <div class="comparison-label">Card Payment</div>
+                                <div class="comparison-value">$0.52 (includes 3% fee)</div>
+                            </div>
+                            <div class="comparison-row">
+                                <div class="comparison-label">Wallet Payment</div>
+                                <div class="comparison-value" style="color: #4ade80;">$0.50 (no processing fee)</div>
+                            </div>
+                        </div>
+
+                        <div class="warning-box">
+                            <strong>⏱️ Time Investment</strong>
+                            Wallet setup takes 5-10 minutes. If you need to create a proposal urgently, card payment is faster. You can always upgrade later!
+                        </div>
+
+                        <button class="button button-primary">Setup Wallet Now</button>
+                        <button class="button button-secondary">← Use Card Instead</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-arrow">↓</div>
+            <div class="flow-label">Wallet setup process (see Tier 2 onboarding from previous mockup)</div>
+
+            <!-- Screen: Wallet Payment -->
+            <div class="phone-mockup">
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span>14:42</span>
+                        <span>🔋 65%</span>
+                    </div>
+                    <div class="screen-content">
+                        <div class="icon-medium">₳</div>
+                        <div class="screen-title">Confirm Payment</div>
+                        <div class="screen-subtitle">Sign transaction with your Cardano wallet</div>
+
+                        <div style="background: white; border: 2px solid #667eea; border-radius: 12px; padding: 16px; margin: 20px 0;">
+                            <div style="text-align: center; margin-bottom: 16px;">
+                                <div style="font-size: 14px; color: #666; margin-bottom: 8px;">Your Wallet Balance</div>
+                                <div style="font-size: 32px; font-weight: 700; color: #333;">₳2.50</div>
+                                <div style="font-size: 13px; color: #666;">≈ $1.00 USD</div>
+                            </div>
+                        </div>
+
+                        <div class="cost-breakdown">
+                            <div style="font-weight: 700; color: #333; margin-bottom: 12px;">Transaction Details</div>
+                            <div class="cost-row">
+                                <span class="cost-label">Proposal Creation Fee</span>
+                                <span class="cost-value">₳1.00</span>
+                            </div>
+                            <div class="cost-row">
+                                <span class="cost-label">Foundation Fee (25%)</span>
+                                <span class="cost-value">₳0.25</span>
+                            </div>
+                            <div class="cost-row">
+                                <span class="cost-label">Network Gas Fee</span>
+                                <span class="cost-value">₳0.17</span>
+                            </div>
+                            <div class="cost-row">
+                                <span class="cost-label">Total Payment</span>
+                                <span class="cost-value" style="color: #667eea;">₳1.42</span>
+                            </div>
+                            <div style="text-align: right; font-size: 12px; color: #666; margin-top: 8px;">
+                                ≈ $0.57 USD
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <strong>🔐 Signing with your wallet</strong>
+                            This transaction will be signed with your Cardano wallet. Your private keys never leave your device.
+                        </div>
+
+                        <div class="success-box">
+                            <strong>✅ Lower fees with crypto</strong>
+                            By paying with ADA, you save the 3% card processing fee. Plus, you now have a self-sovereign identity!
+                        </div>
+
+                        <button class="button button-primary">Sign & Pay ₳1.42</button>
+                        <button class="button button-ghost">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-arrow">↓</div>
+            <div class="flow-label">Transaction signed and submitted to blockchain</div>
+        </div>
+
+        <!-- CONVERGING PATH: Create Proposal Form -->
+        <div style="background: rgba(102, 126, 234, 0.1); border: 2px solid #667eea; border-radius: 16px; padding: 20px; margin: 32px 0;">
+            <div style="font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #667eea;">
+                📝 Both Paths Converge: Create Proposal
+            </div>
+            <div style="font-size: 14px; color: #b0b0d0; margin-bottom: 20px;">
+                After payment (card or wallet), user proceeds to fill out proposal details
+            </div>
+
+            <!-- Screen: Proposal Form -->
+            <div class="phone-mockup">
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span>14:45</span>
+                        <span>🔋 64%</span>
+                    </div>
+                    <div class="screen-content">
+                        <div class="screen-title">Create Proposal</div>
+                        <div class="screen-subtitle">Fill in the details for your proposal</div>
+
+                        <div class="success-box">
+                            <strong>✅ Payment Confirmed</strong>
+                            Your payment has been processed. Fill out your proposal below.
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Proposal Title *</label>
+                            <input type="text" class="input-field" placeholder="e.g., Community Garden Funding" value="">
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Description *</label>
+                            <textarea class="textarea-field" placeholder="Explain your proposal in detail. What problem does it solve? What action will be taken if approved?"></textarea>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Voting Options *</label>
+                            <input type="text" class="input-field" placeholder="Yes, No, Abstain" value="Yes, No, Abstain" style="margin-bottom: 8px;">
+                            <div style="font-size: 12px; color: #666;">Separate options with commas</div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Voting Duration *</label>
+                            <select class="input-field">
+                                <option>3 days</option>
+                                <option selected>7 days</option>
+                                <option>14 days</option>
+                                <option>30 days</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Category</label>
+                            <select class="input-field">
+                                <option>Community</option>
+                                <option>Infrastructure</option>
+                                <option>Budget</option>
+                                <option>Policy</option>
+                                <option>Environment</option>
+                            </select>
+                        </div>
+
+                        <div style="background: #f0f0f0; border-radius: 10px; padding: 14px; margin: 16px 0;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                                <input type="checkbox" id="age-verify" style="width: 20px; height: 20px;">
+                                <label for="age-verify" style="font-size: 14px; font-weight: 600; color: #333;">Require age verification (18+)</label>
+                            </div>
+                            <div style="font-size: 12px; color: #666;">
+                                Check this if voters must prove they're over 18 to participate
+                            </div>
+                        </div>
+
+                        <button class="button button-primary">Publish Proposal</button>
+                        <button class="button button-secondary">Save as Draft</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-arrow">↓</div>
+            <div class="flow-label">Proposal published to blockchain</div>
+
+            <!-- Screen: Success -->
+            <div class="phone-mockup">
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span>14:47</span>
+                        <span>🔋 64%</span>
+                    </div>
+                    <div class="screen-content">
+                        <div class="icon-large">🎉</div>
+                        <div class="screen-title">Proposal Published!</div>
+                        <div class="screen-subtitle">Your proposal is now live on VoteBoxApp</div>
+
+                        <div class="success-box">
+                            <strong>✅ Successfully Created</strong>
+                            Your proposal has been published to the Cardano blockchain and is now visible to all VoteBoxApp users.
+                        </div>
+
+                        <div style="background: white; border: 2px solid #4ade80; border-radius: 12px; padding: 16px; margin: 20px 0;">
+                            <div style="font-weight: 700; color: #333; margin-bottom: 12px;">Community Garden Funding</div>
+                            <div style="font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 12px;">
+                                Proposal to allocate $50,000 for community garden development...
+                            </div>
+                            <div style="font-size: 12px; color: #666; padding-top: 12px; border-top: 1px solid #e0e0e0;">
+                                <strong>Status:</strong> Active<br>
+                                <strong>Ends:</strong> Jan 19, 2026<br>
+                                <strong>Votes:</strong> 0<br>
+                                <strong>Proposal ID:</strong> #4729
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <strong>📢 Share your proposal</strong>
+                            Share the link with your community to get more voters. The more people participate, the more legitimate the results!
+                        </div>
+
+                        <button class="button button-primary">Share Proposal</button>
+                        <button class="button button-secondary">View Proposal</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="section-intro">
+            <div class="intro-title">✨ Key Takeaways</div>
+            <div class="intro-text">
+                <strong>Two payment paths maintain accessibility:</strong>
+            </div>
+            <div class="highlight-box">
+                <strong>💳 Card Payment (Most Users)</strong>
+                • Fastest and simplest (2 minutes)<br>
+                • No blockchain knowledge needed<br>
+                • Stay on Tier 1 (email + biometric)<br>
+                • Cost: $0.52 (includes processing fee)
+            </div>
+            <div class="highlight-box">
+                <strong>👛 Wallet Payment (Web3 Native)</strong>
+                • Upgrade to self-sovereign identity<br>
+                • Get W3C DID (portable across platforms)<br>
+                • Lower fees (no card processing)<br>
+                • Cost: $0.50 in ADA
+            </div>
+            <div class="intro-text" style="margin-top: 16px;">
+                <strong>Strategic Benefits:</strong><br>
+                ✅ Voters never pay (free voting for all)<br>
+                ✅ Creators choose their preferred payment method<br>
+                ✅ No wallet required to participate (maximum accessibility)<br>
+                ✅ Optional upgrade path to Tier 2 for those who want it<br>
+                ✅ Foundation Fee sustains development without VC funding
+            </div>
+        </div>
+
+        <div style="height: 80px;"></div>
+    </div>
+
+    <a href="#top" class="back-to-top">↑</a>
+    <div id="top"></div>
+</body>
+</html>

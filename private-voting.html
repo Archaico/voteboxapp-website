@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VoteBoxApp - ZKP Voter Registration Flow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        /* Phone Frame */
+        .phone-frame {
+            max-width: 390px;
+            margin: 20px auto;
+            background: #000;
+            border-radius: 40px;
+            padding: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .screen {
+            background: #fff;
+            border-radius: 28px;
+            overflow: hidden;
+            height: 800px;
+            position: relative;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 44px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            font-size: 14px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Content Area */
+        .content {
+            padding: 24px;
+            height: calc(800px - 44px - 80px);
+            overflow-y: auto;
+        }
+
+        /* Screen Layouts */
+        .screen-content {
+            display: none;
+        }
+
+        .screen-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Privacy Icon */
+        .privacy-icon {
+            width: 120px;
+            height: 120px;
+            margin: 40px auto 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Info Cards */
+        .info-card {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-card h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-card p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Secret Display */
+        .secret-display {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            font-size: 14px;
+            word-wrap: break-word;
+            position: relative;
+            border: 2px solid #333;
+        }
+
+        .secret-label {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #333;
+            color: #00ff00;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* Progress Steps */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 0 10px;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .step.active .step-circle {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .step.completed .step-circle {
+            background: #4caf50;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 60%;
+            width: 80%;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: -1;
+        }
+
+        .step.completed:not(:last-child)::after {
+            background: #4caf50;
+        }
+
+        /* Buttons */
+        .button {
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 16px;
+        }
+
+        .button-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .button-primary:active {
+            transform: scale(0.98);
+        }
+
+        .button-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 40px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Success Checkmark */
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #4caf50;
+            margin: 40px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            animation: scaleIn 0.5s ease;
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .warning-box strong {
+            color: #856404;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .warning-box p {
+            color: #856404;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Vote Options */
+        .vote-option {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .vote-option:hover {
+            border-color: #667eea;
+            background: #f8f9fe;
+        }
+
+        .vote-option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+
+        .vote-radio {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .vote-option.selected .vote-radio {
+            border-color: #667eea;
+            background: #667eea;
+            box-shadow: inset 0 0 0 4px white;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .nav-buttons .button {
+            margin-top: 0;
+        }
+
+        /* Tech Details Toggle */
+        .tech-details {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .tech-details summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 12px;
+        }
+
+        .tech-details code {
+            background: #e0e0e0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            margin: 0 4px;
+            transition: all 0.3s;
+        }
+
+        .nav-dot.active {
+            background: #667eea;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .proposal-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .proposal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .proposal-meta {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 12px;
+        }
+
+        .proposal-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="screen">
+            <!-- Status Bar -->
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>🔋 85%</span>
+            </div>
+
+            <!-- SCREEN 1: Welcome / Privacy Intro -->
+            <div class="screen-content active" id="screen1">
+                <div class="header">
+                    <h1>VoteBoxApp</h1>
+                    <p>Private • Secure • Democratic</p>
+                </div>
+                <div class="content">
+                    <div class="privacy-icon">🔒</div>
+                    
+                    <h2 style="text-align: center; margin-bottom: 24px; color: #333;">Zero-Knowledge Voting</h2>
+                    
+                    <div class="info-card">
+                        <h3>🎭 Your Vote Stays Private</h3>
+                        <p>Using advanced cryptography, you can prove you're eligible to vote without revealing who you are or how you voted.</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3>✅ Verifiably Fair</h3>
+                        <p>Every vote is cryptographically proven to be legitimate, preventing fraud while maintaining your privacy.</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3>🌍 No Cost to Vote</h3>
+                        <p>Proposal creators pay all fees. Your participation is completely free.</p>
+                    </div>
+
+                    <button class="button button-primary" onclick="showScreen(2)">
+                        Get Started →
+                    </button>
+                    
+                    <details class="tech-details">
+                        <summary>🔬 How does it work?</summary>
+                        <p>VoteBoxApp uses Zero-Knowledge Proofs (ZKPs) to verify your eligibility without revealing your identity. Your vote is protected by the same mathematics that secures cryptocurrencies and military communications.</p>
+                    </details>
+                </div>
+            </div>
+
+            <!-- SCREEN 2: Registration Steps Overview -->
+            <div class="screen-content" id="screen2">
+                <div class="header">
+                    <h1>Voter Registration</h1>
+                    <p>Three simple steps to secure your vote</p>
+                </div>
+                <div class="content">
+                    <div class="progress-steps">
+                        <div class="step active">
+                            <div class="step-circle">1</div>
+                            <div class="step-label">Create Secret</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-circle">2</div>
+                            <div class="step-label">Register</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-circle">3</div>
+                            <div class="step-label">Vote</div>
+                        </div>
+                    </div>
+
+                    <div style="margin: 40px 0;">
+                        <div style="text-align: center; margin-bottom: 30px;">
+                            <div style="font-size: 64px; margin-bottom: 16px;">🔑</div>
+                            <h2 style="color: #333; margin-bottom: 8px;">Step 1: Create Your Secret</h2>
+                            <p style="color: #666; font-size: 14px;">Generate a unique cryptographic identity</p>
+                        </div>
+
+                        <div class="info-card">
+                            <h3>What happens:</h3>
+                            <p>• Your device generates a random secret code<br>
+                            • This code is stored securely on your phone<br>
+                            • Only you have access to this secret<br>
+                            • It proves you're eligible without revealing identity</p>
+                        </div>
+
+                        <div class="warning-box">
+                            <strong>⚠️ Important</strong>
+                            <p>Your secret stays on YOUR device. It's never sent to servers or the blockchain. This guarantees your privacy.</p>
+                        </div>
+                    </div>
+
+                    <button class="button button-primary" onclick="showScreen(3)">
+                        Generate My Secret →
+                    </button>
+                    <button class="button button-secondary" onclick="showScreen(1)">
+                        ← Back
+                    </button>
+                </div>
+            </div>
+
+            <!-- SCREEN 3: Secret Generation -->
+            <div class="screen-content" id="screen3">
+                <div class="header">
+                    <h1>Generate Secret</h1>
+                    <p>Creating your cryptographic identity</p>
+                </div>
+                <div class="content">
+                    <div class="progress-steps">
+                        <div class="step completed">
+                            <div class="step-circle">✓</div>
+                            <div class="step-label">Create Secret</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-circle">2</div>
+                            <div class="step-label">Register</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-circle">3</div>
+                            <div class="step-label">Vote</div>
+                        </div>
+                    </div>
+
+                    <div id="generating" style="display: block;">
+                        <div class="loading-spinner"></div>
+                        <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                            Generating cryptographically secure random secret...
+                        </p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="genProgress" style="width: 0%"></div>
+                        </div>
+                        <p class="progress-text" id="genProgressText">Initializing...</p>
+                    </div>
+
+                    <div id="generated" style="display: none;">
+                        <div style="text-align: center; margin: 30px 0;">
+                            <div style="font-size: 64px; margin-bottom: 16px;">✨</div>
+                            <h2 style="color: #333; margin-bottom: 8px;">Secret Generated!</h2>
+                            <p style="color: #666; font-size: 14px;">Your unique cryptographic identity is ready</p>
+                        </div>
+
+                        <div class="secret-display">
+                            <div class="secret-label">Your Secret (keep this safe!)</div>
+                            <div id="secretValue">0x7a8f3e9c2b1d5a4f6e8c9d2a3b4c5d6e7f8a9b0c</div>
+                            <button class="copy-button" onclick="copySecret()">Copy</button>
+                        </div>
+
+                        <div class="secret-display" style="background: #f8f9fa; color: #333; border-color: #e0e0e0;">
+                            <div class="secret-label" style="color: #666;">Public Commitment (shared with proposal)</div>
+                            <div id="commitmentValue">0x9c5d3e7a1f4b2c8d6e9a3f5b7c1d8e4f2a6b9c0d</div>
+                            <button class="copy-button" style="background: #e0e0e0; color: #333;" onclick="copyCommitment()">Copy</button>
+                        </div>
+
+                        <div class="info-card">
+                            <h3>🔐 How this works:</h3>
+                            <p><strong>Secret:</strong> Stays on your device, never shared<br>
+                            <strong>Commitment:</strong> Mathematical fingerprint of your secret, proves you're registered without revealing the secret itself</p>
+                        </div>
+
+                        <div class="warning-box">
+                            <strong>🔑 Backup Your Secret</strong>
+                            <p>Write down your secret in a safe place. If you lose your phone, you'll need it to recover your voting rights.</p>
+                        </div>
+
+                        <button class="button button-primary" onclick="showScreen(4)">
+                            Continue to Registration →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCREEN 4: Submit Registration -->
+            <div class="screen-content" id="screen4">
+                <div class="header">
+                    <h1>Register to Vote</h1>
+                    <p>Submit your commitment to the proposal</p>
+                </div>
+                <div class="content">
+                    <div class="progress-steps">
+                        <div class="step completed">
+                            <div class="step-circle">✓</div>
+                            <div class="step-label">Create Secret</div>
+                        </div>
+                        <div class="step active">
+                            <div class="step-circle">2</div>
+                            <div class="step-label">Register</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-circle">3</div>
+                            <div class="step-label">Vote</div>
+                        </div>
+                    </div>
+
+                    <div class="proposal-card">
+                        <div class="proposal-title">🌍 Proposal: Community Park Renovation</div>
+                        <div class="proposal-meta">Created by: GreenSpaces DAO • Ends in 5 days</div>
+                        <div class="proposal-description">
+                            Should we allocate $50,000 from the community treasury to renovate Central Park with new playground equipment and solar lighting?
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>📋 Registration Requirements</h3>
+                        <p>• Must be a community resident (verified via credential)<br>
+                        • One vote per person<br>
+                        • Registration closes in 5 days</p>
+                    </div>
+
+                    <div style="background: white; border-radius: 12px; padding: 16px; margin: 20px 0; border: 1px solid #e0e0e0;">
+                        <h3 style="font-size: 14px; color: #333; margin-bottom: 12px;">What gets submitted:</h3>
+                        <div style="font-size: 13px; color: #666; line-height: 1.6;">
+                            ✓ Your public commitment (anonymous ID)<br>
+                            ✓ ZK proof of eligibility<br>
+                            ✗ Your identity<br>
+                            ✗ Your secret<br>
+                            ✗ How you'll vote
+                        </div>
+                    </div>
+
+                    <button class="button button-primary" onclick="showScreen(5)">
+                        Submit Registration →
+                    </button>
+                    <button class="button button-secondary" onclick="showScreen(3)">
+                        ← Back
+                    </button>
+                </div>
+            </div>
+
+            <!-- SCREEN 5: Registration Processing -->
+            <div class="screen-content" id="screen5">
+                <div class="header">
+                    <h1>Processing Registration</h1>
+                    <p>Adding you to the voter registry</p>
+                </div>
+                <div class="content">
+                    <div class="progress-steps">
+                        <div class="step completed">
+                            <div class="step-circle">✓</div>
+                            <div class="step-label">Create Secret</div>
+                        </div>
+                        <div class="step completed">
+                            <div class="step-circle">✓</div>
+                            <div class="step-label">Register</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-circle">3</div>
+                            <div class="step-label">Vote</div>
+                        </div>
+                    </div>
+
+                    <div id="processing" style="display: block;">
+                        <div class="loading-spinner"></div>
+                        <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                            Creating your encrypted voter registration...
+                        </p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="regProgress" style="width: 0%"></div>
+                        </div>
+                        <p class="progress-text" id="regProgressText">Building Merkle tree...</p>
+
+                        <details class="tech-details" style="margin-top: 40px;">
+                            <summary>What's happening right now?</summary>
+                            <p><strong>Step 1:</strong> Your commitment is added to a Merkle tree (a cryptographic data structure)<br>
+                            <strong>Step 2:</strong> Merkle root is stored on Cardano blockchain<br>
+                            <strong>Step 3:</strong> You receive confirmation with your voter position<br><br>
+                            This process ensures your registration is tamper-proof while keeping your identity private.</p>
+                        </details>
+                    </div>
+
+                    <div id="registered" style="display: none;">
+                        <div class="success-icon">✓</div>
+                        <h2 style="text-align: center; color: #333; margin-bottom: 8px;">Registration Complete!</h2>
+                        <p style="text-align: center; color: #666; font-size: 14px; margin-bottom: 30px;">
+                            You're now registered to vote on this proposal
+                        </p>
+
+                        <div class="info-card">
+                            <h3>✅ Registration Confirmed</h3>
+                            <p><strong>Voter ID:</strong> Anonymous-#2847<br>
+                            <strong>Merkle Position:</strong> 142 of 2,847 registered voters<br>
+                            <strong>Blockchain Tx:</strong> <code style="font-size: 11px;">0x7a8f3e...</code><br>
+                            <strong>Status:</strong> Eligible to vote</p>
+                        </div>
+
+                        <div class="info-card" style="border-left-color: #4caf50;">
+                            <h3>🎉 What's Next?</h3>
+                            <p>You can now cast your vote anytime before the proposal closes. Your vote will be cryptographically verified without revealing your identity.</p>
+                        </div>
+
+                        <button class="button button-primary" onclick="showScreen(6)">
+                            Proceed to Voting →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCREEN 6: Voting Interface -->
+            <div class="screen-content" id="screen6">
+                <div class="header">
+                    <h1>Cast Your Vote</h1>
+                    <p>Private & Verifiable Voting</p>
+                </div>
+                <div class="content">
+                    <div class="progress-steps">
+                        <div class="step completed">
+                            <div class="step-circle">✓</div>
+                            <div class="step-label">Create Secret</div>
+                        </div>
+                        <div class="step completed">
+                            <div class="step-circle">✓</div>
+                            <div class="step-label">Register</div>
+                        </div>
+                        <div class="step active">
+                            <div class="step-circle">3</div>
+                            <div class="step-label">Vote</div>
+                        </div>
+                    </div>
+
+                    <div class="proposal-card">
+                        <div class="proposal-title">🌍 Community Park Renovation</div>
+                        <div class="proposal-meta">2,847 registered voters • 1,423 voted (50%)</div>
+                    </div>
+
+                    <div style="margin: 24px 0;">
+                        <h3 style="color: #333; margin-bottom: 16px;">Select Your Choice:</h3>
+                        
+                        <div class="vote-option" onclick="selectVote('yes')" id="voteYes">
+                            <div class="vote-radio"></div>
+                            <div>
+                                <div style="font-weight: 600; color: #333; margin-bottom: 4px;">✅ Yes, Approve</div>
+                                <div style="font-size: 13px; color: #666;">Support the $50,000 park renovation</div>
+                            </div>
+                        </div>
+
+                        <div class="vote-option" onclick="selectVote('no')" id="voteNo">
+                            <div class="vote-radio"></div>
+                            <div>
+                                <div style="font-weight: 600; color: #333; margin-bottom: 4px;">❌ No, Reject</div>
+                                <div style="font-size: 13px; color: #666;">Do not approve the renovation</div>
+                            </div>
+                        </div>
+
+                        <div class="vote-option" onclick="selectVote('abstain')" id="voteAbstain">
+                            <div class="vote-radio"></div>
+                            <div>
+                                <div style="font-weight: 600; color: #333; margin-bottom: 4px;">⚪ Abstain</div>
+                                <div style="font-size: 13px; color: #666;">No preference, count for quorum only</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card" style="border-left-color: #667eea;">
+                        <h3>🔒 Your Privacy is Protected</h3>
+                        <p>When you submit, a Zero-Knowledge Proof is generated that proves:<br>
+                        • You're registered to vote<br>
+                        • You haven't voted before<br>
+                        • WITHOUT revealing your identity or choice to anyone</p>
+                    </div>
+
+                    <button class="button button-primary" id="submitVoteBtn" disabled onclick="showScreen(7)">
+                        Submit Vote (Select an option first)
+                    </button>
+                </div>
+            </div>
+
+            <!-- SCREEN 7: Vote Processing -->
+            <div class="screen-content" id="screen7">
+                <div class="header">
+                    <h1>Generating Proof</h1>
+                    <p>Creating Zero-Knowledge Proof</p>
+                </div>
+                <div class="content">
+                    <div id="voteProcessing" style="display: block;">
+                        <div class="loading-spinner"></div>
+                        <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                            Generating cryptographic proof...
+                        </p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="voteProgress" style="width: 0%"></div>
+                        </div>
+                        <p class="progress-text" id="voteProgressText">Initializing proof generation...</p>
+
+                        <div style="background: white; border-radius: 12px; padding: 16px; margin-top: 30px; border: 1px solid #e0e0e0;">
+                            <h3 style="font-size: 14px; color: #333; margin-bottom: 12px;">ZK Proof Steps:</h3>
+                            <div style="font-size: 13px; color: #666; line-height: 2;">
+                                <div id="step1" style="opacity: 0.3;">⏳ Retrieve your secret from secure storage</div>
+                                <div id="step2" style="opacity: 0.3;">⏳ Load Merkle tree from IPFS</div>
+                                <div id="step3" style="opacity: 0.3;">⏳ Generate ZK proof of membership</div>
+                                <div id="step4" style="opacity: 0.3;">⏳ Create unique nullifier (prevents double voting)</div>
+                                <div id="step5" style="opacity: 0.3;">⏳ Submit encrypted vote to blockchain</div>
+                            </div>
+                        </div>
+
+                        <details class="tech-details" style="margin-top: 20px;">
+                            <summary>Why does this take time?</summary>
+                            <p>Zero-Knowledge Proofs require complex mathematical computations. Your phone is performing advanced cryptography that proves your eligibility without revealing any private information. This typically takes 10-20 seconds on mobile devices.</p>
+                        </details>
+                    </div>
+
+                    <div id="voteSubmitted" style="display: none;">
+                        <div class="success-icon">✓</div>
+                        <h2 style="text-align: center; color: #333; margin-bottom: 8px;">Vote Submitted!</h2>
+                        <p style="text-align: center; color: #666; font-size: 14px; margin-bottom: 30px;">
+                            Your vote has been recorded on the blockchain
+                        </p>
+
+                        <div class="info-card" style="border-left-color: #4caf50;">
+                            <h3>✅ Confirmation Details</h3>
+                            <p><strong>Vote:</strong> <span id="voteChoice">Approved</span> ✅<br>
+                            <strong>ZK Proof:</strong> Verified ✓<br>
+                            <strong>Nullifier:</strong> <code style="font-size: 11px;">0x3e7a1f4b...</code><br>
+                            <strong>Blockchain Tx:</strong> <code style="font-size: 11px;">0x9c5d3e7a...</code><br>
+                            <strong>Timestamp:</strong> Jan 3, 2026 9:47 AM</p>
+                        </div>
+
+                        <div class="info-card">
+                            <h3>🔒 Privacy Guaranteed</h3>
+                            <p>Your vote choice is encrypted and your identity remains anonymous. Only the proof of your eligibility and vote validity are public.</p>
+                        </div>
+
+                        <div class="info-card" style="border-left-color: #2196F3;">
+                            <h3>📊 Current Results</h3>
+                            <p>Results will be revealed after the voting period ends in 4 days. Check back to see the outcome!</p>
+                        </div>
+
+                        <button class="button button-primary" onclick="showScreen(1)">
+                            Return to Home
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentScreen = 1;
+        let selectedVote = null;
+
+        function showScreen(screenNum) {
+            // Hide all screens
+            document.querySelectorAll('.screen-content').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Show selected screen
+            document.getElementById('screen' + screenNum).classList.add('active');
+            currentScreen = screenNum;
+            
+            // Trigger animations for specific screens
+            if (screenNum === 3) {
+                setTimeout(() => simulateSecretGeneration(), 500);
+            }
+            if (screenNum === 5) {
+                setTimeout(() => simulateRegistration(), 500);
+            }
+            if (screenNum === 7) {
+                setTimeout(() => simulateVoteSubmission(), 500);
+            }
+        }
+
+        function simulateSecretGeneration() {
+            let progress = 0;
+            const steps = [
+                'Initializing random number generator...',
+                'Generating cryptographic entropy...',
+                'Creating secret key...',
+                'Computing commitment hash...',
+                'Storing in secure enclave...',
+                'Complete!'
+            ];
+            
+            const interval = setInterval(() => {
+                progress += 20;
+                document.getElementById('genProgress').style.width = progress + '%';
+                
+                const stepIndex = Math.min(Math.floor(progress / 20), steps.length - 1);
+                document.getElementById('genProgressText').textContent = steps[stepIndex];
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('generating').style.display = 'none';
+                        document.getElementById('generated').style.display = 'block';
+                    }, 500);
+                }
+            }, 400);
+        }
+
+        function simulateRegistration() {
+            let progress = 0;
+            const steps = [
+                'Building Merkle tree...',
+                'Adding your commitment...',
+                'Computing Merkle root...',
+                'Preparing Cardano transaction...',
+                'Broadcasting to network...',
+                'Confirming on blockchain...'
+            ];
+            
+            const progressSteps = document.querySelectorAll('#processing .tech-details div');
+            
+            const interval = setInterval(() => {
+                progress += 16.66;
+                document.getElementById('regProgress').style.width = progress + '%';
+                
+                const stepIndex = Math.min(Math.floor(progress / 16.66), steps.length - 1);
+                document.getElementById('regProgressText').textContent = steps[stepIndex];
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('processing').style.display = 'none';
+                        document.getElementById('registered').style.display = 'block';
+                    }, 500);
+                }
+            }, 600);
+        }
+
+        function selectVote(choice) {
+            selectedVote = choice;
+            
+            // Remove selection from all options
+            document.querySelectorAll('.vote-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            if (choice === 'yes') {
+                document.getElementById('voteYes').classList.add('selected');
+                document.getElementById('submitVoteBtn').textContent = '✅ Submit Vote: Approve';
+            } else if (choice === 'no') {
+                document.getElementById('voteNo').classList.add('selected');
+                document.getElementById('submitVoteBtn').textContent = '❌ Submit Vote: Reject';
+            } else {
+                document.getElementById('voteAbstain').classList.add('selected');
+                document.getElementById('submitVoteBtn').textContent = '⚪ Submit Vote: Abstain';
+            }
+            
+            document.getElementById('submitVoteBtn').disabled = false;
+        }
+
+        function simulateVoteSubmission() {
+            let progress = 0;
+            const steps = [
+                'Retrieving your secret from secure storage',
+                'Loading Merkle tree from IPFS',
+                'Generating ZK proof of membership',
+                'Creating unique nullifier (prevents double voting)',
+                'Submitting encrypted vote to blockchain'
+            ];
+            
+            const stepElements = [
+                document.getElementById('step1'),
+                document.getElementById('step2'),
+                document.getElementById('step3'),
+                document.getElementById('step4'),
+                document.getElementById('step5')
+            ];
+            
+            const interval = setInterval(() => {
+                progress += 20;
+                document.getElementById('voteProgress').style.width = progress + '%';
+                
+                const stepIndex = Math.min(Math.floor(progress / 20), steps.length - 1);
+                document.getElementById('voteProgressText').textContent = steps[stepIndex];
+                
+                // Highlight current step
+                if (stepIndex < stepElements.length) {
+                    stepElements[stepIndex].style.opacity = '1';
+                    stepElements[stepIndex].textContent = '✅ ' + steps[stepIndex];
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('voteProcessing').style.display = 'none';
+                        document.getElementById('voteSubmitted').style.display = 'block';
+                        
+                        // Set vote choice in confirmation
+                        const voteText = selectedVote === 'yes' ? 'Approved ✅' : 
+                                       selectedVote === 'no' ? 'Rejected ❌' : 'Abstained ⚪';
+                        document.getElementById('voteChoice').textContent = voteText;
+                    }, 500);
+                }
+            }, 800);
+        }
+
+        function copySecret() {
+            const secret = document.getElementById('secretValue').textContent;
+            navigator.clipboard.writeText(secret).then(() => {
+                alert('Secret copied to clipboard! Keep it safe.');
+            });
+        }
+
+        function copyCommitment() {
+            const commitment = document.getElementById('commitmentValue').textContent;
+            navigator.clipboard.writeText(commitment).then(() => {
+                alert('Commitment copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>
