@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VoteBoxApp - Democratic Technology for Communities</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.564.0/dist/umd/lucide.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .bg-navy-800 { background-color: #2D4A8B; }
@@ -686,12 +686,18 @@
     </footer>
 
     <script>
-        // Initialize Lucide icons
-        lucide.createIcons();
-
-        // Global variables
+        // Global variables — declared before the icon call so a failed/blocked
+        // icon CDN can't cascade into breaking unrelated interactive features
+        // (this is exactly how the flip cards broke previously).
         let flippedCard = null;
         let activePhase = 0;
+
+        // Initialize Lucide icons
+        try {
+            lucide.createIcons();
+        } catch (e) {
+            console.warn('Lucide icon init failed:', e);
+        }
 
         // 3D Card flip functionality
         function flipCard(index) {
@@ -736,7 +742,11 @@
             setActivePhase(0);
             
             // Re-initialize Lucide icons after DOM is loaded
-            lucide.createIcons();
+            try {
+                lucide.createIcons();
+            } catch (e) {
+                console.warn('Lucide icon init failed:', e);
+            }
         });
     </script>
 </body>
