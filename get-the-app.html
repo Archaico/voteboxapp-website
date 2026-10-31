@@ -152,6 +152,9 @@
   .link .go { font-size:20px; color:var(--line); flex-shrink:0; }
   .link.primary { border-color:rgba(180,85,45,0.4); background:rgba(180,85,45,0.05); }
   .link.primary .lab { color:var(--rust); }
+  .creator-note { margin:0 0 28px; padding:16px 18px; border:1px solid var(--line); border-radius:12px; background:#fbf9f1; font-size:14px; color:var(--muted); line-height:1.55; }
+  .creator-note strong { display:block; color:var(--ink); font-size:15px; margin-bottom:4px; }
+  .creator-note a { color:var(--root); font-weight:600; }
   .apk-note { font-size:12px; color:var(--muted); font-style:italic; text-align:center; margin:2px 0 28px; }
 
   .foot {
@@ -283,7 +286,7 @@
       <div class="links-head">Everything you need &middot; tap to open</div>
       <a class="link primary" href="https://github.com/Archaico/VoteBoxApp/releases/latest/download/VoteBoxApp.apk">
         <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3v10m0 0l-4-4m4 4l4-4M5 17v2a2 2 0 002 2h10a2 2 0 002-2v-2" stroke="#f3f0e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="txt"><div class="lab">Download the app (Android APK)</div><div class="url">github.com/Archaico/VoteBoxApp/releases/latest/download/VoteBoxApp.apk</div></div>
+        <div class="txt"><div class="lab">Download the app (Android APK) &middot; v0.3.1</div><div class="url">github.com/Archaico/VoteBoxApp/releases/latest/download/VoteBoxApp.apk</div></div>
         <div class="go">&rarr;</div>
       </a>
       <a class="link site" href="https://voteboxapp.org">
@@ -297,6 +300,11 @@
         <div class="go">&rarr;</div>
       </a>
       <div class="apk-note">Android only for now &middot; the two caution screens above are expected &mdash; just follow the walkthrough</div>
+      <div class="creator-note">
+        <strong>Want to create a proposal?</strong>
+        Voting is always free and needs no wallet. To publish a proposal, you pay a small fee in free test ADA from a Cardano wallet set to the <b>preprod</b> test network. We recommend <a href="https://play.google.com/store/apps/details?id=art.nft_craze.gallery.main">Vespr</a>, which fills in the payment for you.
+        <a href="https://docs.cardano.org/cardano-testnets/tools/faucet">Get free test ADA &rarr;</a>
+      </div>
     </div>
 
     <div class="foot">
