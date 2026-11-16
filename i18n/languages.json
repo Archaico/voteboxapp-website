@@ -85,7 +85,6 @@
     "github.com/Archaico/VoteBoxApp",
     "VoteBoxApp &middot; LifeGround Community",
     "The Seed &mdash; Blueprint for a Better Society",
-    "VoteBoxApp<span>App</span>",
     "BlockchainService",
     "IPFSService",
     "TreasuryService",
@@ -95,6 +94,7 @@
     "NotificationSvc",
     "AnalyticsService",
     "Blockfrost",
-    "{ proposalId, choice, key, ts }"
+    "{ proposalId, choice, key, ts }",
+    "VoteBox<span>App</span>"
   ]
 }

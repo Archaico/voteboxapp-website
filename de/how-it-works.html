@@ -60,7 +60,7 @@
     fill: #fff; font-weight: 600;
   }
   .node-title { font-size: 14px; font-weight: 700; fill: #fff; }
-  .node-sub { font-family: "SF Mono", Consolas, monospace; font-size: 9.5px; fill: rgba(255,255,255,0.82); letter-spacing: 0.04em; }
+  .node-sub { font-family: "SF Mono", Consolas, monospace; font-size: 9.5px; letter-spacing: 0.04em; }
   .svc-title { font-size: 13px; font-weight: 700; }
   .svc-role { font-family: "SF Mono", Consolas, monospace; font-size: 8.5px; letter-spacing: 0.06em; }
   .flow-lbl { font-family: "SF Mono", Consolas, monospace; font-size: 9.5px; fill: var(--muted); letter-spacing: 0.02em; }
@@ -137,7 +137,7 @@
 <div class="frame">
   <div class="head">
     <div class="eyebrow">Systemarchitektur</div>
-    <h1>VoteBoxApp<span>App</span></h1>
+    <h1>VoteBox<span>App</span></h1>
     <div class="sub">Wie ein Vorschlag gepflanzt wird, Stimmen wachsen und das Ergebnis im Ledger Wurzeln schlägt</div>
   </div>
 
@@ -201,7 +201,7 @@
           <circle cx="522" cy="144" r="4.5" fill="#2f7d4f"/>
           <text x="534" y="148" class="svc-title" fill="#16241c">IPFSService</text>
           <text x="520" y="166" class="svc-role" fill="#5c6459">Upload + Ausweichlösung</text>
-          <text x="520" y="178" class="svc-role" fill="#5c6459">Storacha primär</text>
+          <text x="520" y="178" class="svc-role" fill="#5c6459">Pinata primär</text>
         </g>
         <g>
           <rect x="680" y="128" width="160" height="58" rx="7" fill="#fff" stroke="#3d7a4e" stroke-width="1.5"/>
@@ -268,15 +268,15 @@
 
       <g>
         <rect x="146" y="420" width="220" height="82" rx="9" fill="#f6efe0" stroke="#e0d4b5"/>
-        <text x="164" y="446" class="svc-title" fill="#16241c">Storacha (primär)</text>
+        <text x="164" y="446" class="svc-title" fill="#16241c">Pinata (primär)</text>
         <text x="164" y="468" class="node-sub" fill="#5c6459">Hier liegt das ganze JSON</text>
         <text x="164" y="488" class="node-sub" fill="#5c6459">Liefert einen Inhalts-Hash (CID)</text>
       </g>
       <g>
         <rect x="386" y="420" width="228" height="82" rx="9" fill="#f6efe0" stroke="#e0d4b5"/>
-        <text x="404" y="446" class="svc-title" fill="#16241c">Gateway-Ausweichkette</text>
-        <text x="404" y="468" class="node-sub" fill="#5c6459">Öffentliche Gateways</text>
-        <text x="404" y="488" class="node-sub" fill="#5c6459">Kein einzelner Schwachpunkt</text>
+        <text x="404" y="446" class="svc-title" fill="#16241c">Backup + Gateways</text>
+        <text x="404" y="468" class="node-sub" fill="#5c6459">Filebase hält eine zweite Kopie</text>
+        <text x="404" y="488" class="node-sub" fill="#5c6459">4 Gateways, der Reihe nach</text>
       </g>
     </g>
 
@@ -294,9 +294,9 @@
       <g>
         <rect x="146" y="680" width="250" height="106" rx="9" fill="#eef3ec" stroke="#c3ddc9"/>
         <text x="164" y="706" class="svc-title" fill="#16241c">Vorschlags-Transaktion</text>
-        <text x="164" y="728" class="node-sub" fill="#3d7a4e">Metadaten-Label 721</text>
+        <text x="164" y="728" class="node-sub" fill="#3d7a4e">Metadaten-Label 674</text>
         <text x="164" y="748" class="node-sub" fill="#5c6459">enthält den IPFS-Hash</text>
-        <text x="164" y="768" class="node-sub" fill="#5c6459">~2 ADA Gebühr (Split in App)</text>
+        <text x="164" y="768" class="node-sub" fill="#5c6459">1,2+ ADA, zahlt der Ersteller</text>
       </g>
       <g>
         <rect x="416" y="680" width="250" height="106" rx="9" fill="#eef3ec" stroke="#c3ddc9"/>
@@ -346,8 +346,8 @@
     </g>
 
     <!-- return flow: read-back -> client (long left rail, going up) -->
-    <path d="M 146 981 L 100 981 L 100 180 L 296 180" stroke="#3a6b8a" stroke-width="2" fill="none" marker-end="url(#arrowUp)" stroke-dasharray="6 5"/>
-    <text x="82" y="600" class="flow-lbl" fill="#3a6b8a" transform="rotate(-90 82 600)">Ergebnisse fließen zurück aufs Handy — Vorschläge &amp; Live-Zählung</text>
+    <path d="M 146 981 L 52 981 L 52 195 L 296 195" stroke="#3a6b8a" stroke-width="2" fill="none" marker-end="url(#arrowUp)" stroke-dasharray="6 5"/>
+    <text x="42" y="600" class="flow-lbl" fill="#3a6b8a" transform="rotate(-90 42 600)">Ergebnisse fließen zurück aufs Handy — Vorschläge &amp; Live-Zählung</text>
 
     <!-- trust caption -->
     <g>
@@ -369,7 +369,7 @@
     <div class="item"><span class="dot" style="background:#c08a2e"></span> Teilweise / noch offen</div>
   </div>
 
-  <div class="foot">VoteBoxApp · LifeGround Community · aufgebaut auf <i>The Seed — Blueprint for a Better Society</i><br> Architektur vom 28. Juli 2026 · Expo SDK 54 / React 19 / RN 0.81 · Cardano preprod · AGPL-3.0</div>
+  <div class="foot">VoteBoxApp · LifeGround Community · aufgebaut auf <i>The Seed — Blueprint for a Better Society</i><br> Architektur vom 28. Juli 2026 (Speicher und Gebühren aktualisiert am 16. November 2026) · Expo SDK 54 / React 19 / RN 0.81 · Cardano preprod · AGPL-3.0</div>
 </div>
 </body>
 </html>
