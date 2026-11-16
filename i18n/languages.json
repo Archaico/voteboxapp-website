@@ -1,0 +1,100 @@
+{
+  "pages": [
+    {
+      "file": "index.html",
+      "menu": "overlay"
+    },
+    {
+      "file": "get-the-app.html",
+      "menu": "overlay"
+    },
+    {
+      "file": "how-it-works.html",
+      "menu": "inline"
+    }
+  ],
+  "languages": [
+    {
+      "code": "de",
+      "tag": "de",
+      "name": "Deutsch",
+      "suggest": "Diese Seite gibt es auch auf Deutsch"
+    },
+    {
+      "code": "fr",
+      "tag": "fr",
+      "name": "Français",
+      "suggest": "Cette page existe aussi en français"
+    },
+    {
+      "code": "es",
+      "tag": "es",
+      "name": "Español",
+      "suggest": "Esta página también está en español"
+    },
+    {
+      "code": "pt",
+      "tag": "pt",
+      "name": "Português",
+      "suggest": "Esta página também está em português"
+    },
+    {
+      "code": "it",
+      "tag": "it",
+      "name": "Italiano",
+      "suggest": "Questa pagina è disponibile anche in italiano"
+    },
+    {
+      "code": "nl",
+      "tag": "nl",
+      "name": "Nederlands",
+      "suggest": "Deze pagina is ook in het Nederlands"
+    },
+    {
+      "code": "sw",
+      "tag": "sw",
+      "name": "Kiswahili",
+      "suggest": "Ukurasa huu unapatikana pia kwa Kiswahili"
+    },
+    {
+      "code": "zh",
+      "tag": "zh-Hans",
+      "name": "中文（简体）",
+      "suggest": "本页面也有中文版"
+    }
+  ],
+  "keep": [
+    "VoteBoxApp Logo",
+    "VoteBoxApp",
+    "Cardano",
+    "Plutus, Solidity, Web3",
+    "NO57 1228 4461 000",
+    "DNBANOKKXXX",
+    "IBAN:",
+    "BIC/SWIFT:",
+    "<i data-lucide=\"coffee\" class=\"mr-2 w-5 h-5\"></i> Patreon",
+    "<i data-lucide=\"dollar-sign\" class=\"mr-2 w-5 h-5\"></i> Kickstarter",
+    "LGC Logo",
+    "<span class=\"text-white font-bold text-sm\">LGC</span>",
+    "LifeGround Community",
+    "Fund-Raising for VoteBoxApp - LGC",
+    "VoteBox<span class=\"a\">App</span>",
+    "github.com/Archaico/VoteBoxApp/releases/latest/download/VoteBoxApp.apk",
+    "&rarr;",
+    "voteboxapp.org",
+    "github.com/Archaico/VoteBoxApp",
+    "VoteBoxApp &middot; LifeGround Community",
+    "The Seed &mdash; Blueprint for a Better Society",
+    "VoteBoxApp<span>App</span>",
+    "BlockchainService",
+    "IPFSService",
+    "TreasuryService",
+    "WalletService",
+    "DiscussionService",
+    "DataSyncService",
+    "NotificationSvc",
+    "AnalyticsService",
+    "Blockfrost",
+    "{ proposalId, choice, key, ts }"
+  ]
+}

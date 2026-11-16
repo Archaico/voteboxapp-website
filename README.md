@@ -24,6 +24,26 @@ voteboxapp-website/
 Just open `index.html` in a browser — no build step, no dependencies to
 install.
 
+## Translations
+
+The home page, Get the App and How It Works are also published in German,
+French, Spanish, Portuguese, Italian, Dutch, Swahili and Chinese, under
+`/de/`, `/fr/`, `/es/`, `/pt/`, `/it/`, `/nl/`, `/sw/` and `/zh/`. These
+folders are generated: always edit the English pages, never the copies.
+
+After changing English text on a translated page:
+
+```
+cd i18n
+npm install      # first time only
+npm run check    # lists every sentence that needs translating again
+```
+
+Add the missing translations to `i18n/<language>.json` (each entry's ID and
+English text are in `i18n/en-strings.json`), then run `npm run build` to
+regenerate the copies and the language menu. Settings, the page list and
+text that stays the same in every language are in `i18n/languages.json`.
+
 ## Related repos
 
 - [VoteBoxApp](https://github.com/Archaico/VoteBoxApp) — the mobile app
