@@ -1,7 +1,19 @@
 {
   "name": "voteboxapp-website-i18n",
   "private": true,
-  "description": "Builds the translated copies of voteboxapp.org from the English pages",
-  "scripts": { "build": "node build.js", "check": "node build.js --check" },
-  "dependencies": { "cheerio": "1.0.0" }
+  "description": "Site tools for voteboxapp.org: translated pages and self-hosted assets",
+  "scripts": {
+    "build": "node build.js",
+    "check": "node build.js --check",
+    "assets": "node assets.js",
+    "fonts": "node fonts.js"
+  },
+  "dependencies": {
+    "cheerio": "1.0.0"
+  },
+  "devDependencies": {
+    "chart.js": "4.4.1",
+    "lucide-static": "0.564.0",
+    "tailwindcss": "3.4.17"
+  }
 }

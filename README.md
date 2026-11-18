@@ -5,24 +5,48 @@ for VoteBoxApp — an open-source, blockchain-based direct democracy platform.
 
 ## What it is
 
-A single static HTML page (Tailwind CSS via CDN, vanilla JS, no build step)
-covering VoteBoxApp's mission, features, and roadmap. Hosted on GitHub Pages
-with a custom domain.
+Static HTML pages (vanilla JS) covering VoteBoxApp's mission, features,
+roadmap and concept designs. Hosted on GitHub Pages with a custom domain.
+
+The site loads nothing from other servers: no CDNs, no Google Fonts, no
+trackers. Tailwind CSS, the Lucide icons, Chart.js and the fonts are served
+from `assets/`.
 
 ## Structure
 
 ```
 voteboxapp-website/
-├── index.html   # The entire site
-├── images/      # Logos and graphics
-├── CNAME        # Custom domain config (voteboxapp.org)
+├── index.html, *.html   # The pages (English is the source)
+├── de/ fr/ es/ … zh/    # Generated translations — don't edit
+├── assets/              # Self-hosted CSS, JS and fonts — generated
+├── i18n/                # Site tools (translations, assets)
+├── images/              # Logos and graphics
+├── CNAME                # Custom domain config (voteboxapp.org)
 └── LICENSE
 ```
 
 ## Local development
 
-Just open `index.html` in a browser — no build step, no dependencies to
-install.
+The pages use paths like `/assets/...`, so view them through a local server
+rather than by opening the file:
+
+```
+python -m http.server 8765    # then open http://localhost:8765
+```
+
+## Self-hosted assets
+
+After adding Tailwind classes or Lucide icons to `index.html`, rebuild:
+
+```
+cd i18n
+npm install       # first time only
+npm run assets    # tailwind.css, icons.js, chart.umd.js
+npm run build     # then refresh the translated copies
+```
+
+`npm run fonts` re-copies the Google Fonts used by bounty.html and vision.html
+(only needed if a page's fonts change; edit the list in `i18n/fonts.js`).
 
 ## Translations
 

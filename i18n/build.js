@@ -144,12 +144,14 @@ function alternateLinks(page) {
   return `<!-- lang-alternates:start -->\n${tags.join('\n')}\n<!-- lang-alternates:end -->`;
 }
 
-// Replaces a marked block, or inserts it after `anchor` the first time.
-function upsert(html, name, block, anchor) {
-  const re = new RegExp(`<!-- ${name}:start -->[\\s\\S]*?<!-- ${name}:end -->`);
-  if (re.test(html)) return html.replace(re, block);
+// Replaces a marked block, or inserts it the first time: right after the tag
+// matching `anchor`, or right before it when `before` is set.
+function upsert(html, name, block, anchor, before = false) {
+  const re = new RegExp(`<!-- ${name}:start -->[\\s\\S]*?<!-- ${name}:end -->\\n?`);
+  if (re.test(html)) return html.replace(re, block + '\n');
   const at = html.search(anchor);
-  if (at < 0) throw new Error(`No ${anchor} to insert ${name} after`);
+  if (at < 0) throw new Error(`No ${anchor} to insert ${name} at`);
+  if (before) return html.slice(0, at) + block + '\n' + html.slice(at);
   const end = html.indexOf('>', at) + 1;
   return html.slice(0, end) + '\n' + block + html.slice(end);
 }
@@ -200,7 +202,7 @@ for (const lang of config.languages) {
     $('html').attr('lang', lang.tag);
     rewriteLinks($, lang.code);
     let out = $.html();
-    out = upsert(out, 'lang-alternates', alternateLinks(page), /<head[\s>]/);
+    out = upsert(out, 'lang-alternates', alternateLinks(page), /<\/head>/, true);
     out = upsert(out, 'lang-menu', langMenu(lang.code, page), /<body[\s>]/);
     fs.mkdirSync(path.join(ROOT, lang.code), { recursive: true });
     fs.writeFileSync(path.join(ROOT, lang.code, page), out);
@@ -211,8 +213,9 @@ for (const lang of config.languages) {
 if (!CHECK_ONLY) {
   for (const page of PAGES) {
     const file = path.join(ROOT, page);
-    let html = fs.readFileSync(file, 'utf8');
-    html = upsert(html, 'lang-alternates', alternateLinks(page), /<head[\s>]/);
+    // Re-insert both blocks, so they always sit where upsert() puts them.
+    let html = stripMarked(fs.readFileSync(file, 'utf8'));
+    html = upsert(html, 'lang-alternates', alternateLinks(page), /<\/head>/, true);
     html = upsert(html, 'lang-menu', langMenu('en', page), /<body[\s>]/);
     fs.writeFileSync(file, html);
   }
